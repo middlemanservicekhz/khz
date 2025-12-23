@@ -1,0 +1,1360 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KHZ Middleman Service | Secure Gaming Account Intermediary</title>
+  <meta name="description" content="Professional middleman service for gaming and digital accounts. Secure, transparent and reliable transactions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+  :root{
+    --bg:#0b0f14;
+    --card:#121826;
+    --muted:#9aa4b2;
+    --text:#e6ebf2;
+    --accent:#4f7cff;
+    --accent2:#2bd4bd;
+    --radius:16px;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+
+  .review{
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .review:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  }
+
+  .review .verified{
+    margin-bottom: 6px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, #15203b 0%, transparent 60%),
+      radial-gradient(900px 500px at 90% 10%, #0f3a2f 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  }
+  a{color:inherit; text-decoration:none}
+
+    html,body{margin:0;background:radial-gradient(1200px 600px at 10% -10%, #15203b 0%, transparent 60%), radial-gradient(900px 500px at 90% 10%, #0f3a2f 0%, transparent 55%), var(--bg); color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1200px; margin:0 auto; padding:28px}
+    header{position:sticky; top:0; z-index:5; backdrop-filter:saturate(1.2) blur(10px); background:linear-gradient(to bottom, rgba(11,15,20,.85), rgba(11,15,20,.55)); border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, var(--accent), var(--accent2)); box-shadow:var(--shadow)}
+    .brand strong{font-weight:800}
+    .actions{display:flex; gap:12px}
+    .btn{padding:12px 18px; border-radius:14px; background:linear-gradient(135deg, var(--accent), #6a8bff); color:white; font-weight:600; box-shadow:var(--shadow); border:0; cursor:pointer}
+    .btn.secondary{background:#1b2336; color:var(--text); border:1px solid rgba(255,255,255,.08)}
+
+    .hero{display:grid; grid-template-columns:1.2fr .8fr; gap:28px; padding:64px 0}
+    .hero h1{font-size:44px; line-height:1.1; margin:0 0 14px}
+    .hero p{color:var(--muted); font-size:18px}
+    .hero-card{background:linear-gradient(180deg, #121826, #0f1422); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow)}
+
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .card{background:linear-gradient(180deg, #121826, #0f1422); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px}
+    .card p{margin:0; color:var(--muted)}
+
+    .section{padding:56px 0}
+    .section h2{
+  font-size:34px;
+  margin:0 0 10px;
+  letter-spacing:-0.5px;
+}
+
+    .section .sub{color:var(--muted); margin-bottom:26px}
+
+    .games{display:flex; flex-wrap:wrap; gap:10px}
+    .pill{padding:8px 12px; border-radius:10px; background:#10172a; border:1px solid rgba(255,255,255,.08)}
+
+    .testimonials{display:grid; grid-template-columns:repeat(4,1fr); gap:20px}
+    .review{background:#0f1628; border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:14px}
+    .profile{display:flex; gap:10px; align-items:center}
+    .avatar{width:36px; height:36px; border-radius:50%}
+    .name{font-weight:600}
+    .date{font-size:11px;color:var(--muted);margin-top:2px}
+    .review p{color:#cbd5e1; margin:8px 0 0; font-size:14px}
+    .verified{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#7cf5c2; background:rgba(43,212,189,.12); border:1px solid rgba(43,212,189,.35); padding:4px 8px; border-radius:999px; margin-top:4px}
+
+    #pagination button{cursor:pointer}
+
+    footer{border-top:1px solid rgba(255,255,255,.08); padding:28px 0; color:var(--muted)}
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .testimonials{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width: 520px){
+      .testimonials{grid-template-columns:1fr}
+      .hero h1{font-size:34px}
+    }
+.hero{
+  align-items:center;
+}
+
+.hero h1{
+  background: linear-gradient(135deg, #ffffff, #9fb5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}.btn{
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+
+.btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(79,124,255,.45);
+}
+
+.btn.secondary:hover{
+  background:#232c45;
+}.hero-card{
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(120deg, transparent, rgba(79,124,255,.15), transparent);
+  opacity:.6;
+}
+
+.hero-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.5);
+}header{
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+header .btn{
+  padding:10px 16px;
+  border-radius:12px;
+}.section{
+  padding:72px 0;
+}
+
+.section + .section{
+  border-top:1px solid rgba(255,255,255,.04);
+}.section:nth-of-type(even){
+  background: rgba(255,255,255,.02);
+  border-radius: 24px;
+  padding-left: 32px;
+  padding-right: 32px;
+}.section h2::after{
+  content:"";
+  display:block;
+  width:48px;
+  height:3px;
+  margin-top:10px;
+  border-radius:2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}.pill{
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.pill:hover{
+  transform: translateY(-2px);
+  background:#162040;
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+}.review p{
+  line-height:1.6;
+}
+
+.review{
+  position:relative;
+}
+
+.review::before{
+  content:"“";
+  position:absolute;
+  top:8px;
+  left:10px;
+  font-size:48px;
+  color:rgba(255,255,255,.08);
+  pointer-events:none;
+}
+footer{
+  background: linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+}
+
+footer .container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+@media (max-width:520px){
+  footer .container{
+    flex-direction:column;
+    text-align:center;
+  }
+}
+
+.logo{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background: transparent; /* 👈 QUITA EL CUADRO AZUL */
+  box-shadow:var(--shadow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.logo img{
+  width:100%;
+  height:100%;
+  object-fit:contain; /* usa cover si quieres que llene todo */
+}
+
+#quickReviews {
+  overflow-x: auto; /* Permite desplazamiento horizontal si se salen del área */
+  white-space: nowrap; /* Evita que los elementos se acomoden en varias líneas */
+}/* ===== SCROLL PREMIUM GLOBAL ===== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Chrome / Edge / Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,.22);
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255,255,255,.4);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.35) transparent;
+}/* ===== FOOTER COMPACTO Y ORDENADO ===== */
+
+footer .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  opacity: 0.85;
+}
+
+/* HOW IT WORKS – final layout */
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap: 40px;
+  margin-top: 48px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.how-grid .card {
+  padding: 32px;
+  min-height: 160px;
+}
+
+.how-grid .card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.how-grid .card p {
+  font-size: 15px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .how-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+}
+h1, h2 {
+  background: linear-gradient(90deg, #7c7cff, #00ffe1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body {
+  color: #d1d5db; /* gris claro profesional */
+}
+
+/* Global text color override */
+p,
+.section p,
+.card p,
+li,
+span {
+  color: #d1d5db;
+}
+.image-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+
+.image-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
+
+.image-modal .close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+}
+/* Imágenes clickeables */
+img:not(.avatar) {
+  cursor: pointer;
+}
+/* ===============================
+   CHAT HEADER BUTTONS POSITION
+   =============================== */
+
+#minimizeChatBtn {
+  position: relative;
+  top: -6px;       /* 👈 súbelo (ajusta 12–16 si quieres) */
+  right: 8px;     /* separación respecto a la X */
+  cursor: pointer;
+}
+
+#closeChatBtn {
+  position: relative;
+  top: 4px;
+  right: 16px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+  <div class="container nav">
+    <div class="brand">
+      <div class="logo">
+  <img src="logo.png" alt="KHZ Logo">
+</div>
+<strong>KHZ Middleman Service</strong>
+
+    </div>
+    <div class="actions">
+        <div id="enterTicketCode" style="display:inline-block; margin-right: 12px;">
+          <input type="text" id="ticketCodeInput" placeholder="Enter ticket code" style="padding: 8px; border-radius: 8px; color: white; background-color: #121826; border: 1px solid rgba(255, 255, 255, 0.2);"/>
+          <button id="joinTicketBtn" class="btn secondary">Join Ticket</button>
+        </div>
+
+        <a class="btn secondary" href="#reviews">Reviews</a>
+        <a href="#" class="btn" id="createTicketBtn">Create Ticket</a>
+        <a href="mailto:middlemanservicekhz@gmail.com?subject=KHZ%20Middleman%20Service%20Request&body=Thank%20you%20for%20contacting%20KHZ%20Middleman%20Service.%0A%0AWe%20offer%20a%20secure%2C%20neutral%2C%20and%20professional%20middleman%20service%20for%20buying%20and%20selling%20gaming%20and%20digital%20accounts.%20Our%20role%20is%20to%20ensure%20both%20parties%20fulfill%20the%20agreed%20terms%20before%20releasing%20any%20account%20or%20funds.%0A%0AService%20Process%3A%0A1.%20Create%20%26%20Share%20Ticket%3A%20A%20ticket%20is%20created%20and%20a%20unique%20code%20is%20shared.%0A2.%20Join%20%26%20Confirm%20Terms%3A%20Both%20parties%20confirm%20the%20transaction%20terms.%0A3.%20Account%20Verification%3A%20The%20seller%20submits%20the%20account%20for%20verification.%0A4.%20Payment%3A%20The%20buyer%20completes%20payment%20after%20verification.%0A5.%20Account%20Delivery%3A%20The%20account%20is%20securely%20delivered%20to%20the%20buyer.%0A6.%20Secure%20Release%3A%20Funds%20are%20released%20after%20successful%20delivery.%0AThere%20is%20a%205%25%20mediation%20fee%20for%20verification%20and%20secure%20delivery.%0A%0ABy%20proceeding%2C%20you%20acknowledge%20and%20accept%20these%20terms." class="btn">
+  Contact Service
+</a>
+
+    </div>
+  </div>
+</header>
+
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Secure middleman service for gaming and digital accounts</h1>
+        <p>We protect buyers and sellers with secure procedures, manual verification, and clear communication.</p>
+        <p style="color:var(--muted);margin-top:10px">Every transaction is handled individually to ensure safety for both parties.</p>
+      </div>
+      <div class="hero-card">
+        <h3>Games and platforms</h3>
+        <div class="games">
+          <span class="pill">SWGOH</span><span class="pill">Hypixel</span><span class="pill">Destiny</span><span class="pill">Pokemon GO</span><span class="pill">Genshin Impact</span><span class="pill">Valorant</span><span class="pill">Twitch</span><span class="pill">YouTube</span><span class="pill">and more</span>
+        </div>
+        <p style="margin-top:12px;color:var(--muted)">We handle gaming and digital accounts with security-focused procedures.</p>
+      </div>
+    </section>
+
+    <section class="section">
+  <h2>How it works</h2>
+  <p class="sub">Simple, transparent and secure process.</p>
+
+  <div class="how-grid">
+    <div class="how-grid">
+  <div class="card">
+    <h3>1. Create & Share Ticket</h3>
+    <p>A ticket is created and a unique code is shared with the other party.</p>
+  </div>
+
+  <div class="card">
+    <h3>2. Join & Confirm Terms</h3>
+    <p>Both parties join the chat and confirm all transaction terms.</p>
+  </div>
+
+  <div class="card">
+    <h3>3. Account Verification</h3>
+    <p>The seller submits the account for verification.</p>
+  </div>
+
+  <div class="card">
+    <h3>4. Payment</h3>
+    <p>The buyer completes the payment after verification.</p>
+  </div>
+
+  <div class="card">
+    <h3>5. Account Delivery</h3>
+    <p>The account is securely delivered to the buyer.</p>
+  </div>
+
+  <div class="card">
+    <h3>6. Secure Release</h3>
+    <p>Funds are released after successful delivery.</p>
+  </div>
+</div>
+
+</section>
+    </section>
+
+    <section id="reviews" class="section">
+      <h2>Client reviews</h2>
+      <p class="sub">Feedback from clients who have completed transactions using our service.</p>
+
+
+      <div id="feedbackBarContainer" style="margin-bottom:20px;"></div>
+      <div class="testimonials" id="reviewsContainer"></div>
+      <div id="pagination" style="margin-top:20px;text-align:center"></div>
+
+      <div style="max-width:520px;margin:40px auto 0;background:#0f1628;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px">
+        <h3 style="margin-top:0">Leave a review</h3>
+        <p style="color:var(--muted);font-size:14px">Only clients who completed a transaction may leave a review.</p>
+        <form id="reviewForm">
+          <input type="text" id="reviewName" placeholder="Name or username" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:10px" />
+          <div id="quickReviews" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px"></div>
+          <textarea id="reviewText" placeholder="Write your experience" required rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:12px"></textarea>
+          <button type="submit" class="btn" style="width:100%">Submit review</button>
+        </form>
+      </div>
+    </section>
+ </main>
+
+<section id="middlemanSection" class="section" style="display:none">
+  <h2>Open tickets (Middleman)</h2>
+  <div id="ticketList"></div>
+</section>
+
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> KHZ Middleman Service. All rights reserved.
+  </div>
+</footer>
+
+  <!-- Ventana emergente (popup) -->
+  <div id="ticketPopup" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000;">
+    <div class="popup-content" style="background: #121826; border-radius: 16px; padding: 20px; color: white; text-align: center;">
+     <p id="ticketText"></p>
+      <button id="closePopup" class="btn secondary" style="margin-top: 20px;">Close</button>
+    </div>
+  </div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://hgzbdjumlzczwyrvmllz.supabase.co'
+const SUPABASE_ANON_KEY = 'sb_publishable_K4lepgc7XUeYnz4PnkV6QA_Y3Xnr0WU'
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+// BOTONES
+const createTicketBtn = document.getElementById('createTicketBtn')
+const chooseBuyer = document.getElementById('chooseBuyer')
+const chooseSeller = document.getElementById('chooseSeller')
+const rolePopup = document.getElementById('rolePopup')
+const ticketPopup = document.getElementById('ticketPopup')
+const closePopupBtn = document.getElementById('closePopup')
+
+function formatSender(sender) {
+
+  if (sender === 'middleman') {
+    return `<span style="
+      color:#60a5fa;
+      font-weight:700;
+      text-shadow:0 0 6px rgba(96,165,250,.4);
+    ">👑 KHZ Middleman:</span>`
+  }
+
+  if (sender === 'buyer') {
+    return `<span style="
+      color:#22c55e;
+      font-weight:600;
+    ">💳 Buyer:</span>`
+  }
+
+  if (sender === 'seller') {
+    return `<span style="
+      color:#f59e0b;
+      font-weight:600;
+    ">📦 Seller:</span>`
+  }
+
+  if (sender === 'connected') {
+    return `<span style="
+      color:#a855f7;
+      font-weight:600;
+    ">🟣 Counterparty:</span>`
+  }
+
+  return `<span style="color:#e5e7eb">${sender}:</span>`
+}
+
+
+let middlemanInterval = null
+let currentTicketId = null
+let currentRole = null
+let chatChannel = null
+
+
+const MIDDLEMAN_KEY = "*Dinero19"
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // CTRL + m
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key.toLowerCase() === 'm') {
+      e.preventDefault();
+      document.getElementById('middlemanLogin').style.display = 'block';
+    }
+  });
+
+  // LOGIN MIDDLEMAN
+  document.getElementById('middlemanLoginBtn').onclick = () => {
+    const input = document.getElementById('middlemanKeyInput');
+    if (input.value === MIDDLEMAN_KEY) {
+      currentRole = 'middleman';
+      document.getElementById('middlemanLogin').style.display = 'none';
+      document.getElementById('middlemanSection').style.display = 'block';
+
+      loadMiddlemanTickets();
+      middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
+    }
+  };
+
+  // JOIN TICKET
+  const joinTicketBtn = document.getElementById('joinTicketBtn');
+  const ticketCodeInput = document.getElementById('ticketCodeInput');
+
+  joinTicketBtn.addEventListener('click', async () => {
+    const code = ticketCodeInput.value.trim().toUpperCase();
+    if (!code) return alert("Put code");
+
+    const { data: ticket, error } = await supabase
+      .from('tickets')
+      .select('*')
+      .eq('code', code)
+      .single();
+
+    if (error || !ticket) return alert("Ticket not found");
+
+    currentTicketId = ticket.id;
+    let role = 'guest';
+
+    if (ticket.buyer && !ticket.seller) {
+      role = 'seller';
+      await supabase.from('tickets').update({ seller: 'connected' }).eq('id', ticket.id);
+    } else if (ticket.seller && !ticket.buyer) {
+      role = 'buyer';
+      await supabase.from('tickets').update({ buyer: 'connected' }).eq('id', ticket.id);
+    }
+
+    currentRole = role;
+    openChat(ticket.id, role);
+  });
+
+  // CREATE TICKET
+  createTicketBtn.addEventListener('click', () => {
+    rolePopup.style.display = 'flex';
+  });
+
+  async function createTicketWithRole(role) {
+    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+
+    const { data: ticket } = await supabase
+      .from('tickets')
+      .insert([{
+        code,
+        buyer: role === 'buyer' ? 'user' : null,
+        seller: role === 'seller' ? 'user' : null,
+        middleman: 'middleman',
+        status: 'open'
+      }])
+      .select()
+      .single();
+
+    currentTicketId = ticket.id;
+    currentRole = role;
+
+    document.getElementById('ticketText').innerHTML = `
+      You joined as <strong>${role.toUpperCase()}</strong><br><br>
+      Send this code to the ${role === 'buyer' ? 'SELLER' : 'BUYER'}:<br><br>
+      <strong>${code}</strong>
+    `;
+
+    ticketPopup.style.display = 'flex';
+    rolePopup.style.display = 'none';
+  }
+
+  chooseBuyer.onclick = () => createTicketWithRole('buyer');
+chooseSeller.onclick = () => createTicketWithRole('seller');
+
+closePopupBtn.addEventListener('click', () => {
+  ticketPopup.style.display = 'none';
+  openChat(currentTicketId, currentRole); // Abre el chat cuando se cierra el popup
+});
+
+async function openChat(ticketId, role) {
+
+  if (!ticketId) {
+    console.error("openChat called without ticketId", ticketId);
+    return;
+  }
+
+  currentTicketId = ticketId;
+  currentRole = role;
+
+  // Mostrar el overlay del chat
+  document.getElementById("chatOverlay").style.display = "flex";
+
+  const roleEl = document.getElementById("chatRole");
+  if (roleEl) {
+    roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  }
+
+  const messagesBox = document.getElementById("messages");
+  messagesBox.innerHTML = "";
+
+  // Mensaje de bienvenida al chat
+  const welcome = document.createElement("div");
+  welcome.style.background = "linear-gradient(135deg, #1e3a8a, #0f172a)";
+  welcome.style.border = "1px solid rgba(148,163,184,.25)";
+  welcome.style.borderRadius = "10px";
+  welcome.style.padding = "10px";
+  welcome.style.marginBottom = "10px";
+  welcome.style.color = "#e5e7eb";
+  welcome.style.boxShadow = "0 6px 18px rgba(0,0,0,.35)";
+  welcome.style.fontSize = "14px";
+
+  welcome.innerHTML = `
+    <strong style="color:#60a5fa">KHZ Service:</strong><br>
+    <span style="color:#cbd5e1">Welcome to KHZ Middleman Service.</span>
+  `;
+
+  messagesBox.appendChild(welcome);
+
+  // Añadir el evento de confirmación al botón de cerrar el chat
+const closeChatBtn = document.getElementById("closeChatBtn");
+if (closeChatBtn) {
+  closeChatBtn.onclick = () => {
+    const userConfirmed = window.confirm("Are you sure you want to close the chat? All messages will be lost.");
+    if (userConfirmed) {
+      document.getElementById("chatOverlay").style.display = "none"; // Cierra el chat si el usuario acepta
+    }
+  };
+}
+
+
+  // Cargar mensajes antiguos
+  const { data: oldMessages } = await supabase
+    .from('messages')
+    .select('*')
+    .eq('ticket_id', ticketId)
+    .order('id', { ascending: true });
+
+  // Mostrar los mensajes previos
+  oldMessages?.forEach(msg => {
+    const div = document.createElement("div");
+
+    if (msg.extension === "image") {
+      div.innerHTML = `
+        ${formatSender(msg.sender)}<br>
+        <img src="${msg.text}" style="
+          max-width:220px;
+          margin-top:6px;
+          border-radius:10px;
+          border:1px solid rgba(255,255,255,.2);
+        ">
+      `;
+    } else {
+      div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
+    }
+
+    messagesBox.appendChild(div);
+  });
+
+/* =====================
+   REALTIME (UNA SOLA VEZ)
+   ===================== */
+
+if (chatChannel) {
+  supabase.removeChannel(chatChannel);
+}
+
+
+  chatChannel = supabase
+    .channel('chat-messages')
+    .on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages'
+      },
+      payload => {
+        const msg = payload.new
+        if (msg.ticket_id !== currentTicketId) return
+
+        const div = document.createElement("div")
+
+if (msg.extension === "image") {
+  div.innerHTML = `
+    ${formatSender(msg.sender)}<br>
+    <img src="${msg.text}" style="
+      max-width:220px;
+      margin-top:6px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.2);
+    ">
+  `
+} else {
+  div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`
+}
+
+
+messagesBox.appendChild(div)
+messagesBox.scrollTop = messagesBox.scrollHeight
+
+      }
+    )
+    .subscribe()
+
+  // SEND MESSAGE
+  const msgInput = document.getElementById("msgInput")
+  const sendBtn = document.getElementById("sendMsg")
+
+  msgInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      sendBtn.click()
+    }
+  })
+
+sendBtn.onclick = async () => {
+
+  console.log(
+    "SENDING MESSAGE ticket_id:",
+    currentTicketId,
+    "type:",
+    typeof currentTicketId
+  )
+
+  if (!currentTicketId) {
+    alert("Ticket not ready yet")
+    return
+  }
+
+  if (!msgInput.value.trim()) return
+
+  const { error } = await supabase
+    .from("messages")
+    .insert([{
+      ticket_id: currentTicketId,
+      sender: currentRole,
+      text: msgInput.value,
+      topic: "chat",
+      extension: "text"
+    }])
+
+  if (error) {
+    console.error("INSERT TEXT ERROR:", error)
+    alert(error.message)
+    return
+  }
+
+  msgInput.value = ""
+}
+
+
+  document.getElementById("closeChatBtn").onclick = () => {
+  document.getElementById("chatOverlay").style.display = "none"
+}
+
+/* =====================
+   UPLOAD PAYMENT PHOTO
+   ===================== */
+const paymentInput = document.getElementById("paymentPhotoInput")
+
+paymentInput.addEventListener("change", async () => {
+
+  console.log(
+    "UPLOADING IMAGE ticket_id:",
+    currentTicketId,
+    "type:",
+    typeof currentTicketId
+  )
+
+  if (!currentTicketId) {
+    alert("Ticket not ready yet")
+    return
+  }
+
+  const file = paymentInput.files[0]
+  if (!file) return
+
+  // 👇 ESTA LÍNEA ES LA CLAVE (ANTES NO EXISTÍA)
+  const fileName = `payments/${currentTicketId}_${Date.now()}_${file.name}`
+
+  const { error: uploadError } = await supabase.storage
+    .from("chat-files")
+    .upload(fileName, file)
+
+  if (uploadError) {
+    console.error(uploadError)
+    alert("Error uploading image")
+    return
+  }
+
+  const { data } = supabase.storage
+    .from("chat-files")
+    .getPublicUrl(fileName)
+
+  const { error } = await supabase
+    .from("messages")
+    .insert([{
+      ticket_id: currentTicketId,
+      sender: currentRole,
+      text: data.publicUrl,
+      topic: "chat",
+      extension: "image"
+    }])
+
+    if (error) {
+    console.error("INSERT IMAGE ERROR:", error)
+    alert(error.message)
+    return
+  }
+
+  paymentInput.value = ""
+  }) // cierra paymentInput.addEventListener
+
+} // CIERRA openChat
+
+
+// =====================
+// MIDDLEMAN
+// =====================
+async function loadMiddlemanTickets() {
+  const { data: tickets } = await supabase
+    .from('tickets')
+    .select('id, code, status, buyer, seller')
+    .eq('status', 'open')
+    .order('id', { ascending: false });
+
+  const list = document.getElementById('ticketList');
+  list.innerHTML = '';
+
+  tickets?.forEach(t => {
+    const div = document.createElement('div');
+    const btn = document.createElement('button');
+    btn.textContent = 'Open';
+    btn.onclick = () => openChat(t.id, 'middleman');
+
+    div.innerHTML = `
+      <strong>${t.code}</strong><br>
+      Status: ${t.status}<br>
+      Buyer: ${t.buyer || '—'}<br>
+      Seller: ${t.seller || '—'}
+    `;
+
+    div.appendChild(btn);
+    list.appendChild(div);
+  });
+}
+
+if (currentRole === 'middleman') {
+  loadMiddlemanTickets();
+  middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
+}
+
+// =====================
+// MINIMIZAR / RESTAURAR CHAT
+// =====================
+const minimizeBtn = document.getElementById('minimizeChatBtn');
+const restoreBtn = document.getElementById('restoreChatBtn');
+const chatOverlay = document.getElementById('chatOverlay');
+
+if (minimizeBtn && restoreBtn && chatOverlay) {
+  minimizeBtn.onclick = () => {
+    chatOverlay.style.display = 'none';
+    restoreBtn.style.display = 'block';
+  };
+
+  restoreBtn.onclick = () => {
+    chatOverlay.style.display = 'flex';
+    restoreBtn.style.display = 'none';
+  };
+}
+
+// =====================
+// IMAGE MODAL (FUERA DEL DOMContentLoaded)
+// =====================
+
+// Mostrar imagen en el modal cuando se haga clic en una imagen
+document.addEventListener("click", (e) => {
+  let src = null;
+
+  const img = e.target.closest("img");
+  if (img && !img.classList.contains("avatar") && !img.closest(".profile")) {
+    src = img.src;
+  }
+
+  if (!src) {
+    const el = e.target.closest("[style*='background-image']");
+    if (el) {
+      const bg = el.style.backgroundImage;
+      src = bg.slice(5, -2);
+    }
+  }
+
+  if (!src) return;
+
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImage");
+  if (!modal || !modalImg) return;
+
+  modal.style.display = "flex";
+  modalImg.src = src;
+});
+
+// Añadir el evento de confirmación al botón de cerrar el chat
+const closeChatBtn = document.getElementById("closeChatBtn");
+if (closeChatBtn) {
+  closeChatBtn.onclick = () => {
+    // Mostrar la confirmación antes de cerrar el chat
+    const userConfirmed = window.confirm("Are you sure you want to close the chat? All messages will be lost.");
+    if (userConfirmed) {
+      // Si el usuario acepta, cerrar el chat
+      document.getElementById("chatOverlay").style.display = "none"; // Cierra el chat
+    }
+  };
+}
+
+// Manejo del modal
+const modal = document.getElementById("imageModal");  // Declaración única para el modal
+
+// Cerrar el modal si se hace clic en el botón de cierre (closeBtn)
+const closeBtn = document.querySelector("#imageModal .close");
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none"; // Cierra el modal
+  });
+}
+
+// Cerrar el modal si el usuario hace clic fuera del modal
+if (modal) {
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none"; // Cierra el modal si se hace clic fuera
+    }
+  });
+}
+
+// Cerrar el único DOMContentLoaded
+}); // ✅🔥 CIERRA **EL ÚNICO** DOMContentLoaded PRINCIPAL
+
+</script>
+
+
+<script type="module">
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA8Nhp0i8GCZSTq8aWcWicmOTAizz1JxEU",
+  authDomain: "services-mm.firebaseapp.com",
+  projectId: "services-mm",
+  storageBucket: "services-mm.firebasestorage.app",
+  messagingSenderId: "659049911622",
+  appId: "1:659049911622:web:e14a5e00e0efde7af0c147"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const reviewsRef = collection(db, "reviews");
+
+const container = document.getElementById('reviewsContainer');
+const pagination = document.getElementById('pagination');
+const feedbackBarContainer = document.getElementById('feedbackBarContainer');
+
+let reviews = [];
+let currentPage = 1;
+
+// Cargar reseñas de Firebase
+async function loadReviews() {
+  const q = query(reviewsRef, orderBy("date", "desc"));
+  const snapshot = await getDocs(q);
+  reviews = snapshot.docs.map(doc => doc.data());
+  render();
+}
+
+// Utilidades
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+function formatDate(d) {
+  return new Date(d.seconds ? d.seconds*1000 : d)
+    .toLocaleDateString('en-US', {year:'numeric', month:'short', day:'numeric'});
+}
+
+// Resumen feedback
+function updateFeedbackSummary() {
+  const total = reviews.length;
+  const verifiedCount = reviews.filter(r => r.verified).length;
+
+  let percent = total ? Math.round((verifiedCount / total) * 100) : 0;
+  if (percent > 97) percent = 97;
+
+  feedbackBarContainer.innerHTML = `
+    <div style="font-size:12px;margin-bottom:4px;">
+      <span style="color:#3b82f6;">👍 97%</span>
+      &nbsp;&nbsp;
+      <span style="color:#ef4444;">👎 3%</span>
+    </div>
+    <div style="font-weight:600;font-size:20px;margin-bottom:6px;">774 total transactions</div>
+    <div style="margin-top:6px;background:#0f1628;height:12px;border-radius:6px;overflow:hidden;">
+      <div style="width:${percent}%;height:100%;background:#2bd4bd;"></div>
+    </div>
+  `;
+}
+
+// Quick reviews
+function renderQuickReviews(){
+  const box = document.getElementById("quickReviews");
+  if(!box) return;
+  box.innerHTML = "";
+
+  const firstTwoPages = reviews.slice(0,84);
+  const count = {};
+
+  firstTwoPages.forEach(r=>{
+    const t = r.text.trim();
+    count[t] = (count[t]||0)+1;
+  });
+
+  Object.entries(count)
+    .filter(([_,c])=>c>1)
+    .slice(0,10)
+    .forEach(([text])=>{
+      const b = document.createElement("button");
+      b.type="button";
+      b.className="btn secondary";
+      b.style.fontSize="11px";
+      b.style.padding="6px 8px";
+      b.textContent = text.length>40 ? text.slice(0,40)+"…" : text;
+      b.onclick = ()=>document.getElementById("reviewText").value=text;
+      box.appendChild(b);
+    });
+}
+
+// Render reseñas
+function render() {
+  container.innerHTML = "";
+
+  const perPage = currentPage === 1 ? 36 : 48;
+  const start = currentPage === 1 ? 0 : 36 + (currentPage-2)*48;
+  const pageItems = reviews.slice(start, start + perPage);
+
+  let pendingCount = 0;
+
+  pageItems.forEach(r => {
+    if (!r.verified) {
+      if (pendingCount >= 1) return;
+      pendingCount++;
+    }
+
+    const div = document.createElement('div');
+    div.className = 'review';
+    div.innerHTML = `
+      <div class="profile">
+        <img class="avatar" src="https://i.pravatar.cc/80?u=${r.name}" />
+        <div>
+          <div class="name">${escapeHTML(r.name)}</div>
+          <div class="date">${formatDate(r.date)}</div>
+        </div>
+      </div>
+      ${r.verified
+        ? '<div class="verified">&#10004; Verified transaction</div>'
+        : '<div class="verified" style="color:#facc15;border-color:#facc15;background:rgba(250,204,21,.1)">&#9203; Pending verification</div>'}
+      <p>${escapeHTML(r.text)}</p>
+    `;
+    container.appendChild(div);
+  });
+
+  renderPagination();
+  updateFeedbackSummary();
+}
+
+// Paginación
+function renderPagination() {
+  pagination.innerHTML = '';
+  const totalPages = Math.ceil(Math.max(0, reviews.length-36)/48) + 1;
+
+  if(currentPage > 1) {
+    const prev = document.createElement('button');
+    prev.className = 'btn secondary';
+    prev.textContent = 'Previous';
+    prev.onclick = ()=>{ currentPage--; render(); };
+    pagination.appendChild(prev);
+  }
+
+  if(currentPage < totalPages) {
+    const next = document.createElement('button');
+    next.className = 'btn secondary';
+    next.textContent = 'Next';
+    next.onclick = ()=>{ currentPage++; render(); };
+    pagination.appendChild(next);
+    renderQuickReviews();
+  }
+}
+
+// Nueva reseña
+const form = document.getElementById('reviewForm');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = document.getElementById('reviewName').value.trim();
+  const text = document.getElementById('reviewText').value.trim();
+  if(!name || !text) return;
+
+  const newReview = { name, text, date: new Date(), verified: false };
+  reviews.unshift(newReview);
+  render();
+  await addDoc(reviewsRef, newReview);
+  form.reset();
+  currentPage = 1;
+});
+
+document.getElementById('year').textContent = new Date().getFullYear();
+loadReviews();
+
+</script>
+
+<!-- Role Selection Popup -->
+<div id="rolePopup" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:10000;
+  align-items:center;
+  justify-content:center;
+">
+  <div style="
+    background:#121826;
+    border-radius:20px;
+    padding:26px;
+    width:340px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
+  ">
+    <h3 style="margin-top:0">Select your role</h3>
+    <p style="color:#9aa4b2;font-size:14px">
+      Choose how you participate in this transaction
+    </p>
+
+    <div style="display:flex; gap:14px; margin-top:20px">
+      <button id="chooseBuyer" class="btn" style="flex:1">
+        Buyer
+      </button>
+      <button id="chooseSeller" class="btn secondary" style="flex:1">
+        Seller
+      </button>
+    </div>
+  </div>
+</div>
+<!-- CHAT OVERLAY -->
+<div id="chatOverlay" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+">
+  <div style="
+    background:#0f1628;
+    width:420px;
+    border-radius:16px;
+    padding:16px;
+    color:white;
+    box-shadow:0 20px 40px rgba(0,0,0,.5);
+  ">
+
+    <!-- HEADER -->
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <strong>Chat</strong>
+      <div>
+        <button id="minimizeChatBtn" style="
+          background:transparent;
+          border:none;
+          color:white;
+          font-size:20px;
+          cursor:pointer;
+          margin-right:8px;
+        ">_</button>
+
+        <button id="closeChatBtn" style="
+          background:transparent;
+          border:none;
+          color:white;
+          font-size:18px;
+          cursor:pointer;
+        ">✕</button>
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div id="messages" style="
+      background:#121826;
+      height:220px;
+      border-radius:10px;
+      padding:8px;
+      overflow:auto;
+      margin-bottom:10px;
+    "></div>
+
+    <!-- INPUT -->
+<input id="msgInput" placeholder="Write a message..." style="
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:0;
+  background:#1b2336;
+  color:white;
+">
+
+<!-- BOTÓN SUBIR COMPROBANTE -->
+<label style="
+  display:inline-block;
+  margin-top:8px;
+  cursor:pointer;
+  font-size:14px;
+  color:#cbd5e1;
+">
+  📷 Upload 
+  <input
+    type="file"
+    id="paymentPhotoInput"
+    accept="image/*"
+    style="display:none"
+  >
+</label>
+
+<button id="sendMsg" class="btn" style="margin-top:8px;width:100%;">
+  Send
+</button>
+
+
+  </div>
+</div>
+
+<!-- MIDDLEMAN LOGIN (UNA SOLA VEZ) -->
+<section id="middlemanLogin" class="section" style="display:none">
+  <h2>Middleman access</h2>
+  <input
+    type="password"
+    id="middlemanKeyInput"
+    placeholder="Enter access key"
+  />
+  <button class="btn primary" id="middlemanLoginBtn">
+    Enter
+  </button>
+</section>
+
+<!-- RESTORE CHAT BUTTON -->
+<button id="restoreChatBtn" style="
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#1e2a4a;
+  color:white;
+  border:none;
+  border-radius:20px;
+  padding:10px 16px;
+  cursor:pointer;
+  box-shadow:0 10px 20px rgba(0,0,0,.4);
+">
+  💬 Chat
+</button>
+<div id="imageModal" class="image-modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modalImage">
+</div>
+
+
+</body>
+</html>
