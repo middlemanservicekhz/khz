@@ -370,6 +370,45 @@ img:not(.avatar) {
   right: 16px;
   cursor: pointer;
 }
+/* How it works – balanced spacing */
+.section.how .sub {
+  margin-bottom: 18px;
+}
+
+.section.how .how-grid {
+  margin-top: 22px;
+}
+
+/* ===== HOW IT WORKS – card hover ===== */
+.how-grid .card {
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.how-grid .card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.55);
+  border-color: rgba(43,212,189,.55);
+}
+/* Move How it works section up */
+.section.how {
+  padding-top: 36px;
+}
+/* Keep normal arrow cursor on How cards */
+.how-grid .card,
+.how-grid .card * {
+  cursor: default;
+}
+/* Footer year fix */
+footer #year {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+/* Fix year dash alignment */
+footer .year-range {
+  letter-spacing: 0.3px;
+}
 
   </style>
 </head>
@@ -419,12 +458,11 @@ img:not(.avatar) {
       </div>
     </section>
 
-    <section class="section">
+    <section class="section how">
   <h2>How it works</h2>
-  <p class="sub">Simple, transparent and secure process.</p>
+  <p class="sub">Secure & trusted middleman process</p>
 
   <div class="how-grid">
-    <div class="how-grid">
   <div class="card">
     <h3>1. Create & Share Ticket</h3>
     <p>A ticket is created and a unique code is shared with the other party.</p>
@@ -456,7 +494,6 @@ img:not(.avatar) {
   </div>
 </div>
 
-</section>
     </section>
 
     <section id="reviews" class="section">
@@ -489,7 +526,7 @@ img:not(.avatar) {
 
 <footer>
   <div class="container">
-    © <span id="year"></span> KHZ Middleman Service. All rights reserved.
+    © <span class="year-range">2022–<span id="year"></span></span> KHZ Middleman Service. All rights reserved.
   </div>
 </footer>
 
