@@ -716,6 +716,9 @@ async function openChat(ticketId, role) {
   // Mostrar chat
   document.getElementById("chatOverlay").style.display = "flex";
 
+  // cargar panel de orden
+  loadOrderPanel(ticketId);
+
   const roleEl = document.getElementById("chatRole");
   if (roleEl) {
     roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
@@ -724,13 +727,14 @@ async function openChat(ticketId, role) {
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // Mensaje bienvenida
+  // ✅ Mensaje bienvenida
   const welcome = document.createElement("div");
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
     <span style="color:#cbd5e1">Welcome to KHZ Middleman Service.</span>
   `;
   messagesBox.appendChild(welcome);
+}
 
   // Cargar mensajes antiguos
   const { data: oldMessages } = await supabase
@@ -897,12 +901,27 @@ paymentInput.addEventListener("change", async () => {
 // =====================
 // MIDDLEMAN
 // =====================
-async function loadMiddlemanTickets() {
-  const { data: tickets } = await supabase
-    .from('tickets')
-    .select('id, code, status, buyer, seller')
-    .eq('status', 'open')
-    .order('id', { ascending: false });
+async function loadOrderPanel(ticketId) {
+  const { data: ticket, error } = await supabase
+    .from("tickets")
+    .select("status_step, product_name, amount")
+    .eq("id", ticketId)
+    .single()
+
+  if (error || !ticket) {
+    console.error("Order panel error:", error)
+    return
+  }
+
+  document.getElementById("orderStatusText").textContent =
+    ticket.status_step || "CREATED"
+
+  document.getElementById("orderProductText").textContent =
+    ticket.product_name || "—"
+
+  document.getElementById("orderAmountText").textContent =
+    ticket.amount || "—"
+}
 
   const list = document.getElementById('ticketList');
   list.innerHTML = '';
@@ -1376,6 +1395,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
