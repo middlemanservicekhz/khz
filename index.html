@@ -438,10 +438,6 @@ footer .year-range {
   </div>
 </header>
 
-      </div>
-    </div>
-  </header>
-
   <main class="container">
     <section class="hero">
       <div>
@@ -916,11 +912,29 @@ async function loadOrderPanel(ticketId) {
   document.getElementById("orderProductText").textContent =
     ticket.product_name || "—"
 
-  document.getElementById("orderAmountText").textContent =
-    ticket.amount || "—"
+ document.getElementById("orderAmountText").textContent =
+  ticket.amount || "—"
 }
 
+
+// =====================
+// MIDDLEMAN TICKETS LIST
+// =====================
+async function loadMiddlemanTickets() {
+
+  const { data: tickets, error } = await supabase
+    .from('tickets')
+    .select('*')
+    .order('id', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
   const list = document.getElementById('ticketList');
+  if (!list) return;
+
   list.innerHTML = '';
 
   tickets?.forEach(t => {
@@ -941,7 +955,7 @@ async function loadOrderPanel(ticketId) {
   });
 }
 
-if (currentRole === 'middleman') {
+  if (currentRole === 'middleman') {
   loadMiddlemanTickets();
   middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
 }
@@ -1392,6 +1406,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
