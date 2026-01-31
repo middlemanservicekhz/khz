@@ -660,14 +660,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const code = Math.random().toString(36).substring(2, 10).toUpperCase();
 
     const { data: ticket } = await supabase
-      .from('tickets')
-      .insert([{
-        code,
-        buyer: role === 'buyer' ? 'user' : null,
-        seller: role === 'seller' ? 'user' : null,
-        middleman: 'middleman',
-        status: 'open'
-      }])
+  .from('tickets')
+  .insert([{
+    code,
+    buyer: role === 'buyer' ? 'user' : null,
+    seller: role === 'seller' ? 'user' : null,
+    middleman: 'middleman',
+    status: 'open',
+
+    // 🆕 NUEVO — CAMPOS DE ORDEN
+    status_step: 'CREATED',
+    product_name: null,
+    amount: null,
+    payment_proof: null,
+    delivery_data: null,
+    seller_delivered: false,
+    buyer_confirmed: false,
+    dispute_opened: false
+  }])
+
       .select()
       .single();
 
@@ -1338,5 +1349,6 @@ loadReviews();
 
 </body>
 </html>
+
 
 
