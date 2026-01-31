@@ -517,6 +517,13 @@ footer .year-range {
 <section id="middlemanSection" class="section" style="display:none">
   <h2>Open tickets (Middleman)</h2>
   <div id="ticketList"></div>
+  <!-- MIDDLEMAN PRODUCT FORM -->
+<div id="mmProductForm" style="margin-top:12px;">
+  <input id="mmProductName" placeholder="Product name" style="width:100%;margin-bottom:8px;">
+  <input id="mmAmount" type="number" placeholder="Amount" style="width:100%;margin-bottom:8px;">
+  <button id="mmSaveBtn">Save Product</button>
+</div>
+
 </section>
 
 
@@ -1045,6 +1052,48 @@ if (modal) {
 
 // Cerrar el único DOMContentLoaded
 }); // ✅🔥 CIERRA **EL ÚNICO** DOMContentLoaded PRINCIPAL
+document.getElementById("mmSaveBtn").onclick = async () => {
+
+  if (!currentTicketId) {
+    alert("Open a ticket first");
+    return;
+  }
+
+  const name = document.getElementById("mmProductName").value.trim();
+  const amount = document.getElementById("mmAmount").value.trim();
+
+  if (!name || !amount) {
+    alert("Fill product and amount");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("tickets")
+    .update({
+      product_name: name,
+      amount: amount,
+      status_step: "PRODUCT_SET"
+    })
+    .eq("id", currentTicketId);
+
+  if (error) {
+    alert("DB error");
+    console.error(error);
+    return;
+  }
+
+  // actualizar panel del chat
+  document.getElementById("orderProductText").textContent = name;
+  document.getElementById("orderAmountText").textContent = amount;
+  document.getElementById("orderStatusText").textContent = "PRODUCT_SET";
+
+  // mensaje sistema en chat
+  const box = document.getElementById("messages");
+  const div = document.createElement("div");
+  div.innerHTML = `<strong>System:</strong> Product set → ${name} ($${amount})`;
+  box.appendChild(div);
+
+};
 
 </script>
 
@@ -1406,6 +1455,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
