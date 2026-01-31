@@ -695,12 +695,13 @@ document.addEventListener('DOMContentLoaded', () => {
     rolePopup.style.display = 'none';
   }
 
-  chooseBuyer.onclick = () => createTicketWithRole('buyer');
+chooseBuyer.onclick = () => createTicketWithRole('buyer');
 chooseSeller.onclick = () => createTicketWithRole('seller');
 
 closePopupBtn.addEventListener('click', () => {
   ticketPopup.style.display = 'none';
-  openChat(currentTicketId, currentRole); // Abre el chat cuando se cierra el popup
+  openChat(currentTicketId, currentRole);
+});
 
 async function openChat(ticketId, role) {
 
@@ -718,32 +719,37 @@ async function openChat(ticketId, role) {
   // cargar panel de orden
   loadOrderPanel(ticketId);
 
-  const roleEl = document.getElementById("chatRole");
-  if (roleEl) {
-    roleEl.textContent = role.charAt(0).toUpperCase() + role.slice(1);
-  }
-
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // ✅ Mensaje bienvenida
+  // Mensaje bienvenida
   const welcome = document.createElement("div");
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
     <span style="color:#cbd5e1">Welcome to KHZ Middleman Service.</span>
   `;
   messagesBox.appendChild(welcome);
-}
 
-  // Cargar mensajes antiguos
-  const { data: oldMessages } = await supabase
+  // ✅ AHORA SÍ: cargar mensajes antiguos
+  const { data: oldMessages, error } = await supabase
     .from("messages")
     .select("*")
     .eq("ticket_id", ticketId)
     .order("id", { ascending: true });
 
+  if (error) {
+    console.error(error);
+    return;
+  }
+
   oldMessages?.forEach(msg => {
     const div = document.createElement("div");
+    div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
+    messagesBox.appendChild(div);
+  });
+
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
 
     if (msg.extension === "image") {
       div.innerHTML = `
@@ -1394,6 +1400,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
