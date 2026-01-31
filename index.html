@@ -713,16 +713,13 @@ async function openChat(ticketId, role) {
   currentTicketId = ticketId;
   currentRole = role;
 
-  // Mostrar chat
   document.getElementById("chatOverlay").style.display = "flex";
 
-  // cargar panel de orden
   loadOrderPanel(ticketId);
 
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // Mensaje bienvenida
   const welcome = document.createElement("div");
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
@@ -730,7 +727,6 @@ async function openChat(ticketId, role) {
   `;
   messagesBox.appendChild(welcome);
 
-  // ✅ AHORA SÍ: cargar mensajes antiguos
   const { data: oldMessages, error } = await supabase
     .from("messages")
     .select("*")
@@ -744,12 +740,6 @@ async function openChat(ticketId, role) {
 
   oldMessages?.forEach(msg => {
     const div = document.createElement("div");
-    div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
-    messagesBox.appendChild(div);
-  });
-
-  messagesBox.scrollTop = messagesBox.scrollHeight;
-}
 
     if (msg.extension === "image") {
       div.innerHTML = `
@@ -762,6 +752,9 @@ async function openChat(ticketId, role) {
 
     messagesBox.appendChild(div);
   });
+
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
 
   /* ========= REALTIME (SOLO 1 CANAL) ========= */
   if (chatChannel) {
@@ -1400,6 +1393,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
