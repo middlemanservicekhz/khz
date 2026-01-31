@@ -588,6 +588,8 @@ function formatSender(sender) {
 
 
 let middlemanInterval = null
+let chatInitialized = false   
+let sendingMessage = false  
 let currentTicketId = null
 let currentRole = null
 let chatChannel = null
@@ -693,14 +695,14 @@ closePopupBtn.addEventListener('click', () => {
 async function openChat(ticketId, role) {
 
   if (!ticketId) {
-    console.error("openChat called without ticketId", ticketId);
+    console.error("openChat called without ticketId");
     return;
   }
 
   currentTicketId = ticketId;
   currentRole = role;
 
-  // Mostrar el overlay del chat
+  // Mostrar chat
   document.getElementById("chatOverlay").style.display = "flex";
 
   const roleEl = document.getElementById("chatRole");
@@ -711,56 +713,28 @@ async function openChat(ticketId, role) {
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // Mensaje de bienvenida al chat
+  // Mensaje bienvenida
   const welcome = document.createElement("div");
-  welcome.style.background = "linear-gradient(135deg, #1e3a8a, #0f172a)";
-  welcome.style.border = "1px solid rgba(148,163,184,.25)";
-  welcome.style.borderRadius = "10px";
-  welcome.style.padding = "10px";
-  welcome.style.marginBottom = "10px";
-  welcome.style.color = "#e5e7eb";
-  welcome.style.boxShadow = "0 6px 18px rgba(0,0,0,.35)";
-  welcome.style.fontSize = "14px";
-
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
     <span style="color:#cbd5e1">Welcome to KHZ Middleman Service.</span>
   `;
-
   messagesBox.appendChild(welcome);
-
-  // Añadir el evento de confirmación al botón de cerrar el chat
-const closeChatBtn = document.getElementById("closeChatBtn");
-if (closeChatBtn) {
-  closeChatBtn.onclick = () => {
-    const userConfirmed = window.confirm("Are you sure you want to close the chat? All messages will be lost.");
-    if (userConfirmed) {
-      document.getElementById("chatOverlay").style.display = "none"; // Cierra el chat si el usuario acepta
-    }
-  };
-}
-
 
   // Cargar mensajes antiguos
   const { data: oldMessages } = await supabase
-    .from('messages')
-    .select('*')
-    .eq('ticket_id', ticketId)
-    .order('id', { ascending: true });
+    .from("messages")
+    .select("*")
+    .eq("ticket_id", ticketId)
+    .order("id", { ascending: true });
 
-  // Mostrar los mensajes previos
   oldMessages?.forEach(msg => {
     const div = document.createElement("div");
 
     if (msg.extension === "image") {
       div.innerHTML = `
         ${formatSender(msg.sender)}<br>
-        <img src="${msg.text}" style="
-          max-width:220px;
-          margin-top:6px;
-          border-radius:10px;
-          border:1px solid rgba(255,255,255,.2);
-        ">
+        <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
       `;
     } else {
       div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
@@ -769,102 +743,74 @@ if (closeChatBtn) {
     messagesBox.appendChild(div);
   });
 
-/* =====================
-   REALTIME (UNA SOLA VEZ)
-   ===================== */
-
-if (chatChannel) {
-  supabase.removeChannel(chatChannel);
-}
-
+  /* ========= REALTIME (SOLO 1 CANAL) ========= */
+  if (chatChannel) {
+    supabase.removeChannel(chatChannel);
+  }
 
   chatChannel = supabase
-    .channel('chat-messages')
+    .channel("chat-messages")
     .on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages'
-      },
+      "postgres_changes",
+      { event: "INSERT", schema: "public", table: "messages" },
       payload => {
-        const msg = payload.new
-        if (msg.ticket_id !== currentTicketId) return
+        const msg = payload.new;
+        if (msg.ticket_id !== currentTicketId) return;
 
-        const div = document.createElement("div")
+        const div = document.createElement("div");
 
-if (msg.extension === "image") {
-  div.innerHTML = `
-    ${formatSender(msg.sender)}<br>
-    <img src="${msg.text}" style="
-      max-width:220px;
-      margin-top:6px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.2);
-    ">
-  `
-} else {
-  div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`
-}
+        if (msg.extension === "image") {
+          div.innerHTML = `
+            ${formatSender(msg.sender)}<br>
+            <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
+          `;
+        } else {
+          div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
+        }
 
-
-messagesBox.appendChild(div)
-messagesBox.scrollTop = messagesBox.scrollHeight
-
+        messagesBox.appendChild(div);
+        messagesBox.scrollTop = messagesBox.scrollHeight;
       }
     )
-    .subscribe()
+    .subscribe();
 
-  // SEND MESSAGE
-  const msgInput = document.getElementById("msgInput")
-  const sendBtn = document.getElementById("sendMsg")
+  /* ========= SEND MESSAGE (UNA SOLA VEZ) ========= */
+  if (!chatInitialized) {
+    chatInitialized = true;
 
-  msgInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      sendBtn.click()
-    }
-  })
+    const msgInput = document.getElementById("msgInput");
+    const sendBtn = document.getElementById("sendMsg");
 
-sendBtn.onclick = async () => {
+    msgInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendBtn.click();
+      }
+    });
 
-  console.log(
-    "SENDING MESSAGE ticket_id:",
-    currentTicketId,
-    "type:",
-    typeof currentTicketId
-  )
+    sendBtn.onclick = async () => {
+      if (!currentTicketId) return;
+      if (!msgInput.value.trim()) return;
 
-  if (!currentTicketId) {
-    alert("Ticket not ready yet")
-    return
+      await supabase.from("messages").insert([{
+        ticket_id: currentTicketId,
+        sender: currentRole,
+        text: msgInput.value,
+        topic: "chat",
+        extension: "text"
+      }]);
+
+      msgInput.value = "";
+    };
   }
-
-  if (!msgInput.value.trim()) return
-
-  const { error } = await supabase
-    .from("messages")
-    .insert([{
-      ticket_id: currentTicketId,
-      sender: currentRole,
-      text: msgInput.value,
-      topic: "chat",
-      extension: "text"
-    }])
-
-  if (error) {
-    console.error("INSERT TEXT ERROR:", error)
-    alert(error.message)
-    return
-  }
-
-  msgInput.value = ""
 }
-
 
   document.getElementById("closeChatBtn").onclick = () => {
-  document.getElementById("chatOverlay").style.display = "none"
-}
+  document.getElementById("chatOverlay").style.display = "none";
+
+  // 🔥 ESTO ES CLAVE
+  chatInitialized = false;
+};
 
 /* =====================
    UPLOAD PAYMENT PHOTO
@@ -1395,3 +1341,4 @@ loadReviews();
 
 </body>
 </html>
+
