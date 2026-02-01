@@ -1066,10 +1066,16 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
     rolePopup.style.display = 'none';
   }
 
-chooseBuyer.onclick = () => {
-  createTicketWithRole('buyer');  // Crear el ticket
-  document.getElementById('buyerCreateOrderModal').style.display = 'block';  // Muestra el popup
+chooseBuyer.onclick = async () => {
+  await createTicketWithRole('buyer');
+
+  // ⛔ OCULTAMOS EL TICKET POPUP PARA BUYER
+  ticketPopup.style.display = 'none';
+
+  // ✅ MOSTRAMOS CREATE ORDER (EL FLUJO CORRECTO)
+  document.getElementById('buyerCreateOrderModal').style.display = 'block';
 };
+
 
 chooseSeller.onclick = () => {
   createTicketWithRole('seller');
@@ -1886,6 +1892,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
