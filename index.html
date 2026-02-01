@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -409,6 +409,68 @@ footer #year {
 footer .year-range {
   letter-spacing: 0.3px;
 }
+/* ===== ORDER PANEL ===== */
+
+#orderPanel{
+  background:#0b1220;
+  border:1px solid #1f2a44;
+  border-radius:12px;
+  padding:12px;
+  margin:10px 0;
+  font-size:13px;
+}
+
+.order-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.order-header span{
+  font-size:11px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#1b2336;
+  color:#9aa4b2;
+}
+
+.order-info{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.label{
+  font-size:11px;
+  color:#9aa4b2;
+  display:block;
+}
+
+#orderSteps{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.step{
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  background:#1b2336;
+  color:#9aa4b2;
+  border:1px solid rgba(255,255,255,.08);
+}
+.step.active{
+  background:rgba(43,212,189,.15);
+  color:#2bd4bd;
+  border-color:rgba(43,212,189,.4);
+}
+
+.step.done{
+  background:rgba(79,124,255,.15);
+  color:#7c9cff;
+}
 
   </style>
 </head>
@@ -764,31 +826,36 @@ async function openChat(ticketId, role) {
     supabase.removeChannel(chatChannel);
   }
 
-  chatChannel = supabase
-    .channel("chat-messages")
-    .on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "messages" },
-      payload => {
-        const msg = payload.new;
-        if (msg.ticket_id !== currentTicketId) return;
+ chatChannel = supabase
+  .channel("chat-messages")
+  .on(
+    "postgres_changes",
+    { event: "INSERT", schema: "public", table: "messages" },
+    payload => {
 
-        const div = document.createElement("div");
+      const messagesBox = document.getElementById("messages")
+      if (!messagesBox) return
 
-        if (msg.extension === "image") {
-          div.innerHTML = `
-            ${formatSender(msg.sender)}<br>
-            <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
-          `;
-        } else {
-          div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
-        }
+      const msg = payload.new
+      if (msg.ticket_id !== currentTicketId) return
 
-        messagesBox.appendChild(div);
-        messagesBox.scrollTop = messagesBox.scrollHeight;
+      const div = document.createElement("div")
+
+      if (msg.extension === "image") {
+        div.innerHTML = `
+          ${formatSender(msg.sender)}<br>
+          <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
+        `
+      } else {
+        div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`
       }
-    )
-    .subscribe();
+
+      messagesBox.appendChild(div)
+      messagesBox.scrollTop = messagesBox.scrollHeight
+    }
+  )
+  .subscribe()
+
 
   /* ========= SEND MESSAGE (UNA SOLA VEZ) ========= */
   if (!chatInitialized) {
@@ -898,8 +965,8 @@ paymentInput.addEventListener("change", async () => {
   paymentInput.value = ""
 })
 
-// =====================
-// MIDDLEMAN
+
+// ORDER PANEL (ESCROW)
 // =====================
 async function loadOrderPanel(ticketId) {
   const { data: ticket, error } = await supabase
@@ -913,16 +980,109 @@ async function loadOrderPanel(ticketId) {
     return
   }
 
+  // TEXT INFO
   document.getElementById("orderStatusText").textContent =
     ticket.status_step || "CREATED"
+
+  renderOrderActions(ticket.status_step, currentRole)
 
   document.getElementById("orderProductText").textContent =
     ticket.product_name || "—"
 
- document.getElementById("orderAmountText").textContent =
-  ticket.amount || "—"
+  document.getElementById("orderAmountText").textContent =
+    ticket.amount || "—"
+
+  // RESET
+  document.querySelectorAll(".step").forEach(step => {
+    step.classList.remove("active", "done")
+  })
+
+  // ACTIVATE STEPS
+  if (ticket.status_step === "CREATED") {
+    document.getElementById("step-payment").classList.add("active")
+  }
+
+  if (ticket.status_step === "PAYMENT_UPLOADED") {
+    document.getElementById("step-payment").classList.add("done")
+    document.getElementById("step-delivery").classList.add("active")
+  }
+
+  if (ticket.status_step === "DELIVERED") {
+    document.getElementById("step-payment").classList.add("done")
+    document.getElementById("step-delivery").classList.add("done")
+    document.getElementById("step-confirm").classList.add("active")
+  }
+
+  if (ticket.status_step === "RELEASED") {
+    document.getElementById("step-payment").classList.add("done")
+    document.getElementById("step-delivery").classList.add("done")
+    document.getElementById("step-confirm").classList.add("done")
+    document.getElementById("step-release").classList.add("active")
+  }
+
+  if (ticket.status_step === "COMPLETED") {
+    document.querySelectorAll(".step").forEach(step => {
+      step.classList.add("done")
+    })
+  }
 }
 
+// =====================
+// ORDER ACTIONS
+// =====================
+function renderOrderActions(status, role) {
+  const box = document.getElementById("orderActions")
+  if (!box) return
+
+  box.innerHTML = ""
+
+  // MIDDLEMAN
+  if (role === "middleman") {
+    if (status === "PAYMENT_UPLOADED") {
+      box.innerHTML = `<button id="btnConfirmPayment">Confirm Payment</button>`
+      document.getElementById("btnConfirmPayment").onclick = () =>
+        updateTicketStatus("PAYMENT_CONFIRMED")
+    }
+
+    if (status === "DELIVERED") {
+      box.innerHTML = `<button id="btnRelease">Release Funds</button>`
+      document.getElementById("btnRelease").onclick = () =>
+        updateTicketStatus("RELEASED")
+    }
+  }
+
+  // SELLER
+  if (role === "seller") {
+    if (status === "PAYMENT_CONFIRMED") {
+      box.innerHTML = `<button id="btnDelivered">Mark as Delivered</button>`
+      document.getElementById("btnDelivered").onclick = () =>
+        updateTicketStatus("DELIVERED")
+    }
+  }
+
+  // BUYER
+  if (role === "buyer") {
+    if (status === "DELIVERED") {
+      box.innerHTML = `<button id="btnConfirm">Confirm Delivery</button>`
+      document.getElementById("btnConfirm").onclick = () =>
+        updateTicketStatus("COMPLETED")
+    }
+  }
+}
+
+async function updateTicketStatus(newStatus) {
+  const { error } = await supabase
+    .from("tickets")
+    .update({ status_step: newStatus })
+    .eq("id", currentTicketId)
+
+  if (error) {
+    alert("Error updating status")
+    console.error(error)
+  } else {
+    loadOrderPanel(currentTicketId)
+  }
+}
 
 // =====================
 // MIDDLEMAN TICKETS LIST
@@ -1317,6 +1477,7 @@ loadReviews();
     </div>
   </div>
 </div>
+
 <!-- CHAT OVERLAY -->
 <div id="chatOverlay" style="
   display:none;
@@ -1360,17 +1521,33 @@ loadReviews();
 </div>
 
 <!-- ORDER PANEL -->
-<div id="orderPanel" style="
-  background:#0b1220;
-  border:1px solid #1f2a44;
-  border-radius:10px;
-  padding:10px;
-  margin:10px 0;
-  font-size:13px;
-">
-  <div><strong>Order Status:</strong> <span id="orderStatusText">Loading...</span></div>
-  <div><strong>Product:</strong> <span id="orderProductText">—</span></div>
-  <div><strong>Amount:</strong> $<span id="orderAmountText">—</span></div>
+<div id="orderPanel">
+
+  <div class="order-header">
+    <strong>Order</strong>
+    <span id="orderStatusText">CREATED</span>
+  </div>
+
+<div id="orderActions" style="margin-top:8px;"></div>
+
+  <div class="order-info">
+    <div>
+      <span class="label">Product</span>
+      <span id="orderProductText">—</span>
+    </div>
+    <div>
+      <span class="label">Amount</span>
+      <span>$<span id="orderAmountText">—</span></span>
+    </div>
+  </div>
+
+  <div id="orderSteps">
+    <span class="step" id="step-payment">Payment</span>
+    <span class="step" id="step-delivery">Delivery</span>
+    <span class="step" id="step-confirm">Confirm</span>
+    <span class="step" id="step-release">Released</span>
+  </div>
+
 </div>
 
     <!-- MESSAGES -->
@@ -1455,16 +1632,3 @@ loadReviews();
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
