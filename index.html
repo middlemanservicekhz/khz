@@ -1162,19 +1162,6 @@ if (amountEl) {
   amountEl.textContent = `${ticket.currency || "$"} ${ticket.amount || "—"}`;
 }
 
-  // 🔥 ELDORADO LOGIC
-  const creator = document.getElementById("inlineOrderCreator")
-
-  // Solo el buyer puede ver este formulario si aún no se ha creado el producto o si el ticket está en "CREATED"
-  if (
-    currentRole === "buyer" &&
-    (!ticket.product_name || ticket.status_step === "CREATED")
-  ) {
-    creator.style.display = "block"
-  } else {
-    creator.style.display = "none"
-  }
-
   // RESET Steps
   document.querySelectorAll(".step").forEach(step => {
     step.classList.remove("active", "done")
@@ -1807,4 +1794,5 @@ loadReviews();
 
 </body>
 </html>
+
 
