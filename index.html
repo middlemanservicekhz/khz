@@ -1848,14 +1848,16 @@ loadReviews();
 <!-- MIDDLEMAN LOGIN (UNA SOLA VEZ) -->
 <section id="middlemanLogin" class="section" style="display:none">
   <h2>Middleman access</h2>
-  <input
-    type="password"
-    id="middlemanKeyInput"
-    placeholder="Enter access key"
-  />
-  <button class="btn primary" id="middlemanLoginBtn">
-    Enter
-  </button>
+  <form id="middlemanForm">
+    <input
+      type="password"
+      id="middlemanKeyInput"
+      placeholder="Enter access key"
+    />
+    <button class="btn primary" id="middlemanLoginBtn">
+      Enter
+    </button>
+  </form>
 </section>
 
 <!-- RESTORE CHAT BUTTON -->
@@ -1910,3 +1912,4 @@ loadReviews();
 
 </body>
 </html>
+
