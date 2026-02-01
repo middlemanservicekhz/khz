@@ -1144,16 +1144,23 @@ async function loadOrderPanel(ticketId) {
   }
 
   // TEXT INFO
-  document.getElementById("orderStatusText").textContent =
-    ticket.status_step || "CREATED"
+  const statusEl = document.getElementById("orderStatusText");
+if (statusEl) {
+  statusEl.textContent = ticket.status_step || "CREATED";
+}
 
   renderOrderActions(ticket.status_step, currentRole)
 
-  document.getElementById("orderProductText").textContent =
-    ticket.product_name || "—"
+const productEl = document.getElementById("orderProductText");
+if (productEl) {
+  productEl.textContent = ticket.product_name || "—";
+}
 
-  document.getElementById("orderAmountText").textContent =
-    `${ticket.currency || "$"} ${ticket.amount || "—"}`
+
+  const amountEl = document.getElementById("orderAmountText");
+if (amountEl) {
+  amountEl.textContent = `${ticket.currency || "$"} ${ticket.amount || "—"}`;
+}
 
   // 🔥 ELDORADO LOGIC
   const creator = document.getElementById("inlineOrderCreator")
@@ -1800,3 +1807,4 @@ loadReviews();
 
 </body>
 </html>
+
