@@ -1062,20 +1062,18 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
       <strong>${code}</strong>
     `;
 
-    ticketPopup.style.display = 'flex';
-    rolePopup.style.display = 'none';
-  }
+  // Siempre cerramos el popup de rol
+rolePopup.style.display = 'none';
 
-chooseBuyer.onclick = async () => {
-  await createTicketWithRole('buyer');
+// SOLO EL SELLER ve el ticket popup
+if (role === 'seller') {
+  ticketPopup.style.display = 'flex';
+}
 
-  // ⛔ OCULTAMOS EL TICKET POPUP PARA BUYER
-  ticketPopup.style.display = 'none';
-
-  // ✅ MOSTRAMOS CREATE ORDER (EL FLUJO CORRECTO)
+chooseBuyer.onclick = () => {
+  createTicketWithRole('buyer');
   document.getElementById('buyerCreateOrderModal').style.display = 'block';
 };
-
 
 chooseSeller.onclick = () => {
   createTicketWithRole('seller');
@@ -1892,6 +1890,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
