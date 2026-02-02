@@ -951,27 +951,37 @@ const MIDDLEMAN_KEY = "*Dinero19"
 
 document.addEventListener('DOMContentLoaded', async () => { 
 
-  // ♻️ Restaurar sesión si existe
+ // ♻️ Restaurar sesión si existe
 const savedTicket = localStorage.getItem("khz_ticketId");
 const savedRole = localStorage.getItem("khz_role");
 
 if (savedTicket && savedRole) {
   currentTicketId = savedTicket;
   currentRole = savedRole;
-  
-  const { data: ticket } = await supabase
-  .from("tickets")
-  .select("*")
-  .eq("id", savedTicket)
-  .single();
-  
 
-if (ticket) {
+  // 🛠️ Reemplazo: Usar `.maybeSingle()` en vez de `.single()` para evitar 406
+  const { data: ticket, error } = await supabase
+    .from("tickets")
+    .select("*")
+    .eq("id", savedTicket)
+    .maybeSingle();  // 🟢 Aquí cambiaste a `.maybeSingle()`
+
+  // Verifica si no existe el ticket
+  if (!ticket) {
+    console.log("Ticket no encontrado o no autorizado.");
+    localStorage.removeItem("khz_ticketId");
+    localStorage.removeItem("khz_role");
+    return;
+  }
+
+  // Si el ticket existe, resuelves el rol
   const resolvedRole = resolveRoleFromTicket(ticket);
   currentRole = resolvedRole;
+  
+  // Abrir el chat con el ticket y rol resuelto
   openChat(savedTicket, resolvedRole);
 }
-}
+
 
   // 🔒 Prevent middleman form reload (ENTER fix)
 const middlemanForm = document.getElementById("middlemanForm");
@@ -2036,6 +2046,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
