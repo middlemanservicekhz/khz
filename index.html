@@ -1394,30 +1394,20 @@ function renderOrderActions(status, role) {
 
   // MIDDLEMAN
   if (role === "middleman") {
-    if (status === "PAYMENT_UPLOADED") {
-      box.innerHTML = `<button id="btnConfirmPayment">Confirm Payment</button>`
-      document.getElementById("btnConfirmPayment").onclick = () =>
-        updateTicketStatus("PAYMENT_CONFIRMED")
-    }
-
-    if (status === "DELIVERED") {
-      box.innerHTML = `<button id="btnRelease">Release Funds</button>`
-      document.getElementById("btnRelease").onclick = () =>
-        updateTicketStatus("RELEASED")
-    }
+  if (status === "PAYMENT_UPLOADED") {
+    box.innerHTML = `<button id="btnConfirmPayment">Confirm Payment</button>`;
+    document.getElementById("btnConfirmPayment").onclick = () =>
+      updateTicketStatus("PAYMENT_CONFIRMED");
   }
 
-  // SELLER
-  if (role === "seller") {
-    if (status === "PAYMENT_CONFIRMED") {
-      box.innerHTML = `<button id="btnDelivered">Mark as Delivered</button>`
-      document.getElementById("btnDelivered").onclick = () =>
-        updateTicketStatus("DELIVERED")
-    }
+  if (status === "COMPLETED") { // Cambio aquí: solo después de que el buyer confirme
+    box.innerHTML = `<button id="btnRelease">Release Funds</button>`;
+    document.getElementById("btnRelease").onclick = () =>
+      updateTicketStatus("RELEASED");
   }
+}
 
-  // BUYER
-  // SELLER
+// SELLER
 if (role === "seller") {
   if (status !== "PAYMENT_CONFIRMED") {
     // Bloqueamos la acción si el pago no está confirmado
@@ -1429,21 +1419,30 @@ if (role === "seller") {
       updateTicketStatus("DELIVERED");
   }
 }
+
+// BUYER
+if (role === "buyer") {
+  if (status === "DELIVERED") {
+    box.innerHTML = `<button id="btnConfirm">Confirm Delivery</button>`;
+    document.getElementById("btnConfirm").onclick = () =>
+      updateTicketStatus("COMPLETED");
+  }
 }
 
 async function updateTicketStatus(newStatus) {
   const { error } = await supabase
     .from("tickets")
     .update({ status_step: newStatus })
-    .eq("id", currentTicketId)
+    .eq("id", currentTicketId);
 
   if (error) {
-    alert("Error updating status")
-    console.error(error)
+    alert("Error updating status");
+    console.error(error);
   } else {
-    loadOrderPanel(currentTicketId)
+    loadOrderPanel(currentTicketId); // Actualiza la vista del ticket
   }
 }
+
 
 // =====================
 // MIDDLEMAN TICKETS LIST
@@ -1924,6 +1923,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
