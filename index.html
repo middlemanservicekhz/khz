@@ -1231,18 +1231,24 @@ const paymentInput = document.getElementById("paymentPhotoInput")
 
 paymentInput.addEventListener("change", async () => {
 
-// 🔒 El Dorado rule: product must be set first
-const { data: ticket } = await supabase
-  .from("tickets")
-  .select("status_step")
-  .eq("id", currentTicketId)
-  .single();
+  if (!currentTicketId) {
+    alert("Ticket not ready yet")
+    paymentInput.value = ""
+    return
+  }
 
-if (ticket.status_step !== "PRODUCT_SET") {
-  alert("Order is not ready for payment yet.");
-  paymentInput.value = "";
-  return;
-}
+  // 🔒 El Dorado rule: order must be set before payment
+  const { data: ticket } = await supabase
+    .from("tickets")
+    .select("status_step")
+    .eq("id", currentTicketId)
+    .single();
+
+  if (ticket.status_step !== "PRODUCT_SET") {
+    alert("Order is not ready for payment yet.");
+    paymentInput.value = "";
+    return;
+  }
   
   if (!currentTicketId) {
     alert("Ticket not ready yet")
@@ -1913,6 +1919,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
