@@ -949,38 +949,41 @@ let chatChannel = null
 
 const MIDDLEMAN_KEY = "*Dinero19"
 
-document.addEventListener('DOMContentLoaded', async () => { 
+document.addEventListener('DOMContentLoaded', async () => {
 
- // ♻️ Restaurar sesión si existe
-const savedTicket = localStorage.getItem("khz_ticketId");
-const savedRole = localStorage.getItem("khz_role");
+  // ♻️ Restaurar sesión si existe
+  const savedTicket = localStorage.getItem("khz_ticketId");
+  const savedRole = localStorage.getItem("khz_role");
 
-if (savedTicket && savedRole) {
+  if (!savedTicket || !savedRole) return;
+
   currentTicketId = savedTicket;
   currentRole = savedRole;
 
-  // 🛠️ Reemplazo: Usar `.maybeSingle()` en vez de `.single()` para evitar 406
+  // 🔍 Verificar que el ticket exista (SIN abrir chat)
   const { data: ticket, error } = await supabase
     .from("tickets")
     .select("*")
     .eq("id", savedTicket)
-    .single();  // 🟢 Aquí cambiaste a `.Single()`
+    .single(); // ✅ correcto
 
-  // Verifica si no existe el ticket
   if (!ticket) {
     console.log("Ticket no encontrado o no autorizado.");
     localStorage.removeItem("khz_ticketId");
     localStorage.removeItem("khz_role");
+    currentTicketId = null;
+    currentRole = null;
     return;
   }
 
-  // Si el ticket existe, resuelves el rol
+  // 🔁 Resolver rol (pero NO abrir chat)
   const resolvedRole = resolveRoleFromTicket(ticket);
   currentRole = resolvedRole;
-  
-  // Abrir el chat con el ticket y rol resuelto
-  openChat(savedTicket, resolvedRole);
-}
+
+  // 🟢 SOLO mostrar opción de reanudar
+  showRestoreBanner(); // botón "Resume chat"
+});
+
 
 
   // 🔒 Prevent middleman form reload (ENTER fix)
@@ -2046,6 +2049,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
