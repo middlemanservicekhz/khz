@@ -933,6 +933,19 @@ let chatChannel = null
 const MIDDLEMAN_KEY = "*Dinero19"
 
 document.addEventListener('DOMContentLoaded', () => { 
+
+  // ♻️ Restaurar sesión si existe
+const savedTicket = localStorage.getItem("khz_ticketId");
+const savedRole = localStorage.getItem("khz_role");
+
+if (savedTicket && savedRole) {
+  currentTicketId = savedTicket;
+  currentRole = savedRole;
+
+  // Reabrir chat automáticamente
+  openChat(savedTicket, savedRole);
+}
+
   // 🔒 Prevent middleman form reload (ENTER fix)
 const middlemanForm = document.getElementById("middlemanForm");
 if (middlemanForm) {
@@ -1987,6 +2000,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
