@@ -1273,6 +1273,25 @@ async function openChat(ticketId, role) {
   });
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
+  applyChatPermissions(currentRole);
+
+}
+function applyChatPermissions(role) {
+  const input = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendMsg");
+
+  if (!input || !sendBtn) return;
+
+  // Middleman siempre escribe
+  if (role === "middleman") {
+    input.disabled = false;
+    sendBtn.disabled = false;
+    return;
+  }
+
+  // Buyer y Seller solo cuando el middleman entró
+  input.disabled = !middlemanOnline;
+  sendBtn.disabled = !middlemanOnline;
 }
 
   function showRestoreBanner() {
@@ -2060,6 +2079,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
