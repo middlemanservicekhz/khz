@@ -1068,15 +1068,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const input = document.getElementById('middlemanKeyInput');
   if (input.value === MIDDLEMAN_KEY) {
     currentRole = 'middleman';
+    middlemanOnline = true; // 🔑 ESTA ES LA CLAVE
 
     document.getElementById('middlemanLogin').style.display = 'none';
     document.getElementById('middlemanSection').style.display = 'block';
 
     loadMiddlemanTickets();
     middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
-
   }
 };
+
 
   // =====================
   // JOIN TICKET
@@ -1208,8 +1209,16 @@ async function openChat(ticketId, role) {
   // 🔒 Bloquear por defecto
   const msgInput = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
-  msgInput.disabled = true;
-  sendBtn.disabled = true;
+  // 🔒 Por defecto: chat bloqueado
+msgInput.disabled = true;
+sendBtn.disabled = true;
+
+// 🔓 SOLO si el middleman está online
+if (middlemanOnline) {
+  msgInput.disabled = false;
+  sendBtn.disabled = false;
+}
+
 
   // 🔍 Ver estado del ticket
   const { data: ticket } = await supabase
@@ -2077,6 +2086,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
