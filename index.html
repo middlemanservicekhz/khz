@@ -1166,10 +1166,6 @@ async function openChat(ticketId, role) {
   // ✅ Cargamos panel y mensajes
   loadOrderPanel(ticketId);
 
-
-  const messagesBox = document.getElementById("messages");
-  messagesBox.innerHTML = "";
-
   const welcome = document.createElement("div");
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
@@ -1977,6 +1973,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
