@@ -971,6 +971,29 @@ if (currentRole !== "buyer") {
       console.error(error);
       return;
     }
+// 🔑 MOSTRAR CÓDIGO AL BUYER (ESTILO ELDORADO)
+const { data: ticketData } = await supabase
+  .from("tickets")
+  .select("code")
+  .eq("id", currentTicketId)
+  .single();
+
+document.getElementById("ticketText").innerHTML = `
+  <h3>Order created ✅</h3>
+  <p style="color:#9aa4b2;font-size:14px">
+    Send this code to the seller so they can join the transaction:
+  </p>
+  <div style="
+    font-size:22px;
+    font-weight:800;
+    margin-top:12px;
+    letter-spacing:2px;
+  ">
+    ${ticketData.code}
+  </div>
+`;
+
+ticketPopup.style.display = "flex";
 
     // Cerrar modal de creación de orden
     document.getElementById("buyerCreateOrderModal").style.display = "none";
@@ -1922,6 +1945,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
