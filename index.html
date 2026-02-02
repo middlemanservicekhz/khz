@@ -1123,11 +1123,15 @@ async function openChat(ticketId, role) {
   currentTicketId = ticketId;
   currentRole = role;
 
-  // ✅ PRIMERO abrimos el chat
+  // ✅ Abrimos el chat primero
   document.getElementById("chatOverlay").style.display = "flex";
 
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
+
+  // 🔒 Bloqueamos input por defecto
+  document.getElementById("msgInput").disabled = true;
+  document.getElementById("sendMsg").disabled = true;
 
   // 🔒 ElDorado rule: wait for both parties
   const { data: ticket } = await supabase
@@ -1145,8 +1149,13 @@ async function openChat(ticketId, role) {
     return;
   }
 
-  // ✅ SI YA ESTÁN LOS DOS → seguimos normal
+  // 🔓 Ya están los dos → desbloqueamos chat
+  document.getElementById("msgInput").disabled = false;
+  document.getElementById("sendMsg").disabled = false;
+
+  // ✅ Cargamos panel y mensajes
   loadOrderPanel(ticketId);
+
 
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
@@ -1958,6 +1967,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
