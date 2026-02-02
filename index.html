@@ -1211,6 +1211,8 @@ localStorage.setItem("khz_role", role);
     .select("buyer, seller")
     .eq("id", ticketId)
     .single();
+  updateChatLock(ticket);
+
 
   if (!ticket.seller || !ticket.buyer) {
     messagesBox.innerHTML = `
@@ -1263,7 +1265,27 @@ localStorage.setItem("khz_role", role);
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
 } 
-  
+  function updateChatLock(ticket) {
+  const input = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendMessageBtn");
+  const lockMsg = document.getElementById("chatLockMsg"); // opcional
+
+  if (!input || !sendBtn) return;
+
+  const buyerJoined = !!ticket.buyer;
+  const sellerJoined = !!ticket.seller;
+
+  if (buyerJoined && sellerJoined) {
+    input.disabled = false;
+    sendBtn.disabled = false;
+    if (lockMsg) lockMsg.style.display = "none";
+  } else {
+    input.disabled = true;
+    sendBtn.disabled = true;
+    if (lockMsg) lockMsg.style.display = "block";
+  }
+}
+
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
   const chatOverlay = document.getElementById("chatOverlay");
@@ -2055,6 +2077,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
