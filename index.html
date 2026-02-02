@@ -964,7 +964,7 @@ if (savedTicket && savedRole) {
     .from("tickets")
     .select("*")
     .eq("id", savedTicket)
-    .Single();  // 🟢 Aquí cambiaste a `.Single()`
+    .single();  // 🟢 Aquí cambiaste a `.Single()`
 
   // Verifica si no existe el ticket
   if (!ticket) {
@@ -2046,6 +2046,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
