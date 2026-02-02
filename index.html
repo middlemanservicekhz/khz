@@ -1069,7 +1069,7 @@ rolePopup.style.display = 'none';
 if (role === 'seller') {
   ticketPopup.style.display = 'flex';
 }
-
+}
 chooseBuyer.onclick = () => {
   createTicketWithRole('buyer');
   document.getElementById('buyerCreateOrderModal').style.display = 'block';
@@ -1533,6 +1533,7 @@ if (modal) {
     }
   });
 }
+}); // ← CIERRA DOMContentLoaded
 
   </script>
   
@@ -1888,6 +1889,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
