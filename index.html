@@ -929,6 +929,23 @@ let currentTicketId = null
 let currentRole = null
 let chatChannel = null
 
+  function resolveRoleFromTicket(ticket) {
+  // Middleman nunca cambia
+  if (currentRole === "middleman") return "middleman";
+
+  // Intentar restaurar rol guardado
+  const savedRole = localStorage.getItem("khz_role");
+
+  if (savedRole === "buyer" && ticket.buyer) return "buyer";
+  if (savedRole === "seller" && ticket.seller) return "seller";
+
+  // Asignación automática si falta alguien
+  if (ticket.buyer && !ticket.seller) return "seller";
+  if (ticket.seller && !ticket.buyer) return "buyer";
+
+  return "guest";
+}
+
 
 const MIDDLEMAN_KEY = "*Dinero19"
 
@@ -2000,6 +2017,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
