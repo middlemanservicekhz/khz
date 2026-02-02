@@ -1417,13 +1417,18 @@ function renderOrderActions(status, role) {
   }
 
   // BUYER
-  if (role === "buyer") {
-    if (status === "DELIVERED") {
-      box.innerHTML = `<button id="btnConfirm">Confirm Delivery</button>`
-      document.getElementById("btnConfirm").onclick = () =>
-        updateTicketStatus("COMPLETED")
-    }
+  // SELLER
+if (role === "seller") {
+  if (status !== "PAYMENT_CONFIRMED") {
+    // Bloqueamos la acción si el pago no está confirmado
+    box.innerHTML = `<p style="color: #ff0000;">Payment not confirmed yet. Please wait for payment confirmation.</p>`;
+  } else {
+    // Si el pago está confirmado, el botón de "Delivered" aparece
+    box.innerHTML = `<button id="btnDelivered">Mark as Delivered</button>`;
+    document.getElementById("btnDelivered").onclick = () =>
+      updateTicketStatus("DELIVERED");
   }
+}
 }
 
 async function updateTicketStatus(newStatus) {
@@ -1919,6 +1924,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
