@@ -1123,8 +1123,29 @@ async function openChat(ticketId, role) {
   currentTicketId = ticketId;
   currentRole = role;
 
+  // ✅ PRIMERO abrimos el chat
   document.getElementById("chatOverlay").style.display = "flex";
 
+  const messagesBox = document.getElementById("messages");
+  messagesBox.innerHTML = "";
+
+  // 🔒 ElDorado rule: wait for both parties
+  const { data: ticket } = await supabase
+    .from("tickets")
+    .select("buyer, seller")
+    .eq("id", ticketId)
+    .single();
+
+  if (!ticket.seller || !ticket.buyer) {
+    messagesBox.innerHTML = `
+      <div style="color:#9aa4b2;font-size:14px">
+        ⏳ Waiting for the other party to join the transaction...
+      </div>
+    `;
+    return;
+  }
+
+  // ✅ SI YA ESTÁN LOS DOS → seguimos normal
   loadOrderPanel(ticketId);
 
   const messagesBox = document.getElementById("messages");
@@ -1937,6 +1958,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
