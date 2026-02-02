@@ -1063,16 +1063,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   // LOGIN MIDDLEMAN
   // =====================
   document.getElementById('middlemanLoginBtn').onclick = () => {
-    const input = document.getElementById('middlemanKeyInput');
-    if (input.value === MIDDLEMAN_KEY) {
-      currentRole = 'middleman';
-      document.getElementById('middlemanLogin').style.display = 'none';
-      document.getElementById('middlemanSection').style.display = 'block';
+  const input = document.getElementById('middlemanKeyInput');
+  if (input.value === MIDDLEMAN_KEY) {
+    currentRole = 'middleman';
 
-      loadMiddlemanTickets();
-      middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
-    }
-  };
+    document.getElementById('middlemanLogin').style.display = 'none';
+    document.getElementById('middlemanSection').style.display = 'block';
+
+    loadMiddlemanTickets();
+    middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
+
+    // 🔓 CLAVE
+    unlockChat();
+  }
+};
 
   // =====================
   // JOIN TICKET
@@ -2066,6 +2070,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
