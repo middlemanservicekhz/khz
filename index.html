@@ -958,6 +958,7 @@ const savedRole = localStorage.getItem("khz_role");
 if (savedTicket && savedRole) {
   currentTicketId = savedTicket;
   currentRole = savedRole;
+  }
 
   const { data: ticket } = await supabase
   .from("tickets")
@@ -2035,6 +2036,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
