@@ -1080,7 +1080,16 @@ ticketPopup.style.display = "flex";
     if (error || !ticket) return alert("Ticket not found");
 
     currentTicketId = ticket.id;
-    let role = 'guest';
+
+const resolvedRole = resolveRoleFromTicket(ticket);
+currentRole = resolvedRole;
+
+// 💾 Persistimos rol correcto
+localStorage.setItem("khz_ticketId", ticket.id);
+localStorage.setItem("khz_role", resolvedRole);
+
+openChat(ticket.id, resolvedRole);
+
 
     if (ticket.buyer && !ticket.seller) {
   role = 'seller';
@@ -2017,6 +2026,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
