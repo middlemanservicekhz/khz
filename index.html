@@ -1262,7 +1262,27 @@ localStorage.setItem("khz_role", role);
   });
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
+} 
+  
+  function showRestoreBanner() {
+  const restoreBtn = document.getElementById("restoreChatBtn");
+  const chatOverlay = document.getElementById("chatOverlay");
+
+  if (!restoreBtn || !chatOverlay) return;
+
+  // Mostrar botón "Resume chat"
+  restoreBtn.style.display = "block";
+
+  restoreBtn.onclick = () => {
+    chatOverlay.style.display = "flex";
+    restoreBtn.style.display = "none";
+
+    if (currentTicketId && currentRole) {
+      openChat(currentTicketId, currentRole);
+    }
+  };
 }
+  
 
   /* ========= REALTIME (SOLO 1 CANAL) ========= */
   if (chatChannel) {
@@ -2035,6 +2055,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
