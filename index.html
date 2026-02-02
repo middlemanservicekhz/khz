@@ -1219,13 +1219,22 @@ localStorage.setItem("khz_role", role);
 
 
   if (!ticket.seller || !ticket.buyer) {
-    messagesBox.innerHTML = `
-      <div style="color:#9aa4b2;font-size:14px">
-        ⏳ Waiting for the other party to join the transaction...
-      </div>
-    `;
-    return;
+
+  // 👑 Middleman puede hablar siempre
+  if (currentRole === "middleman") {
+    unlockChat();
   }
+
+  messagesBox.innerHTML = `
+    <div style="color:#9aa4b2;font-size:14px">
+      ⏳ Waiting for the other party to join the transaction...
+    </div>
+  `;
+
+  // ⚠️ solo buyer/seller quedan bloqueados
+  return;
+}
+
 
   // 🔓 Desbloqueamos chat (estilo ElDorado: apenas entra middleman)
 unlockChat();
@@ -2071,6 +2080,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
