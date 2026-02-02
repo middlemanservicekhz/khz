@@ -1092,12 +1092,6 @@ ticketPopup.style.display = "flex";
     currentTicketId = ticket.id;
     currentRole = role;
 
-    document.getElementById('ticketText').innerHTML = `
-      You joined as <strong>${role.toUpperCase()}</strong><br><br>
-      Send this code to the ${role === 'buyer' ? 'SELLER' : 'BUYER'}:<br><br>
-      <strong>${code}</strong>
-    `;
-
   // Siempre cerramos el popup de rol
 rolePopup.style.display = 'none';
 
@@ -1945,6 +1939,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
