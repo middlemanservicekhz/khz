@@ -1045,12 +1045,22 @@ ticketPopup.style.display = "flex";
     let role = 'guest';
 
     if (ticket.buyer && !ticket.seller) {
-      role = 'seller';
-      await supabase.from('tickets').update({ seller: 'connected' }).eq('id', ticket.id);
-    } else if (ticket.seller && !ticket.buyer) {
-      role = 'buyer';
-      await supabase.from('tickets').update({ buyer: 'connected' }).eq('id', ticket.id);
-    }
+  role = 'seller';
+
+  await supabase
+    .from('tickets')
+    .update({ seller: 'connected' })
+    .eq('id', ticket.id);
+
+  // 🤖 Mensaje sistema estilo ElDorado
+  await supabase.from("messages").insert([{
+    ticket_id: ticket.id,
+    sender: "system",
+    text: "✅ Seller has joined the transaction.",
+    topic: "system",
+    extension: "text"
+  }]);
+}
 
     currentRole = role;
     openChat(ticket.id, role);
@@ -1967,6 +1977,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
