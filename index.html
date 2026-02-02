@@ -1194,55 +1194,53 @@ async function openChat(ticketId, role) {
   currentTicketId = ticketId;
   currentRole = role;
 
-  // 💾 Guardar sesión (ElDorado style)
-localStorage.setItem("khz_ticketId", ticketId);
-localStorage.setItem("khz_role", role);
+  // 💾 Guardar sesión
+  localStorage.setItem("khz_ticketId", ticketId);
+  localStorage.setItem("khz_role", role);
 
-
-  // ✅ Abrimos el chat primero
-  document.getElementById("chatOverlay").style.display = "flex";
+  // Abrir chat
+  const chatOverlay = document.getElementById("chatOverlay");
+  chatOverlay.style.display = "flex";
 
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // 🔒 Bloqueamos input por defecto
-  document.getElementById("msgInput").disabled = true;
-  document.getElementById("sendMsg").disabled = true;
+  // 🔒 Bloquear por defecto
+  const msgInput = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendMsg");
+  msgInput.disabled = true;
+  sendBtn.disabled = true;
 
-  // 🔒 ElDorado rule: wait for both parties
+  // 🔍 Ver estado del ticket
   const { data: ticket } = await supabase
     .from("tickets")
     .select("buyer, seller")
     .eq("id", ticketId)
     .single();
-  updateChatLock(ticket);
 
+  // ⏳ Falta alguien
+  if (!ticket.buyer || !ticket.seller) {
 
-  if (!ticket.seller || !ticket.buyer) {
+    // 👑 Middleman escribe desde que entra
+    if (currentRole === "middleman") {
+      unlockChat();
+    }
 
-  // 👑 Middleman puede hablar siempre
-  if (currentRole === "middleman") {
+    messagesBox.innerHTML = `
+      <div style="color:#9aa4b2;font-size:14px">
+        ⏳ Waiting for the other party to join the transaction...
+      </div>
+    `;
+
+  } else {
+    // ✅ Buyer + Seller presentes
     unlockChat();
   }
 
-  messagesBox.innerHTML = `
-    <div style="color:#9aa4b2;font-size:14px">
-      ⏳ Waiting for the other party to join the transaction...
-    </div>
-  `;
-
-  // ⚠️ solo buyer/seller quedan bloqueados
-  return;
-}
-
-
-  // 🔓 Desbloqueamos chat (estilo ElDorado: apenas entra middleman)
-unlockChat();
-
-
-  // ✅ Cargamos panel y mensajes
+  // Cargar panel
   loadOrderPanel(ticketId);
 
+  // Mensaje sistema
   const welcome = document.createElement("div");
   welcome.innerHTML = `
     <strong style="color:#60a5fa">KHZ Service:</strong><br>
@@ -1250,16 +1248,12 @@ unlockChat();
   `;
   messagesBox.appendChild(welcome);
 
-  const { data: oldMessages, error } = await supabase
+  // Cargar mensajes
+  const { data: oldMessages } = await supabase
     .from("messages")
     .select("*")
     .eq("ticket_id", ticketId)
     .order("id", { ascending: true });
-
-  if (error) {
-    console.error(error);
-    return;
-  }
 
   oldMessages?.forEach(msg => {
     const div = document.createElement("div");
@@ -1277,7 +1271,9 @@ unlockChat();
   });
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
-} 
+}
+
+
   function unlockChat() {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
@@ -1287,7 +1283,6 @@ unlockChat();
   input.disabled = false;
   sendBtn.disabled = false;
 }
-
 
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
@@ -2080,6 +2075,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
