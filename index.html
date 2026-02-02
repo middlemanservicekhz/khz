@@ -1270,14 +1270,15 @@ unlockChat();
   messagesBox.scrollTop = messagesBox.scrollHeight;
 } 
   function unlockChat() {
-  const input = document.getElementById("chatInput");
-  const sendBtn = document.getElementById("sendMessageBtn");
+  const input = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendMsg");
 
   if (!input || !sendBtn) return;
 
   input.disabled = false;
   sendBtn.disabled = false;
 }
+
 
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
@@ -2070,6 +2071,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
