@@ -1275,17 +1275,6 @@ async function openChat(ticketId, role) {
   messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
-
-  function unlockChat() {
-  const input = document.getElementById("msgInput");
-  const sendBtn = document.getElementById("sendMsg");
-
-  if (!input || !sendBtn) return;
-
-  input.disabled = false;
-  sendBtn.disabled = false;
-}
-
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
   const chatOverlay = document.getElementById("chatOverlay");
@@ -2071,6 +2060,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
