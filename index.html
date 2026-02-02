@@ -934,41 +934,49 @@ const MIDDLEMAN_KEY = "*Dinero19"
 
 document.addEventListener('DOMContentLoaded', () => {
 
-document.getElementById("buyerCreateOrderBtn").onclick = async () => {
+  document.getElementById("buyerCreateOrderBtn").onclick = async () => {
 
-  if (!currentTicketId) {
-    alert("Ticket not ready");
-    return;
-  }
+    if (!currentTicketId) {
+      alert("Ticket not ready");
+      return;
+    }
 
-  const name = document.getElementById("buyerProductName").value.trim();
-  const amount = document.getElementById("buyerAmount").value.trim();
-  const currency = document.getElementById("buyerCurrency").value;
+    const name = document.getElementById("buyerProductName").value.trim();
+    const amount = document.getElementById("buyerAmount").value.trim();
+    const currency = document.getElementById("buyerCurrency").value;
 
-  if (!name || !amount) {
-    alert("Fill product and price");
-    return;
-  }
+    if (!name || !amount) {
+      alert("Fill product and price");
+      return;
+    }
 
-  const { error } = await supabase
-    .from("tickets")
-    .update({
-      product_name: name,
-      amount: amount,
-      currency: currency,
-      status_step: "PRODUCT_SET"
-    })
-    .eq("id", currentTicketId);
+    // Actualiza el ticket con la información del comprador
+    const { error } = await supabase
+      .from("tickets")
+      .update({
+        product_name: name,
+        amount: amount,
+        currency: currency,
+        status_step: "PRODUCT_SET"
+      })
+      .eq("id", currentTicketId);
 
-  if (error) {
-    alert("Error saving order");
-    console.error(error);
-    return;
-  }
+    if (error) {
+      alert("Error saving order");
+      console.error(error);
+      return;
+    }
 
-  document.getElementById("buyerCreateOrderModal").style.display = "none";
-  loadOrderPanel(currentTicketId);
-};
+    // Cerrar modal de creación de orden
+    document.getElementById("buyerCreateOrderModal").style.display = "none";
+    
+    // Cargar el panel de la orden
+    loadOrderPanel(currentTicketId);
+    
+    // ✅ Llamar a `openChat()` para abrir el chat del comprador
+    openChat(currentTicketId, 'buyer');
+  };
+
 
   // CTRL + m
   document.addEventListener('keydown', (e) => {
@@ -1887,6 +1895,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
