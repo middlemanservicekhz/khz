@@ -949,7 +949,7 @@ let chatChannel = null
 
 const MIDDLEMAN_KEY = "*Dinero19"
 
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', async () => { 
 
   // ♻️ Restaurar sesión si existe
 const savedTicket = localStorage.getItem("khz_ticketId");
@@ -958,13 +958,13 @@ const savedRole = localStorage.getItem("khz_role");
 if (savedTicket && savedRole) {
   currentTicketId = savedTicket;
   currentRole = savedRole;
-  }
-
+  
   const { data: ticket } = await supabase
   .from("tickets")
   .select("*")
   .eq("id", savedTicket)
   .single();
+  
 
 if (ticket) {
   const resolvedRole = resolveRoleFromTicket(ticket);
@@ -2036,6 +2036,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
