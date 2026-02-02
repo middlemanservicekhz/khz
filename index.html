@@ -1141,6 +1141,11 @@ async function openChat(ticketId, role) {
   currentTicketId = ticketId;
   currentRole = role;
 
+  // 💾 Guardar sesión (ElDorado style)
+localStorage.setItem("khz_ticketId", ticketId);
+localStorage.setItem("khz_role", role);
+
+
   // ✅ Abrimos el chat primero
   document.getElementById("chatOverlay").style.display = "flex";
 
@@ -1982,6 +1987,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
