@@ -1428,7 +1428,7 @@ if (role === "buyer") {
       updateTicketStatus("COMPLETED");
   }
 }
-
+}
 async function updateTicketStatus(newStatus) {
   const { error } = await supabase
     .from("tickets")
@@ -1923,6 +1923,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
