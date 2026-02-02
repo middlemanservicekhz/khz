@@ -951,54 +951,53 @@ const MIDDLEMAN_KEY = "*Dinero19"
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  // ♻️ Restaurar sesión si existe
+  // ♻️ Restaurar sesión si existe (SIN abrir chat)
   const savedTicket = localStorage.getItem("khz_ticketId");
   const savedRole = localStorage.getItem("khz_role");
 
-  if (!savedTicket || !savedRole) return;
+  if (savedTicket && savedRole) {
+    currentTicketId = savedTicket;
+    currentRole = savedRole;
 
-  currentTicketId = savedTicket;
-  currentRole = savedRole;
+    const { data: ticket } = await supabase
+      .from("tickets")
+      .select("*")
+      .eq("id", savedTicket)
+      .maybeSingle(); // ✅ CAMBIO: maybeSingle
 
-  // 🔍 Verificar que el ticket exista (SIN abrir chat)
-  const { data: ticket, error } = await supabase
-    .from("tickets")
-    .select("*")
-    .eq("id", savedTicket)
-    .single(); // ✅ correcto
+    if (!ticket) {
+      console.log("Ticket no encontrado o no autorizado.");
+      localStorage.removeItem("khz_ticketId");
+      localStorage.removeItem("khz_role");
+      currentTicketId = null;
+      currentRole = null;
+    } else {
+      const resolvedRole = resolveRoleFromTicket(ticket);
+      currentRole = resolvedRole;
 
-  if (!ticket) {
-    console.log("Ticket no encontrado o no autorizado.");
-    localStorage.removeItem("khz_ticketId");
-    localStorage.removeItem("khz_role");
-    currentTicketId = null;
-    currentRole = null;
-    return;
+      // 🟢 SOLO mostrar opción de reanudar
+      showRestoreBanner(); // botón "Resume chat"
+    }
   }
 
-  // 🔁 Resolver rol (pero NO abrir chat)
-  const resolvedRole = resolveRoleFromTicket(ticket);
-  currentRole = resolvedRole;
-
-  // 🟢 SOLO mostrar opción de reanudar
-  showRestoreBanner(); // botón "Resume chat"
-
   // 🔒 Prevent middleman form reload (ENTER fix)
-const middlemanForm = document.getElementById("middlemanForm");
-if (middlemanForm) {
-  middlemanForm.addEventListener("submit", e => {
-    e.preventDefault();
-  });
-}
+  const middlemanForm = document.getElementById("middlemanForm");
+  if (middlemanForm) {
+    middlemanForm.addEventListener("submit", e => {
+      e.preventDefault();
+    });
+  }
 
-
+  // =====================
+  // BUYER CREATE ORDER
+  // =====================
   document.getElementById("buyerCreateOrderBtn").onclick = async () => {
 
-if (currentRole !== "buyer") {
-  alert("Only the buyer can create the order.");
-  return;
-}
-    
+    if (currentRole !== "buyer") {
+      alert("Only the buyer can create the order.");
+      return;
+    }
+
     if (!currentTicketId) {
       alert("Ticket not ready");
       return;
@@ -1013,7 +1012,6 @@ if (currentRole !== "buyer") {
       return;
     }
 
-    // Actualiza el ticket con la información del comprador
     const { error } = await supabase
       .from("tickets")
       .update({
@@ -1029,40 +1027,31 @@ if (currentRole !== "buyer") {
       console.error(error);
       return;
     }
-// 🔑 MOSTRAR CÓDIGO AL BUYER (ESTILO ELDORADO)
-const { data: ticketData } = await supabase
-  .from("tickets")
-  .select("code")
-  .eq("id", currentTicketId)
-  .single();
 
-document.getElementById("ticketText").innerHTML = `
-  <h3>Order created ✅</h3>
-  <p style="color:#9aa4b2;font-size:14px">
-    Send this code to the seller so they can join the transaction:
-  </p>
-  <div style="
-    font-size:22px;
-    font-weight:800;
-    margin-top:12px;
-    letter-spacing:2px;
-  ">
-    ${ticketData.code}
-  </div>
-`;
+    const { data: ticketData } = await supabase
+      .from("tickets")
+      .select("code")
+      .eq("id", currentTicketId)
+      .single();
 
-ticketPopup.style.display = "flex";
+    document.getElementById("ticketText").innerHTML = `
+      <h3>Order created ✅</h3>
+      <p style="color:#9aa4b2;font-size:14px">
+        Send this code to the seller so they can join the transaction:
+      </p>
+      <div style="font-size:22px;font-weight:800;margin-top:12px;letter-spacing:2px;">
+        ${ticketData.code}
+      </div>
+    `;
 
-    // Cerrar modal de creación de orden
+    ticketPopup.style.display = "flex";
     document.getElementById("buyerCreateOrderModal").style.display = "none";
-    
-    // Cargar el panel de la orden
     loadOrderPanel(currentTicketId);
-    
   };
 
-
-  // CTRL + m
+  // =====================
+  // CTRL + M (MIDDLEMAN)
+  // =====================
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key.toLowerCase() === 'm') {
       e.preventDefault();
@@ -1070,7 +1059,9 @@ ticketPopup.style.display = "flex";
     }
   });
 
+  // =====================
   // LOGIN MIDDLEMAN
+  // =====================
   document.getElementById('middlemanLoginBtn').onclick = () => {
     const input = document.getElementById('middlemanKeyInput');
     if (input.value === MIDDLEMAN_KEY) {
@@ -1083,7 +1074,9 @@ ticketPopup.style.display = "flex";
     }
   };
 
+  // =====================
   // JOIN TICKET
+  // =====================
   const joinTicketBtn = document.getElementById('joinTicketBtn');
   const ticketCodeInput = document.getElementById('ticketCodeInput');
 
@@ -1091,52 +1084,49 @@ ticketPopup.style.display = "flex";
     const code = ticketCodeInput.value.trim().toUpperCase();
     if (!code) return alert("Put code");
 
-    const { data: ticket, error } = await supabase
+    const { data: ticket } = await supabase
       .from('tickets')
       .select('*')
       .eq('code', code)
-      .single();
+      .maybeSingle(); // ✅ CAMBIO
 
-    if (error || !ticket) return alert("Ticket not found");
+    if (!ticket) return alert("Ticket not found");
 
     currentTicketId = ticket.id;
 
-const resolvedRole = resolveRoleFromTicket(ticket);
-currentRole = resolvedRole;
+    const resolvedRole = resolveRoleFromTicket(ticket);
+    currentRole = resolvedRole;
 
-// 💾 Persistimos rol correcto
-localStorage.setItem("khz_ticketId", ticket.id);
-localStorage.setItem("khz_role", resolvedRole);
+    localStorage.setItem("khz_ticketId", ticket.id);
+    localStorage.setItem("khz_role", resolvedRole);
 
-openChat(ticket.id, resolvedRole);
-
+    // 🟢 SOLO UNA VEZ
+    openChat(ticket.id, resolvedRole);
 
     if (ticket.buyer && !ticket.seller) {
-  role = 'seller';
+      await supabase
+        .from('tickets')
+        .update({ seller: 'connected' })
+        .eq('id', ticket.id);
 
-  await supabase
-    .from('tickets')
-    .update({ seller: 'connected' })
-    .eq('id', ticket.id);
-
-  // 🤖 Mensaje sistema estilo ElDorado
-  await supabase.from("messages").insert([{
-    ticket_id: ticket.id,
-    sender: "system",
-    text: "✅ Seller has joined the transaction.",
-    topic: "system",
-    extension: "text"
-  }]);
-}
-
-    currentRole = role;
-    openChat(ticket.id, role);
+      await supabase.from("messages").insert([{
+        ticket_id: ticket.id,
+        sender: "system",
+        text: "✅ Seller has joined the transaction.",
+        topic: "system",
+        extension: "text"
+      }]);
+    }
   });
 
+  // =====================
   // CREATE TICKET
+  // =====================
   createTicketBtn.addEventListener('click', () => {
     rolePopup.style.display = 'flex';
   });
+
+}); // ✅ CIERRE CORRECTO DOMContentLoaded
 
   async function createTicketWithRole(role) {
     const code = Math.random().toString(36).substring(2, 10).toUpperCase();
@@ -2046,6 +2036,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
