@@ -1068,7 +1068,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const input = document.getElementById('middlemanKeyInput');
   if (input.value === MIDDLEMAN_KEY) {
     currentRole = 'middleman';
-    middlemanOnline = true; // 🔑 ESTA ES LA CLAVE
+    await supabase
+  .from("tickets")
+  .update({ middleman_joined: true })
+  .eq("id", currentTicketId);
+
 
     document.getElementById('middlemanLogin').style.display = 'none';
     document.getElementById('middlemanSection').style.display = 'block';
@@ -1209,14 +1213,18 @@ async function openChat(ticketId, role) {
   // 🔒 Bloquear por defecto
   const msgInput = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
-  // 🔒 Por defecto: chat bloqueado
-msgInput.disabled = true;
-sendBtn.disabled = true;
+  const { data: ticket } = await supabase
+  .from("tickets")
+  .select("middleman_joined")
+  .eq("id", ticketId)
+  .single();
 
-// 🔓 SOLO si el middleman está online
-if (middlemanOnline) {
+if (currentRole === "middleman") {
   msgInput.disabled = false;
   sendBtn.disabled = false;
+} else {
+  msgInput.disabled = !ticket.middleman_joined;
+  sendBtn.disabled = !ticket.middleman_joined;
 }
 
 
@@ -1322,39 +1330,68 @@ function applyChatPermissions(role) {
   
 
   /* ========= REALTIME (SOLO 1 CANAL) ========= */
-  if (chatChannel) {
-    supabase.removeChannel(chatChannel);
-  }
 
- chatChannel = supabase
-  .channel("chat-messages")
+  if (chatChannel) {
+  supabase.removeChannel(chatChannel);
+}
+
+chatChannel = supabase
+  .channel("chat-realtime")
+
+  // 🔓 CUANDO EL MIDDLEMAN ENTRA
   .on(
     "postgres_changes",
-    { event: "INSERT", schema: "public", table: "messages" },
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "tickets"
+    },
     payload => {
+      if (payload.new.id !== currentTicketId) return;
 
-      const messagesBox = document.getElementById("messages")
-      if (!messagesBox) return
+      if (payload.new.middleman_joined) {
+        const input = document.getElementById("msgInput");
+        const sendBtn = document.getElementById("sendMsg");
 
-      const msg = payload.new
-      if (msg.ticket_id !== currentTicketId) return
+        if (input && sendBtn) {
+          input.disabled = false;
+          sendBtn.disabled = false;
+        }
+      }
+    }
+  )
 
-      const div = document.createElement("div")
+  // 💬 MENSAJES DEL CHAT
+  .on(
+    "postgres_changes",
+    {
+      event: "INSERT",
+      schema: "public",
+      table: "messages"
+    },
+    payload => {
+      const messagesBox = document.getElementById("messages");
+      if (!messagesBox) return;
+
+      const msg = payload.new;
+      if (msg.ticket_id !== currentTicketId) return;
+
+      const div = document.createElement("div");
 
       if (msg.extension === "image") {
         div.innerHTML = `
           ${formatSender(msg.sender)}<br>
           <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
-        `
+        `;
       } else {
-        div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`
+        div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
       }
 
-      messagesBox.appendChild(div)
-      messagesBox.scrollTop = messagesBox.scrollHeight
+      messagesBox.appendChild(div);
+      messagesBox.scrollTop = messagesBox.scrollHeight;
     }
   )
-  .subscribe()
+  .subscribe();
 
 
   /* ========= SEND MESSAGE (UNA SOLA VEZ) ========= */
@@ -2099,6 +2136,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
