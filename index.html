@@ -1252,12 +1252,6 @@ async function openChat(ticketId, role) {
 
   if (!currentTicketId) return;
 
-const { data: oldMessages } = await supabase
-  .from("messages")
-  .select("*")
-  .eq("ticket_id", currentTicketId)
-  .order("id", { ascending: true });
-
   const { data: oldMessages } = await supabase
     .from("messages")
     .select("*")
@@ -2130,6 +2124,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
