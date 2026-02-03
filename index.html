@@ -1406,6 +1406,16 @@ chatChannel = supabase
   }
 )
 
+function addSystemMessage(text) {
+  const messagesBox = document.getElementById("messages");
+  if (!messagesBox) return;
+
+  const div = document.createElement("div");
+  div.innerHTML = `<strong style="color:#60a5fa">KHZ:</strong><br>${text}`;
+  messagesBox.appendChild(div);
+
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
 
 
   // 💬 MENSAJES DEL CHAT
@@ -2183,6 +2193,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
