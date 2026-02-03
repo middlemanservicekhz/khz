@@ -1177,6 +1177,7 @@ async function forceMiddlemanSync(ticketId) {
 // ==========================================
 // 1. LA FUNCIÓN QUE TE FALTABA (generateTicketID)
 // ==========================================
+// Función para generar el ID (por si acaso)
 function generateTicketID() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let result = '';
@@ -1185,24 +1186,27 @@ function generateTicketID() {
   }
   return result;
 }
+
+// Función para mostrar la sección del chat y ocultar el inicio
 function showChatSection() {
-  // Ocultamos la página de inicio (hero)
   const hero = document.getElementById('hero');
-  if (hero) hero.style.display = 'none';
-
-  // Mostramos la sección del chat
   const chatSection = document.getElementById('chatSection');
+  
+  if (hero) hero.style.display = 'none';
   if (chatSection) chatSection.style.display = 'block';
-
-  // Ocultamos el modal de "Join Ticket" por si estaba abierto
-  const joinModal = document.getElementById('joinTicketModal');
-  if (joinModal) joinModal.style.display = 'none';
+  
+  // También cerramos cualquier modal que pueda estar abierto
+  const modalBuyer = document.getElementById('buyerOrderModal');
+  const modalJoin = document.getElementById('joinTicketModal');
+  if (modalBuyer) modalBuyer.style.display = 'none';
+  if (modalJoin) modalJoin.style.display = 'none';
 }
 // ==========================================
 // 2. LA FUNCIÓN PARA CREAR EL TICKET
 // ==========================================
 async function createTicketWithRole(role) {
-  const productName = document.getElementById('buyerProductName')?.value.trim() || "New Order";
+  // Capturamos datos de los inputs
+  const productName = document.getElementById('buyerProductName')?.value.trim() || "Order";
   const amount = document.getElementById('buyerAmount')?.value.trim() || 0;
   const currency = document.getElementById('buyerCurrency')?.value || "USD";
 
@@ -1212,7 +1216,7 @@ async function createTicketWithRole(role) {
     amount: parseFloat(amount),
     currency: currency,
     status: "open",
-    middleman_joined: false
+    middleman_joined: false // Chat bloqueado inicialmente
   };
 
   const { data: ticket, error } = await supabase
@@ -1222,8 +1226,9 @@ async function createTicketWithRole(role) {
     .single();
 
   if (error) {
-    console.error("Error:", error);
-    return alert("Error: " + error.message);
+    console.error("Error Supabase:", error);
+    alert("Error: " + error.message);
+    return;
   }
 
   if (ticket) {
@@ -1231,22 +1236,19 @@ async function createTicketWithRole(role) {
     currentRole = role;
     middlemanOnline = false;
 
-    // ACTUALIZACIÓN DE INTERFAZ SEGURA
-    const ticketDisplay = document.getElementById('ticketCode'); // ID correcto según tu archivo
-    if (ticketDisplay) {
-      ticketDisplay.innerText = ticket.code;
-    }
+    // Actualizar el código en el HTML (ID: ticketCode)
+    const codeDisplay = document.getElementById('ticketCode');
+    if (codeDisplay) codeDisplay.innerText = ticket.code;
     
-    // Aplicar permisos (bloquear chat)
+    // Bloquear chat para el comprador
     applyChatPermissions(currentRole);
 
+    // Cambiar de pantalla (La función que creamos arriba)
     showChatSection();
+    
+    // Iniciar servicios
     loadMessages();
     setupRealtime();
-    
-    // Cerrar el modal (ID correcto según tu archivo)
-    const modal = document.getElementById('buyerOrderModal');
-    if (modal) modal.style.display = 'none';
   }
 }
 chooseBuyer.onclick = () => {
@@ -2211,6 +2213,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
