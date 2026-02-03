@@ -1190,21 +1190,19 @@ function generateTicketID() {
 // 2. LA FUNCIÓN PARA CREAR EL TICKET
 // ==========================================
 async function createTicketWithRole(role) {
-  // Obtenemos los datos de los inputs
   const productName = document.getElementById('buyerProductName')?.value.trim() || "New Order";
   const amount = document.getElementById('buyerAmount')?.value.trim() || 0;
   const currency = document.getElementById('buyerCurrency')?.value || "USD";
 
   const newTicket = {
-    code: generateTicketID(), // <--- AQUÍ ES DONDE DABA EL ERROR
+    code: generateTicketID(), 
     product_name: productName,
     amount: parseFloat(amount),
     currency: currency,
     status: "open",
-    middleman_joined: false // Empieza bloqueado para seguridad
+    middleman_joined: false
   };
 
-  // Guardamos en Supabase
   const { data: ticket, error } = await supabase
     .from('tickets')
     .insert([newTicket])
@@ -1212,9 +1210,8 @@ async function createTicketWithRole(role) {
     .single();
 
   if (error) {
-    console.error("Error al guardar:", error);
-    alert("Database Error: " + error.message);
-    return;
+    console.error("Error:", error);
+    return alert("Error: " + error.message);
   }
 
   if (ticket) {
@@ -1222,18 +1219,22 @@ async function createTicketWithRole(role) {
     currentRole = role;
     middlemanOnline = false;
 
-    // Actualizamos la interfaz
-    document.getElementById('ticketCodeDisplay').innerText = ticket.code;
+    // ACTUALIZACIÓN DE INTERFAZ SEGURA
+    const ticketDisplay = document.getElementById('ticketCode'); // ID correcto según tu archivo
+    if (ticketDisplay) {
+      ticketDisplay.innerText = ticket.code;
+    }
     
-    // Bloqueamos el chat porque el middleman aún no entra
+    // Aplicar permisos (bloquear chat)
     applyChatPermissions(currentRole);
 
     showChatSection();
     loadMessages();
     setupRealtime();
     
-    // Cerramos el modal
-    document.getElementById('buyerOrderModal').style.display = 'none';
+    // Cerrar el modal (ID correcto según tu archivo)
+    const modal = document.getElementById('buyerOrderModal');
+    if (modal) modal.style.display = 'none';
   }
 }
 chooseBuyer.onclick = () => {
@@ -2198,6 +2199,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
