@@ -1120,14 +1120,28 @@ joinTicketBtn.addEventListener('click', async () => {
       .eq("id", ticket.id);
   }
 
-  // 🔄 Estado del middleman
-  middlemanOnline = !!ticket.middleman_joined;
+  // >>> NUEVA LÓGICA PARA EL MIDDLEMAN <<<
+  // Si el que entra es el middleman, actualizamos la base de datos para avisar a todos
+  if (resolvedRole === "middleman") {
+    await supabase
+      .from("tickets")
+      .update({ middleman_joined: true })
+      .eq("id", ticket.id);
+    
+    middlemanOnline = true; // Lo activamos localmente también
+  } else {
+    // Si es buyer o seller, leemos el estado actual que viene de la base de datos
+    middlemanOnline = ticket.middleman_joined || false;
+  }
 
-  localStorage.setItem("khz_ticketId", ticket.id);
-  localStorage.setItem("khz_role", resolvedRole);
+  // Una vez que sabemos si el MM está o no, aplicamos los permisos visuales
+  applyChatPermissions(currentRole); 
 
-  // 🟢 Abrir chat
-  openChat(ticket.id, resolvedRole);
+  // Continuar con el flujo normal
+  joinTicketModal.style.display = 'none';
+  showChatSection();
+  loadMessages();
+  setupRealtime(); // Este paso es vital para que el Buyer vea el cambio en vivo
 });
 
   // =====================
@@ -2163,6 +2177,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
