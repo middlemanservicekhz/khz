@@ -1091,53 +1091,44 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   // =====================
-  // JOIN TICKET
-  // =====================
-  const joinTicketBtn = document.getElementById('joinTicketBtn');
-  const ticketCodeInput = document.getElementById('ticketCodeInput');
+// JOIN TICKET
+// =====================
+const joinTicketBtn = document.getElementById('joinTicketBtn');
+const ticketCodeInput = document.getElementById('ticketCodeInput');
 
-  joinTicketBtn.addEventListener('click', async () => {
-    const code = ticketCodeInput.value.trim().toUpperCase();
-    if (!code) return alert("Put code");
+joinTicketBtn.addEventListener('click', async () => {
+  const code = ticketCodeInput.value.trim().toUpperCase();
+  if (!code) return alert("Put code");
 
-    const { data: ticket } = await supabase
-      .from('tickets')
-      .select('*')
-      .eq('code', code)
-      .single(); 
+  const { data: ticket } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('code', code)
+    .single();
 
-    if (!ticket) return alert("Ticket not found");
+  if (!ticket) return alert("Ticket not found");
 
-    currentTicketId = ticket.id;
+  const resolvedRole = resolveRoleFromTicket(ticket);
+  currentRole = resolvedRole;
+  currentTicketId = ticket.id;
 
-    const resolvedRole = resolveRoleFromTicket(ticket);
-currentRole = resolvedRole;
+  // 🔑 REGISTRAR SELLER (UNA SOLA VEZ)
+  if (resolvedRole === "seller" && !ticket.seller) {
+    await supabase
+      .from("tickets")
+      .update({ seller: "connected" })
+      .eq("id", ticket.id);
+  }
 
-// 🔄 Sincronizar estado del middleman
-middlemanOnline = !!ticket.middleman_joined;
+  // 🔄 Estado del middleman
+  middlemanOnline = !!ticket.middleman_joined;
 
+  localStorage.setItem("khz_ticketId", ticket.id);
+  localStorage.setItem("khz_role", resolvedRole);
 
-localStorage.setItem("khz_ticketId", ticket.id);
-localStorage.setItem("khz_role", resolvedRole);
-
-// 🟢 SOLO UNA VEZ
-openChat(ticket.id, resolvedRole);
-
-    if (ticket.buyer && !ticket.seller) {
-      await supabase
-        .from('tickets')
-        .update({ seller: 'connected' })
-        .eq('id', ticket.id);
-
-      await supabase.from("messages").insert([{
-        ticket_id: ticket.id,
-        sender: "system",
-        text: "✅ Seller has joined the transaction.",
-        topic: "system",
-        extension: "text"
-      }]);
-    }
-  });
+  // 🟢 Abrir chat
+  openChat(ticket.id, resolvedRole);
+});
 
   // =====================
   // CREATE TICKET
@@ -1231,68 +1222,33 @@ closePopupBtn.addEventListener('click', () => {
 });
 
 async function openChat(ticketId, role) {
-
-  if (!ticketId) {
-    console.error("openChat called without ticketId");
-    return;
-  }
+  if (!ticketId) return;
 
   currentTicketId = ticketId;
   currentRole = role;
 
-  // 💾 Guardar sesión
   localStorage.setItem("khz_ticketId", ticketId);
   localStorage.setItem("khz_role", role);
 
-  // 🔄 Forzar sincronización del middleman
-await forceMiddlemanSync(ticketId);
-
-// Abrir chat
-const chatOverlay = document.getElementById("chatOverlay");
-chatOverlay.style.display = "flex";
-
-const messagesBox = document.getElementById("messages");
-messagesBox.innerHTML = "";
-
-const msgInput = document.getElementById("msgInput");
-const sendBtn = document.getElementById("sendMsg");
-
-// aplicar permisos (ÚNICA FUENTE DE VERDAD)
-applyChatPermissions(currentRole);
-
-  /* =============================
-     2️⃣ CONSULTA PARTICIPANTES
-     ============================= */
-  const { data: ticket } = await supabase
+  // 👉 1. Preguntamos a Supabase si el middleman YA estaba dentro
+  const { data } = await supabase
     .from("tickets")
-    .select("buyer, seller")
+    .select("middleman_joined")
     .eq("id", ticketId)
     .single();
 
-  // ⏳ Falta alguien
-  if (!ticket.buyer || !ticket.seller) {
+  middlemanOnline = !!data?.middleman_joined;
 
-    messagesBox.innerHTML = `
-      <div style="color:#9aa4b2;font-size:14px">
-        ⏳ Waiting for the other party to join the transaction...
-      </div>
-    `;
+  // 👉 2. AHORA sí aplicamos permisos (UNA SOLA VEZ)
+  applyChatPermissions(currentRole);
+
+  // UI
+  document.getElementById("chatOverlay").style.display = "flex";
+  document.getElementById("messages").innerHTML = "";
+
+  loadOrderPanel(ticketId);
 }
 
-  // Cargar panel
-loadOrderPanel(ticketId);
-
-// 🔥 FORZAR PERMISOS AL ABRIR CHAT
-applyChatPermissions(currentRole);
-
-
-  // Mensaje sistema
-  const welcome = document.createElement("div");
-  welcome.innerHTML = `
-    <strong style="color:#60a5fa">KHZ Service:</strong><br>
-    <span style="color:#cbd5e1">Welcome to KHZ Middleman Service.</span>
-  `;
-  messagesBox.appendChild(welcome);
 
   // Cargar mensajes anteriores
   const { data: oldMessages } = await supabase
@@ -1326,17 +1282,16 @@ function applyChatPermissions(role) {
 
   if (!input || !sendBtn) return;
 
-  // Middleman siempre escribe
   if (role === "middleman") {
     input.disabled = false;
     sendBtn.disabled = false;
     return;
   }
 
-  // Buyer y Seller solo cuando el middleman entró
   input.disabled = !middlemanOnline;
   sendBtn.disabled = !middlemanOnline;
 }
+
 
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
@@ -1360,13 +1315,8 @@ function applyChatPermissions(role) {
 
   /* ========= REALTIME (SOLO 1 CANAL) ========= */
 
-if (chatChannel) {
-  supabase.removeChannel(chatChannel);
-}
-
 chatChannel = supabase
   .channel("chat-realtime")
-
   .on(
     "postgres_changes",
     {
@@ -1377,39 +1327,16 @@ chatChannel = supabase
     payload => {
       if (payload.new.id !== currentTicketId) return;
 
-      // 🔓 Middleman entra
+      // 🔓 EL ÚNICO DESBLOQUEO REAL
       if (payload.new.middleman_joined && !middlemanOnline) {
-        middlemanOnline = true;
-        applyChatPermissions(currentRole);
-
-        const input = document.getElementById("msgInput");
-        const sendBtn = document.getElementById("sendMsg");
-
-        if (input && sendBtn) {
-          input.disabled = false;
-          sendBtn.disabled = false;
-        }
+        middlemanOnline = true;           // 1️⃣ cambia estado
+        applyChatPermissions(currentRole); // 2️⃣ aplica permisos
 
         addSystemMessage("✅ Middleman joined. Chat unlocked.");
       }
-
-      // 📦 Producto / precio
-      if (
-        payload.new.product_name &&
-        payload.new.amount &&
-        (
-          payload.new.product_name !== payload.old.product_name ||
-          payload.new.amount !== payload.old.amount
-        )
-      ) {
-        addSystemMessage(
-          `📦 Product: ${payload.new.product_name}<br>
-           💰 Price: ${payload.new.currency || "$"} ${payload.new.amount}`
-        );
-      }
     }
   )
-  .subscribe(); // 🔥 CRÍTICO
+  .subscribe();
 
 function addSystemMessage(text) {
   const messagesBox = document.getElementById("messages");
@@ -2199,6 +2126,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
