@@ -1284,7 +1284,11 @@ applyChatPermissions(currentRole);
   }
 
   // Cargar panel
-  loadOrderPanel(ticketId);
+loadOrderPanel(ticketId);
+
+// 🔥 FORZAR PERMISOS AL ABRIR CHAT
+applyChatPermissions(currentRole);
+
 
   // Mensaje sistema
   const welcome = document.createElement("div");
@@ -2199,6 +2203,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
