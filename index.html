@@ -1371,14 +1371,19 @@ chatChannel = supabase
       table: "tickets"
     },
     payload => {
+      // Si el cambio no es en el ticket actual, ignoramos
       if (payload.new.id !== currentTicketId) return;
 
-      // 🔓 EL ÚNICO DESBLOQUEO REAL
-      if (payload.new.middleman_joined && !middlemanOnline) {
-        middlemanOnline = true;           // 1️⃣ cambia estado
-        applyChatPermissions(currentRole); // 2️⃣ aplica permisos
+      // Si el estado de middleman_joined cambió a true en la DB
+      if (payload.new.middleman_joined === true) {
+        
+        // Solo enviamos el mensaje de sistema la primera vez que se detecta el cambio
+        if (!middlemanOnline) {
+            addSystemMessage("✅ Middleman joined. Chat unlocked.");
+        }
 
-        addSystemMessage("✅ Middleman joined. Chat unlocked.");
+        middlemanOnline = true;            // Actualizamos el estado local
+        applyChatPermissions(currentRole); // Habilitamos el input y el botón
       }
     }
   )
@@ -2177,6 +2182,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
