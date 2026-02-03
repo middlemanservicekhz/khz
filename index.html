@@ -1362,26 +1362,32 @@ chatChannel = supabase
 
   // 🔓 CUANDO EL MIDDLEMAN ENTRA
   .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "tickets"
-    },
-    payload => {
-      if (payload.new.id !== currentTicketId) return;
+  "postgres_changes",
+  {
+    event: "UPDATE",
+    schema: "public",
+    table: "tickets"
+  },
+  payload => {
+    if (payload.new.id !== currentTicketId) return;
 
-      if (payload.new.middleman_joined) {
-        const input = document.getElementById("msgInput");
-        const sendBtn = document.getElementById("sendMsg");
+    if (payload.new.middleman_joined) {
 
-        if (input && sendBtn) {
-          input.disabled = false;
-          sendBtn.disabled = false;
-        }
+      // ✅ CLAVE: sincronizar estado global
+      middlemanOnline = true;
+      applyChatPermissions(currentRole);
+
+      const input = document.getElementById("msgInput");
+      const sendBtn = document.getElementById("sendMsg");
+
+      if (input && sendBtn) {
+        input.disabled = false;
+        sendBtn.disabled = false;
       }
     }
-  )
+  }
+)
+
 
   // 💬 MENSAJES DEL CHAT
   .on(
@@ -2158,4 +2164,5 @@ loadReviews();
 
 </body>
 </html>
+
 
