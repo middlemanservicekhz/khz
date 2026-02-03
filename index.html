@@ -1185,7 +1185,19 @@ function generateTicketID() {
   }
   return result;
 }
+function showChatSection() {
+  // Ocultamos la página de inicio (hero)
+  const hero = document.getElementById('hero');
+  if (hero) hero.style.display = 'none';
 
+  // Mostramos la sección del chat
+  const chatSection = document.getElementById('chatSection');
+  if (chatSection) chatSection.style.display = 'block';
+
+  // Ocultamos el modal de "Join Ticket" por si estaba abierto
+  const joinModal = document.getElementById('joinTicketModal');
+  if (joinModal) joinModal.style.display = 'none';
+}
 // ==========================================
 // 2. LA FUNCIÓN PARA CREAR EL TICKET
 // ==========================================
@@ -2199,6 +2211,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
