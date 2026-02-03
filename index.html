@@ -1180,43 +1180,43 @@ async function forceMiddlemanSync(ticketId) {
 // CREATE TICKET
 // =====================
 async function createTicketWithRole(role) {
-  const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+  const newTicket = {
+    code: generateTicketCode(),
+    product_name: "New Order",
+    amount: 0,
+    currency: "USD",
+    status: "open",
+    middleman_joined: false // 👈 Importante que empiece en false
+  };
 
-  const { data: ticket } = await supabase
+  // 1. Insertamos y pedimos que nos devuelva el registro creado (.select().single())
+  const { data: ticket, error } = await supabase
     .from('tickets')
-    .insert([{
-      code,
-      buyer: role === 'buyer' ? 'user' : null,
-      seller: role === 'seller' ? 'user' : null,
-      middleman: 'middleman',
-      status: 'open',
-
-      middleman_joined: false, // 🔒 CLAVE
-
-      status_step: 'CREATED',
-      product_name: null,
-      amount: null,
-      payment_proof: null,
-      delivery_data: null,
-      seller_delivered: false,
-      buyer_confirmed: false,
-      dispute_opened: false
-    }])
-    .select()
+    .insert([newTicket])
+    .select() 
     .single();
 
-  currentTicketId = ticket.id;
-  currentRole = role;
+  if (error) {
+    console.error("Error creating ticket:", error);
+    alert("Error: " + error.message);
+    return;
+  }
 
-  // 🔒 Al crear ticket, el middleman NO está online
-  middlemanOnline = false;
+  // 2. Ahora que 'ticket' tiene datos, asignamos las variables
+  if (ticket) {
+    currentTicketId = ticket.id; 
+    currentRole = role;
 
-  // Siempre cerramos el popup de rol
-  rolePopup.style.display = 'none';
+    // 3. Limpiamos y preparamos la interfaz
+    chatMessages.innerHTML = "";
+    document.getElementById('ticketCodeDisplay').innerText = ticket.code;
+    
+    // 4. Aplicamos permisos iniciales (estarán bloqueados para buyer/seller)
+    applyChatPermissions(currentRole);
 
-  // SOLO EL SELLER ve el ticket popup
-  if (role === 'seller') {
-    ticketPopup.style.display = 'flex';
+    showChatSection();
+    loadMessages();
+    setupRealtime();
   }
 }
 
@@ -2182,6 +2182,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
