@@ -2071,7 +2071,15 @@ loadReviews();
     <span class="close-btn" onclick="document.getElementById('middlemanLogin').style.display='none'">&times;</span>
     <h3>Middleman Access</h3>
 
-    <form onsubmit="return false;">
+   <form onsubmit="document.getElementById('middlemanLoginBtn').click(); return false;">
+  <!-- 👇 USERNAME OCULTO (SOLO PARA CHROME / ACCESIBILIDAD) -->
+  <input
+    type="text"
+    name="username"
+    autocomplete="username"
+    style="display:none"
+  >
+
   <input
     id="middlemanKeyInput"
     class="form-input"
@@ -2082,6 +2090,7 @@ loadReviews();
 </form>
 
 
+
     <button id="middlemanLoginBtn" class="submit-btn">
       Enter
     </button>
@@ -2090,6 +2099,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
