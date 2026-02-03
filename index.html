@@ -1180,46 +1180,50 @@ async function forceMiddlemanSync(ticketId) {
 // CREATE TICKET
 // =====================
 async function createTicketWithRole(role) {
+  // Obtenemos los valores de los inputs del modal de Buyer
+  const productName = document.getElementById('buyerProductName').value.trim();
+  const amount = document.getElementById('buyerAmount').value.trim();
+  const currency = document.getElementById('buyerCurrency').value;
+
   const newTicket = {
-    code: generateTicketCode(),
-    product_name: "New Order",
-    amount: 0,
-    currency: "USD",
+    code: generateTicketID(), // Asegúrate que coincida con tu función de generar ID
+    product_name: productName || "Generic Product",
+    amount: parseFloat(amount) || 0,
+    currency: currency || "USD",
     status: "open",
-    middleman_joined: false // 👈 Importante que empiece en false
+    middleman_joined: false // El chat empieza bloqueado
   };
 
-  // 1. Insertamos y pedimos que nos devuelva el registro creado (.select().single())
   const { data: ticket, error } = await supabase
     .from('tickets')
     .insert([newTicket])
-    .select() 
+    .select()
     .single();
 
   if (error) {
-    console.error("Error creating ticket:", error);
-    alert("Error: " + error.message);
+    console.error("Error:", error);
+    alert("Error creating ticket");
     return;
   }
 
-  // 2. Ahora que 'ticket' tiene datos, asignamos las variables
   if (ticket) {
-    currentTicketId = ticket.id; 
+    currentTicketId = ticket.id;
     currentRole = role;
+    middlemanOnline = false; // Importante resetear esto
 
-    // 3. Limpiamos y preparamos la interfaz
-    chatMessages.innerHTML = "";
     document.getElementById('ticketCodeDisplay').innerText = ticket.code;
     
-    // 4. Aplicamos permisos iniciales (estarán bloqueados para buyer/seller)
+    // Bloquear el chat visualmente de inmediato
     applyChatPermissions(currentRole);
 
     showChatSection();
     loadMessages();
     setupRealtime();
+    
+    // Cerrar el modal
+    document.getElementById('buyerOrderModal').style.display = 'none';
   }
 }
-
 chooseBuyer.onclick = () => {
   createTicketWithRole('buyer');
   document.getElementById('buyerCreateOrderModal').style.display = 'block';
@@ -2182,6 +2186,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
