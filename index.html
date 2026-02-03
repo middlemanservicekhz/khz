@@ -1221,44 +1221,65 @@ closePopupBtn.addEventListener('click', () => {
   openChat(currentTicketId, currentRole);
 });
 
-async function openChat(ticketId, role) {
-  if (!ticketId) return;
+  async function openChat(ticketId, role) {
+  if (!ticketId || !role) return;
 
+  // ===== STATE =====
   currentTicketId = ticketId;
   currentRole = role;
 
   localStorage.setItem("khz_ticketId", ticketId);
   localStorage.setItem("khz_role", role);
 
-  // 👉 1. Preguntamos a Supabase si el middleman YA estaba dentro
-  const { data } = await supabase
+  // ===== CHECK MIDDLEMAN STATUS =====
+  const { data: ticket } = await supabase
     .from("tickets")
     .select("middleman_joined")
     .eq("id", ticketId)
     .single();
 
-  middlemanOnline = !!data?.middleman_joined;
+  middlemanOnline = !!ticket?.middleman_joined;
 
-  // 👉 2. AHORA sí aplicamos permisos (UNA SOLA VEZ)
+  // ===== UI =====
+  const overlay = document.getElementById("chatOverlay");
+  const messagesBox = document.getElementById("messages");
+
+  if (!overlay || !messagesBox) return;
+
+  overlay.style.display = "flex";
+  messagesBox.innerHTML = "";
+
+  // ===== PERMISSIONS =====
   applyChatPermissions(currentRole);
 
-  // UI
-  document.getElementById("chatOverlay").style.display = "flex";
-  document.getElementById("messages").innerHTML = "";
+  // ===== LOAD DATA =====
+  await loadOldMessages();
+  await loadOrderPanel(ticketId);
 
-  loadOrderPanel(ticketId);
+  // ===== SYSTEM MESSAGE =====
+  if (!middlemanOnline && currentRole !== "middleman") {
+    addSystemMessage("⏳ Waiting for middleman to join.");
+  }
+}
 
-  // Cargar mensajes anteriores
-
+  async function loadOldMessages() {
   if (!currentTicketId) return;
 
-  const { data: oldMessages } = await supabase
+  const messagesBox = document.getElementById("messages");
+  if (!messagesBox) return;
+
+  const { data: messages, error } = await supabase
     .from("messages")
     .select("*")
     .eq("ticket_id", currentTicketId)
     .order("id", { ascending: true });
 
-  oldMessages?.forEach(msg => {
+  if (error) {
+    console.error("Load messages error:", error);
+    return;
+  }
+
+  messages?.forEach(msg => {
     const div = document.createElement("div");
 
     if (msg.extension === "image") {
@@ -1272,7 +1293,10 @@ async function openChat(ticketId, role) {
 
     messagesBox.appendChild(div);
   });
- }
+
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
   
 function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
@@ -2124,6 +2148,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
