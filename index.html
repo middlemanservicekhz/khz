@@ -1360,58 +1360,56 @@ function applyChatPermissions(role) {
 
   /* ========= REALTIME (SOLO 1 CANAL) ========= */
 
-  if (chatChannel) {
+if (chatChannel) {
   supabase.removeChannel(chatChannel);
 }
 
 chatChannel = supabase
   .channel("chat-realtime")
 
-  // 🔓 CUANDO EL MIDDLEMAN ENTRA
-.on(
-  "postgres_changes",
-  {
-    event: "UPDATE",
-    schema: "public",
-    table: "tickets"
-  },
-  payload => {
-    if (payload.new.id !== currentTicketId) return;
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "tickets"
+    },
+    payload => {
+      if (payload.new.id !== currentTicketId) return;
 
-    // ✅ Middleman entra
-    if (payload.new.middleman_joined && !middlemanOnline) {
+      // 🔓 Middleman entra
+      if (payload.new.middleman_joined && !middlemanOnline) {
+        middlemanOnline = true;
+        applyChatPermissions(currentRole);
 
-      middlemanOnline = true;
-      applyChatPermissions(currentRole);
+        const input = document.getElementById("msgInput");
+        const sendBtn = document.getElementById("sendMsg");
 
-      const input = document.getElementById("msgInput");
-      const sendBtn = document.getElementById("sendMsg");
+        if (input && sendBtn) {
+          input.disabled = false;
+          sendBtn.disabled = false;
+        }
 
-      if (input && sendBtn) {
-        input.disabled = false;
-        sendBtn.disabled = false;
+        addSystemMessage("✅ Middleman joined. Chat unlocked.");
       }
 
-      addSystemMessage("✅ Middleman joined. Chat unlocked.");
-
+      // 📦 Producto / precio
+      if (
+        payload.new.product_name &&
+        payload.new.amount &&
+        (
+          payload.new.product_name !== payload.old.product_name ||
+          payload.new.amount !== payload.old.amount
+        )
+      ) {
+        addSystemMessage(
+          `📦 Product: ${payload.new.product_name}<br>
+           💰 Price: ${payload.new.currency || "$"} ${payload.new.amount}`
+        );
+      }
     }
-
-    // 📦 Producto / precio cambian
-    else if (
-      payload.new.product_name &&
-      payload.new.price &&
-      (
-        !payload.old ||
-        payload.new.product_name !== payload.old.product_name ||
-        payload.new.price !== payload.old.price
-      )
-    ) {
-      addSystemMessage(
-        `📦 Product: ${payload.new.product_name}<br>💰 Price: $${payload.new.price}`
-      );
-    }
-  }
-)
+  )
+  .subscribe(); // 🔥 CRÍTICO
 
 function addSystemMessage(text) {
   const messagesBox = document.getElementById("messages");
@@ -1420,8 +1418,7 @@ function addSystemMessage(text) {
   const div = document.createElement("div");
   div.innerHTML = `<strong style="color:#60a5fa">KHZ:</strong><br>${text}`;
   messagesBox.appendChild(div);
-
-  messagesBox.scrollTop = messagesBox.scrollHeight;
+ messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
 
@@ -2202,6 +2199,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
