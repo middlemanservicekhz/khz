@@ -1247,8 +1247,6 @@ async function openChat(ticketId, role) {
   document.getElementById("messages").innerHTML = "";
 
   loadOrderPanel(ticketId);
-}
-
 
   // Cargar mensajes anteriores
 
@@ -1280,7 +1278,8 @@ const { data: oldMessages } = await supabase
 
     messagesBox.appendChild(div);
   });
-
+ }
+  
 function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
@@ -2131,6 +2130,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
