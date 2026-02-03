@@ -1064,7 +1064,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // =====================
   // LOGIN MIDDLEMAN
   // =====================
-  document.getElementById('middlemanLoginBtn').onclick = () => {
+  document.getElementById('middlemanLoginBtn').onclick = async () => {
+
   const input = document.getElementById('middlemanKeyInput');
   if (input.value === MIDDLEMAN_KEY) {
     currentRole = 'middleman';
@@ -2136,6 +2137,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
