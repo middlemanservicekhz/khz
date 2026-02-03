@@ -1227,25 +1227,30 @@ async function openChat(ticketId, role) {
   const messagesBox = document.getElementById("messages");
   messagesBox.innerHTML = "";
 
-  // 🔒 Bloquear por defecto
   const msgInput = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
-  const { data: ticket } = await supabase
-  .from("tickets")
-  .select("middleman_joined")
-  .eq("id", ticketId)
-  .single();
 
-if (currentRole === "middleman") {
-  msgInput.disabled = false;
-  sendBtn.disabled = false;
-} else {
-  msgInput.disabled = !ticket.middleman_joined;
-  sendBtn.disabled = !ticket.middleman_joined;
-}
+  /* =============================
+     1️⃣ CONSULTA SOLO ESTADO
+     ============================= */
+  const { data: ticketState } = await supabase
+    .from("tickets")
+    .select("middleman_joined")
+    .eq("id", ticketId)
+    .single();
 
+  // 🔒 Permisos iniciales
+  if (currentRole === "middleman") {
+    msgInput.disabled = false;
+    sendBtn.disabled = false;
+  } else {
+    msgInput.disabled = !ticketState.middleman_joined;
+    sendBtn.disabled = !ticketState.middleman_joined;
+  }
 
-  // 🔍 Ver estado del ticket
+  /* =============================
+     2️⃣ CONSULTA PARTICIPANTES
+     ============================= */
   const { data: ticket } = await supabase
     .from("tickets")
     .select("buyer, seller")
@@ -1255,7 +1260,7 @@ if (currentRole === "middleman") {
   // ⏳ Falta alguien
   if (!ticket.buyer || !ticket.seller) {
 
-    // 👑 Middleman escribe desde que entra
+    // 👑 Middleman puede escribir
     if (currentRole === "middleman") {
       unlockChat();
     }
@@ -1282,7 +1287,7 @@ if (currentRole === "middleman") {
   `;
   messagesBox.appendChild(welcome);
 
-  // Cargar mensajes
+  // Cargar mensajes anteriores
   const { data: oldMessages } = await supabase
     .from("messages")
     .select("*")
@@ -1306,8 +1311,8 @@ if (currentRole === "middleman") {
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
   applyChatPermissions(currentRole);
-
 }
+
 function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
@@ -2153,6 +2158,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
