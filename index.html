@@ -1304,14 +1304,24 @@ function applyChatPermissions(role) {
 
   if (!input || !sendBtn) return;
 
+  // Si eres el middleman, siempre puedes escribir
   if (role === "middleman") {
     input.disabled = false;
     sendBtn.disabled = false;
+    input.placeholder = "Escribe un mensaje como Middleman...";
     return;
   }
 
-  input.disabled = !middlemanOnline;
-  sendBtn.disabled = !middlemanOnline;
+  // Para comprador y vendedor, depende de la variable middlemanOnline
+  if (middlemanOnline) {
+    input.disabled = false;
+    sendBtn.disabled = false;
+    input.placeholder = "Escribe un mensaje...";
+  } else {
+    input.disabled = true;
+    sendBtn.disabled = true;
+    input.placeholder = "Esperando que el Middleman se una...";
+  }
 }
 
 
@@ -2153,6 +2163,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
