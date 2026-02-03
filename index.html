@@ -2071,12 +2071,16 @@ loadReviews();
     <span class="close-btn" onclick="document.getElementById('middlemanLogin').style.display='none'">&times;</span>
     <h3>Middleman Access</h3>
 
-    <input
-      id="middlemanKeyInput"
-      class="form-input"
-      type="password"
-      placeholder="Enter middleman key"
-    />
+    <form onsubmit="return false;">
+  <input
+    id="middlemanKeyInput"
+    class="form-input"
+    type="password"
+    placeholder="Enter middleman key"
+    autocomplete="new-password"
+  />
+</form>
+
 
     <button id="middlemanLoginBtn" class="submit-btn">
       Enter
@@ -2086,6 +2090,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
