@@ -1234,10 +1234,17 @@ async function openChat(ticketId, role) {
      1️⃣ CONSULTA SOLO ESTADO
      ============================= */
   const { data: ticketState } = await supabase
-    .from("tickets")
-    .select("middleman_joined")
-    .eq("id", ticketId)
-    .single();
+  .from("tickets")
+  .select("middleman_joined")
+  .eq("id", ticketId)
+  .single();
+
+// 🔥 ESTO ERA LO QUE FALTABA
+middlemanOnline = ticketState.middleman_joined;
+
+// sincroniza permisos desde el inicio
+applyChatPermissions(currentRole);
+
 
   // 🔒 Permisos iniciales
   if (currentRole === "middleman") {
@@ -2195,6 +2202,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
