@@ -965,7 +965,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       .from("tickets")
       .select("*")
       .eq("id", savedTicket)
-      .maybeSingle(); // ✅ CAMBIO: maybeSingle
+      .single(); 
 
     if (!ticket) {
       console.log("Ticket no encontrado o no autorizado.");
@@ -1093,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       .from('tickets')
       .select('*')
       .eq('code', code)
-      .maybeSingle(); // ✅ CAMBIO
+      .single(); 
 
     if (!ticket) return alert("Ticket not found");
 
@@ -2099,6 +2099,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
