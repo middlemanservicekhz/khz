@@ -1111,13 +1111,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentTicketId = ticket.id;
 
     const resolvedRole = resolveRoleFromTicket(ticket);
-    currentRole = resolvedRole;
+currentRole = resolvedRole;
 
-    localStorage.setItem("khz_ticketId", ticket.id);
-    localStorage.setItem("khz_role", resolvedRole);
+// 🔄 Sincronizar estado del middleman
+if (ticket.middleman_joined) {
+  middlemanOnline = true;
+}
 
-    // 🟢 SOLO UNA VEZ
-    openChat(ticket.id, resolvedRole);
+localStorage.setItem("khz_ticketId", ticket.id);
+localStorage.setItem("khz_role", resolvedRole);
+
+// 🟢 SOLO UNA VEZ
+openChat(ticket.id, resolvedRole);
 
     if (ticket.buyer && !ticket.seller) {
       await supabase
@@ -2143,6 +2148,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
