@@ -1174,26 +1174,37 @@ async function forceMiddlemanSync(ticketId) {
     applyChatPermissions(currentRole);
   }
 }
+// ==========================================
+// 1. LA FUNCIÓN QUE TE FALTABA (generateTicketID)
+// ==========================================
+function generateTicketID() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
 
-
-// =====================
-// CREATE TICKET
-// =====================
+// ==========================================
+// 2. LA FUNCIÓN PARA CREAR EL TICKET
+// ==========================================
 async function createTicketWithRole(role) {
-  // Obtenemos los valores de los inputs del modal de Buyer
-  const productName = document.getElementById('buyerProductName').value.trim();
-  const amount = document.getElementById('buyerAmount').value.trim();
-  const currency = document.getElementById('buyerCurrency').value;
+  // Obtenemos los datos de los inputs
+  const productName = document.getElementById('buyerProductName')?.value.trim() || "New Order";
+  const amount = document.getElementById('buyerAmount')?.value.trim() || 0;
+  const currency = document.getElementById('buyerCurrency')?.value || "USD";
 
   const newTicket = {
-    code: generateTicketID(), // Asegúrate que coincida con tu función de generar ID
-    product_name: productName || "Generic Product",
-    amount: parseFloat(amount) || 0,
-    currency: currency || "USD",
+    code: generateTicketID(), // <--- AQUÍ ES DONDE DABA EL ERROR
+    product_name: productName,
+    amount: parseFloat(amount),
+    currency: currency,
     status: "open",
-    middleman_joined: false // El chat empieza bloqueado
+    middleman_joined: false // Empieza bloqueado para seguridad
   };
 
+  // Guardamos en Supabase
   const { data: ticket, error } = await supabase
     .from('tickets')
     .insert([newTicket])
@@ -1201,26 +1212,27 @@ async function createTicketWithRole(role) {
     .single();
 
   if (error) {
-    console.error("Error:", error);
-    alert("Error creating ticket");
+    console.error("Error al guardar:", error);
+    alert("Database Error: " + error.message);
     return;
   }
 
   if (ticket) {
     currentTicketId = ticket.id;
     currentRole = role;
-    middlemanOnline = false; // Importante resetear esto
+    middlemanOnline = false;
 
+    // Actualizamos la interfaz
     document.getElementById('ticketCodeDisplay').innerText = ticket.code;
     
-    // Bloquear el chat visualmente de inmediato
+    // Bloqueamos el chat porque el middleman aún no entra
     applyChatPermissions(currentRole);
 
     showChatSection();
     loadMessages();
     setupRealtime();
     
-    // Cerrar el modal
+    // Cerramos el modal
     document.getElementById('buyerOrderModal').style.display = 'none';
   }
 }
@@ -2186,6 +2198,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
