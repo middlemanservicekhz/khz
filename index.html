@@ -1419,6 +1419,8 @@ function addSystemMessage(text) {
 
 
   // 💬 MENSAJES DEL CHAT
+supabase
+  .channel("messages-realtime")
   .on(
     "postgres_changes",
     {
@@ -2193,6 +2195,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
