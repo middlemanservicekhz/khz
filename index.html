@@ -1421,19 +1421,24 @@ supabase
     });
 
     sendBtn.onclick = async () => {
-      if (!currentTicketId) return;
-      if (!msgInput.value.trim()) return;
+  if (sendingMessage) return;
+  if (!currentTicketId) return;
+  if (!msgInput.value.trim()) return;
 
-      await supabase.from("messages").insert([{
-        ticket_id: currentTicketId,
-        sender: currentRole,
-        text: msgInput.value,
-        topic: "chat",
-        extension: "text"
-      }]);
+  sendingMessage = true;
 
-      msgInput.value = "";
-    };
+  await supabase.from("messages").insert([{
+    ticket_id: currentTicketId,
+    sender: currentRole,
+    text: msgInput.value,
+    topic: "chat",
+    extension: "text"
+  }]);
+
+  msgInput.value = "";
+  sendingMessage = false;
+};
+
   }
 
   document.getElementById("closeChatBtn").onclick = () => {
@@ -2148,6 +2153,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
