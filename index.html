@@ -1254,7 +1254,7 @@ async function openChat(ticketId, role) {
   const { data: oldMessages } = await supabase
     .from("messages")
     .select("*")
-    .eq("ticket_id", ticketId)
+    .eq("ticket_id", currentTicketId)
     .order("id", { ascending: true });
 
   oldMessages?.forEach(msg => {
@@ -2125,6 +2125,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
