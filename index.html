@@ -1244,18 +1244,21 @@ async function openChat(ticketId, role) {
   localStorage.setItem("khz_ticketId", ticketId);
   localStorage.setItem("khz_role", role);
 
-  await forceMiddlemanSync(ticketId);
+  // 🔄 Forzar sincronización del middleman
+await forceMiddlemanSync(ticketId);
 
+// Abrir chat
+const chatOverlay = document.getElementById("chatOverlay");
+chatOverlay.style.display = "flex";
 
-  // Abrir chat
-  const chatOverlay = document.getElementById("chatOverlay");
-  chatOverlay.style.display = "flex";
+const messagesBox = document.getElementById("messages");
+messagesBox.innerHTML = "";
 
-  const messagesBox = document.getElementById("messages");
-  messagesBox.innerHTML = "";
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendMsg");
 
-  const msgInput = document.getElementById("msgInput");
-  const sendBtn = document.getElementById("sendMsg");
+// aplicar permisos (ÚNICA FUENTE DE VERDAD)
+applyChatPermissions(currentRole);
 
   /* =============================
      2️⃣ CONSULTA PARTICIPANTES
@@ -1269,11 +1272,6 @@ async function openChat(ticketId, role) {
   // ⏳ Falta alguien
   if (!ticket.buyer || !ticket.seller) {
 
-    // 👑 Middleman puede escribir
-    if (currentRole === "middleman") {
-      unlockChat();
-    }
-
     messagesBox.innerHTML = `
       <div style="color:#9aa4b2;font-size:14px">
         ⏳ Waiting for the other party to join the transaction...
@@ -1282,7 +1280,6 @@ async function openChat(ticketId, role) {
 
   } else {
     // ✅ Buyer + Seller presentes
-    unlockChat();
   }
 
   // Cargar panel
@@ -2205,6 +2202,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
