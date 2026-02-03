@@ -1155,28 +1155,33 @@ openChat(ticket.id, resolvedRole);
     const { data: ticket } = await supabase
   .from('tickets')
   .insert([{
-    code,
-    buyer: role === 'buyer' ? 'user' : null,
-    seller: role === 'seller' ? 'user' : null,
-    middleman: 'middleman',
-    status: 'open',
+  code,
+  buyer: role === 'buyer' ? 'user' : null,
+  seller: role === 'seller' ? 'user' : null,
+  middleman: 'middleman',
+  status: 'open',
 
-    // 🆕 NUEVO — CAMPOS DE ORDEN
-    status_step: 'CREATED',
-    product_name: null,
-    amount: null,
-    payment_proof: null,
-    delivery_data: null,
-    seller_delivered: false,
-    buyer_confirmed: false,
-    dispute_opened: false
-  }])
+  middleman_joined: false, // 🔒 CLAVE
+
+  status_step: 'CREATED',
+  product_name: null,
+  amount: null,
+  payment_proof: null,
+  delivery_data: null,
+  seller_delivered: false,
+  buyer_confirmed: false,
+  dispute_opened: false
+}])
 
       .select()
       .single();
 
     currentTicketId = ticket.id;
     currentRole = role;
+
+    // 🔒 Al crear ticket, el middleman NO está online
+middlemanOnline = false;
+
 
   // Siempre cerramos el popup de rol
 rolePopup.style.display = 'none';
@@ -2148,6 +2153,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
