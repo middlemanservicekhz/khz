@@ -1361,7 +1361,7 @@ chatChannel = supabase
   .channel("chat-realtime")
 
   // 🔓 CUANDO EL MIDDLEMAN ENTRA
-  .on(
+.on(
   "postgres_changes",
   {
     event: "UPDATE",
@@ -1371,9 +1371,9 @@ chatChannel = supabase
   payload => {
     if (payload.new.id !== currentTicketId) return;
 
-    if (payload.new.middleman_joined) {
+    // ✅ Middleman entra
+    if (payload.new.middleman_joined && !middlemanOnline) {
 
-      // ✅ CLAVE: sincronizar estado global
       middlemanOnline = true;
       applyChatPermissions(currentRole);
 
@@ -1384,9 +1384,28 @@ chatChannel = supabase
         input.disabled = false;
         sendBtn.disabled = false;
       }
+
+      addSystemMessage("✅ Middleman joined. Chat unlocked.");
+
+    }
+
+    // 📦 Producto / precio cambian
+    else if (
+      payload.new.product_name &&
+      payload.new.price &&
+      (
+        !payload.old ||
+        payload.new.product_name !== payload.old.product_name ||
+        payload.new.price !== payload.old.price
+      )
+    ) {
+      addSystemMessage(
+        `📦 Product: ${payload.new.product_name}<br>💰 Price: $${payload.new.price}`
+      );
     }
   }
 )
+
 
 
   // 💬 MENSAJES DEL CHAT
@@ -2164,5 +2183,6 @@ loadReviews();
 
 </body>
 </html>
+
 
 
