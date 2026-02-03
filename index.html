@@ -1114,9 +1114,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 currentRole = resolvedRole;
 
 // 🔄 Sincronizar estado del middleman
-if (ticket.middleman_joined) {
-  middlemanOnline = true;
-}
+middlemanOnline = !!ticket.middleman_joined;
+
 
 localStorage.setItem("khz_ticketId", ticket.id);
 localStorage.setItem("khz_role", resolvedRole);
@@ -1149,48 +1148,73 @@ openChat(ticket.id, resolvedRole);
 
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
-  async function createTicketWithRole(role) {
-    const code = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-    const { data: ticket } = await supabase
-  .from('tickets')
-  .insert([{
-  code,
-  buyer: role === 'buyer' ? 'user' : null,
-  seller: role === 'seller' ? 'user' : null,
-  middleman: 'middleman',
-  status: 'open',
+// =====================
+// 🔄 FORCE MIDDLEMAN SYNC
+// =====================
+async function forceMiddlemanSync(ticketId) {
+  const { data, error } = await supabase
+    .from("tickets")
+    .select("middleman_joined")
+    .eq("id", ticketId)
+    .single();
 
-  middleman_joined: false, // 🔒 CLAVE
+  if (error) {
+    console.error("Middleman sync error:", error);
+    return;
+  }
 
-  status_step: 'CREATED',
-  product_name: null,
-  amount: null,
-  payment_proof: null,
-  delivery_data: null,
-  seller_delivered: false,
-  buyer_confirmed: false,
-  dispute_opened: false
-}])
+  if (data?.middleman_joined) {
+    middlemanOnline = true;
+    applyChatPermissions(currentRole);
+  }
+}
 
-      .select()
-      .single();
 
-    currentTicketId = ticket.id;
-    currentRole = role;
+// =====================
+// CREATE TICKET
+// =====================
+async function createTicketWithRole(role) {
+  const code = Math.random().toString(36).substring(2, 10).toUpperCase();
 
-    // 🔒 Al crear ticket, el middleman NO está online
-middlemanOnline = false;
+  const { data: ticket } = await supabase
+    .from('tickets')
+    .insert([{
+      code,
+      buyer: role === 'buyer' ? 'user' : null,
+      seller: role === 'seller' ? 'user' : null,
+      middleman: 'middleman',
+      status: 'open',
 
+      middleman_joined: false, // 🔒 CLAVE
+
+      status_step: 'CREATED',
+      product_name: null,
+      amount: null,
+      payment_proof: null,
+      delivery_data: null,
+      seller_delivered: false,
+      buyer_confirmed: false,
+      dispute_opened: false
+    }])
+    .select()
+    .single();
+
+  currentTicketId = ticket.id;
+  currentRole = role;
+
+  // 🔒 Al crear ticket, el middleman NO está online
+  middlemanOnline = false;
 
   // Siempre cerramos el popup de rol
-rolePopup.style.display = 'none';
+  rolePopup.style.display = 'none';
 
-// SOLO EL SELLER ve el ticket popup
-if (role === 'seller') {
-  ticketPopup.style.display = 'flex';
+  // SOLO EL SELLER ve el ticket popup
+  if (role === 'seller') {
+    ticketPopup.style.display = 'flex';
+  }
 }
-}
+
 chooseBuyer.onclick = () => {
   createTicketWithRole('buyer');
   document.getElementById('buyerCreateOrderModal').style.display = 'block';
@@ -1220,6 +1244,9 @@ async function openChat(ticketId, role) {
   localStorage.setItem("khz_ticketId", ticketId);
   localStorage.setItem("khz_role", role);
 
+  await forceMiddlemanSync(ticketId);
+
+
   // Abrir chat
   const chatOverlay = document.getElementById("chatOverlay");
   chatOverlay.style.display = "flex";
@@ -1229,31 +1256,6 @@ async function openChat(ticketId, role) {
 
   const msgInput = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
-
-  /* =============================
-     1️⃣ CONSULTA SOLO ESTADO
-     ============================= */
-  const { data: ticketState } = await supabase
-  .from("tickets")
-  .select("middleman_joined")
-  .eq("id", ticketId)
-  .single();
-
-// 🔥 ESTO ERA LO QUE FALTABA
-middlemanOnline = ticketState.middleman_joined;
-
-// sincroniza permisos desde el inicio
-applyChatPermissions(currentRole);
-
-
-  // 🔒 Permisos iniciales
-  if (currentRole === "middleman") {
-    msgInput.disabled = false;
-    sendBtn.disabled = false;
-  } else {
-    msgInput.disabled = !ticketState.middleman_joined;
-    sendBtn.disabled = !ticketState.middleman_joined;
-  }
 
   /* =============================
      2️⃣ CONSULTA PARTICIPANTES
@@ -2203,6 +2205,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
