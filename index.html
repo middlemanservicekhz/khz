@@ -18,6 +18,10 @@
     --accent2:#2bd4bd;
     --radius:16px;
     --shadow:0 10px 30px rgba(0,0,0,.35);
+    /* Nuevas variables para el chat estilo ElDorado */
+    --chat-me: linear-gradient(135deg, var(--accent), #3a66e5);
+    --chat-them: #1c253d;
+    --chat-mm: linear-gradient(135deg, var(--accent2), #24a898);
   }
 
   .review{
@@ -300,7 +304,6 @@ footer .container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 /* Mobile */
 @media (max-width: 640px) {
   .how-grid {
@@ -475,87 +478,95 @@ footer .year-range {
 .modal {
   display: none; /* Por defecto oculto */
   position: fixed;
-  z-index: 1;
+  z-index: 1000; /* Aumentado para asegurar que esté arriba */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo un poco más oscuro para más profesionalismo */
+  backdrop-filter: blur(4px); /* Efecto blur moderno */
   padding-top: 60px;
-  font-family: "Roboto", sans-serif; /* Tipo de letra similar */
 }
 
 /* Estilo del contenido del modal */
 .modal-content {
-  background-color: #222;
+  background-color: #121826;
   margin: 5% auto;
-  padding: 20px;
-  border-radius: 12px;
-  width: 80%;
-  max-width: 500px;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
   color: #fff;
   font-size: 14px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255,255,255,0.05);
+  position: relative;
 }
 
 /* Estilo del botón de cerrar */
 .close-btn {
   color: #aaa;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: bold;
   position: absolute;
-  top: 10px;
+  top: 15px;
   right: 20px;
   cursor: pointer;
+  transition: color 0.2s;
 }
 
-.close-btn:hover,
-.close-btn:focus {
+.close-btn:hover {
   color: #fff;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 /* Estilo de los inputs y el select */
 .form-input {
-  padding: 10px;
-  background: #333;
-  border-radius: 8px;
+  padding: 12px;
+  background: #1b2336;
+  border-radius: 10px;
   color: #fff;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.1);
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-family: inherit;
+  transition: border-color 0.3s;
 }
 
 .form-input:focus {
   outline: none;
-  background: #444;
+  border-color: var(--accent);
+  background: #232c45;
 }
 
 /* Estilo del botón de confirmación */
 .submit-btn {
-  padding: 12px;
-  background: #2bd4bd; /* Color verde similar a ElDorado */
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent2), #24a898);
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 100%;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .submit-btn:hover {
-  background: #29b1a1;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(43,212,189,0.3);
 }
+
 /* Estilo del popup */
 .chat-popup {
-  display: none;  /* Por defecto, está oculto */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5); /* Fondo oscuro */
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
   justify-content: center;
   align-items: center;
   z-index: 3000;
@@ -564,39 +575,13 @@ footer .year-range {
 .popup-content {
   background: #121826;
   border-radius: 16px;
-  padding: 20px;
+  padding: 30px;
   color: white;
   text-align: center;
-}
-
-.chat-input {
-  padding: 10px;
-  background: #333;
-  border-radius: 8px;
-  color: #fff;
-  border: none;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
-.chat-input:focus {
-  outline: none;
-  background: #444;
-}
-
-.btn.primary {
-  padding: 12px;
-  background: #2bd4bd; /* Color verde similar a ElDorado */
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  width: 100%;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn.primary:hover {
-  background: #29b1a1;
+  max-width: 400px;
+  width: 90%;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 /* =========================
    CHAT STYLE — ELDORADO BASE
@@ -605,47 +590,68 @@ footer .year-range {
 .chat-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 14, 25, 0.75);
+  background: rgba(10, 14, 25, 0.85); /* Un poco más profundo */
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  backdrop-filter: blur(8px);
 }
 
 .chat-window {
-  width: 420px;
-  height: 620px;
-  background: #0f172a; /* TU COLOR BASE */
-  border-radius: 14px;
+  width: 440px; /* Un poco más ancho para legibilidad */
+  height: 650px;
+  background: var(--chat-bg); 
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
   font-family: inherit;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
 }
 
 /* HEADER */
 .chat-header {
-  padding: 14px 16px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.02);
   border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #e5e7eb;
-  font-size: 15px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chat-header-actions {
+  display: flex;
+  gap: 12px;
 }
 
 .chat-header-actions button {
-  background: transparent;
+  background: rgba(255,255,255,0.05);
   border: none;
   color: #9aa4b2;
-  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chat-header-actions button:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
 }
 
 /* ORDER PANEL */
 #orderPanel {
-  padding: 12px 16px;
-  background: rgba(255,255,255,0.03);
+  padding: 16px;
+  background: rgba(79, 124, 255, 0.03);
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -653,234 +659,327 @@ footer .year-range {
   display: flex;
   justify-content: space-between;
   font-size: 13px;
-  color: #cbd5f5;
+  color: #fff;
 }
 
 .order-info .label {
   display: block;
   font-size: 11px;
-  color: #9aa4b2;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
 }
 
 #orderSteps {
   display: flex;
-  gap: 6px;
-  margin-top: 10px;
+  gap: 8px;
+  margin-top: 14px;
 }
 
 .step {
   flex: 1;
   text-align: center;
-  padding: 4px 0;
-  font-size: 11px;
+  padding: 6px 0;
+  font-size: 10px;
+  font-weight: 700;
   border-radius: 6px;
-  background: rgba(255,255,255,0.06);
-  color: #9aa4b2;
+  background: rgba(255,255,255,0.05);
+  color: #64748b;
+  text-transform: uppercase;
 }
 
 .step.active {
-  background: #2563eb; /* COLOR ACTIVO */
-  color: #fff;
+  background: rgba(43, 212, 189, 0.15);
+  color: var(--accent2);
+  border: 1px solid rgba(43, 212, 189, 0.3);
 }
 
-/* MESSAGES */
+.step.done {
+  background: rgba(79, 124, 255, 0.15);
+  color: var(--accent);
+}
+
+/* MESSAGES CONTAINER */
 .chat-messages {
   flex: 1;
-  padding: 14px;
+  padding: 20px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-/* MENSAJES */
+/* MENSAJES ESTILO ELDORADO */
 .msg {
-  max-width: 75%;
-  padding: 10px 12px;
-  border-radius: 12px;
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 16px;
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.5;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.msg.buyer {
-  background: #2563eb;
+/* Mi mensaje (Comprador/Vendedor) */
+.msg.me {
+  background: var(--chat-me);
   color: #fff;
   align-self: flex-end;
+  border-bottom-right-radius: 4px;
 }
 
-.msg.seller,
-.msg.middleman {
-  background: #1e293b;
+/* Mensaje de la otra parte */
+.msg.them {
+  background: var(--chat-them);
   color: #e5e7eb;
   align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-/* INPUT */
+/* MENSAJE MIDDLEMAN (Destacado) */
+.msg.middleman {
+  background: var(--chat-mm);
+  color: #fff;
+  align-self: center;
+  text-align: center;
+  font-weight: 500;
+  border-radius: 12px;
+  max-width: 90%;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* INPUT BAR */
 .chat-input-bar {
   display: flex;
-  gap: 8px;
-  padding: 12px;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  background: #0f172a;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 
 .chat-input-bar input {
   flex: 1;
   background: #020617;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  padding: 10px;
-  color: #e5e7eb;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.chat-input-bar input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.chat-input-bar input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #111;
 }
 
 .chat-input-bar button {
-  background: #2563eb;
+  background: var(--accent);
   border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
 }
 
-/* UPLOAD */
+.chat-input-bar button:hover:not(:disabled) {
+  background: #3a66e5;
+  transform: scale(1.05);
+}
+
+/* UPLOAD BOTÓN PROFESIONAL */
 .upload-btn {
-  padding: 10px 16px;
-  font-size: 13px;
-  color: #9aa4b2;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
 }
-
+    .upload-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
   <header>
-  <div class="container nav">
-    <div class="brand">
-      <div class="logo">
-  <img src="logo.png" alt="KHZ Logo">
-</div>
-<strong>KHZ Middleman Service</strong>
-
-    </div>
-    <div class="actions">
-        <div id="enterTicketCode" style="display:inline-block; margin-right: 12px;">
-          <input type="text" id="ticketCodeInput" placeholder="Enter ticket code" style="padding: 8px; border-radius: 8px; color: white; background-color: #121826; border: 1px solid rgba(255, 255, 255, 0.2);"/>
-          <button id="joinTicketBtn" class="btn secondary">Join Ticket</button>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">
+          <img src="logo.png" alt="KHZ Logo">
+        </div>
+        <strong>KHZ Middleman Service</strong>
+      </div>
+      
+      <div class="actions">
+        <div id="enterTicketCode" style="display:flex; align-items:center; gap: 8px; background: rgba(255,255,255,0.03); padding: 4px 4px 4px 12px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);">
+          <input type="text" id="ticketCodeInput" placeholder="Ticket code..." 
+            style="width: 110px; border: none; background: transparent; color: white; font-size: 13px; font-weight: 500; outline: none;"/>
+          <button id="joinTicketBtn" class="btn secondary" style="padding: 8px 14px; font-size: 12px; border-radius: 10px;">Join</button>
         </div>
 
         <a class="btn secondary" href="#reviews">Reviews</a>
-        <a href="#" class="btn" id="createTicketBtn">Create Ticket</a>
-        <a href="mailto:middlemanservicekhz@gmail.com?subject=KHZ%20Middleman%20Service%20Request&body=Thank%20you%20for%20contacting%20KHZ%20Middleman%20Service.%0A%0AWe%20offer%20a%20secure%2C%20neutral%2C%20and%20professional%20middleman%20service%20for%20buying%20and%20selling%20gaming%20and%20digital%20accounts.%20Our%20role%20is%20to%20ensure%20both%20parties%20fulfill%20the%20agreed%20terms%20before%20releasing%20any%20account%20or%20funds.%0A%0AService%20Process%3A%0A1.%20Create%20%26%20Share%20Ticket%3A%20A%20ticket%20is%20created%20and%20a%20unique%20code%20is%20shared.%0A2.%20Join%20%26%20Confirm%20Terms%3A%20Both%20parties%20confirm%20the%20transaction%20terms.%0A3.%20Account%20Verification%3A%20The%20seller%20submits%20the%20account%20for%20verification.%0A4.%20Payment%3A%20The%20buyer%20completes%20payment%20after%20verification.%0A5.%20Account%20Delivery%3A%20The%20account%20is%20securely%20delivered%20to%20the%20buyer.%0A6.%20Secure%20Release%3A%20Funds%20are%20released%20after%20successful%20delivery.%0AThere%20is%20a%205%25%20mediation%20fee%20for%20verification%20and%20secure%20delivery.%0A%0ABy%20proceeding%2C%20you%20acknowledge%20and%20accept%20these%20terms." class="btn">
-  Contact Service
-</a>
-
+        <button class="btn primary" id="createTicketBtn">Create Ticket</button>
+        
+        <button onclick="document.getElementById('middlemanLogin').style.display='flex'" 
+                style="background:transparent; border:none; color:rgba(255,255,255,0.1); cursor:pointer; font-size:10px;">MM</button>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
   <main class="container">
     <section class="hero">
       <div>
         <h1>Secure middleman service for gaming and digital accounts</h1>
         <p>We protect buyers and sellers with secure procedures, manual verification, and clear communication.</p>
-        <p style="color:var(--muted);margin-top:10px">Every transaction is handled individually to ensure safety for both parties.</p>
-      </div>
-      <div class="hero-card">
-        <h3>Games and platforms</h3>
-        <div class="games">
-          <span class="pill">SWGOH</span><span class="pill">Hypixel</span><span class="pill">Destiny</span><span class="pill">Pokemon GO</span><span class="pill">Genshin Impact</span><span class="pill">Valorant</span><span class="pill">Twitch</span><span class="pill">YouTube</span><span class="pill">and more</span>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <div style="width:12px; height:12px; border-radius:50%; background:var(--accent2); box-shadow: 0 0 10px var(--accent2);"></div>
+          <span style="font-size:14px; font-weight:500; color:var(--accent2)">Verified Middleman Service Active</span>
         </div>
-        <p style="margin-top:12px;color:var(--muted)">We handle gaming and digital accounts with security-focused procedures.</p>
+      </div>
+      
+      <div class="hero-card">
+        <h3 style="margin-top:0; font-size:18px;">Supported Platforms</h3>
+        <div class="games">
+          <span class="pill">SWGOH</span>
+          <span class="pill">Hypixel</span>
+          <span class="pill">Destiny</span>
+          <span class="pill">Pokemon GO</span>
+          <span class="pill">Genshin Impact</span>
+          <span class="pill">Valorant</span>
+          <span class="pill">Twitch</span>
+          <span class="pill">YouTube</span>
+          <span class="pill" style="background:rgba(255,255,255,0.05)">+ More</span>
+        </div>
+        <p style="margin-top:20px; font-size:14px; opacity:0.8;">We handle all digital assets with bank-grade security protocols.</p>
       </div>
     </section>
 
     <section class="section how">
-  <h2>How it works</h2>
-  <p class="sub">Secure & trusted middleman process</p>
+      <h2>How it works</h2>
+      <p class="sub">Our battle-tested process for 100% secure trades.</p>
 
-  <div class="how-grid">
-  <div class="card">
-    <h3>1. Create & Share Ticket</h3>
-    <p>A ticket is created and a unique code is shared with the other party.</p>
-  </div>
+      <div class="how-grid">
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">01</div>
+          <h3>Create & Share</h3>
+          <p>Generate a secure ticket and share the unique code with the other party.</p>
+        </div>
 
-  <div class="card">
-    <h3>2. Join & Confirm Terms</h3>
-    <p>Both parties join the chat and confirm all transaction terms.</p>
-  </div>
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">02</div>
+          <h3>Confirm Terms</h3>
+          <p>Both parties join the encrypted chat to finalize transaction details.</p>
+        </div>
 
-  <div class="card">
-    <h3>3. Account Verification</h3>
-    <p>The seller submits the account for verification.</p>
-  </div>
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">03</div>
+          <h3>Verification</h3>
+          <p>The seller submits account credentials for our manual verification process.</p>
+        </div>
 
-  <div class="card">
-    <h3>4. Payment</h3>
-    <p>The buyer completes the payment after verification.</p>
-  </div>
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">04</div>
+          <h3>Payment</h3>
+          <p>Buyer completes the payment once the account is secured in our vault.</p>
+        </div>
 
-  <div class="card">
-    <h3>5. Account Delivery</h3>
-    <p>The account is securely delivered to the buyer.</p>
-  </div>
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">05</div>
+          <h3>Delivery</h3>
+          <p>We transfer all security credentials directly to the buyer.</p>
+        </div>
 
-  <div class="card">
-    <h3>6. Secure Release</h3>
-    <p>Funds are released after successful delivery.</p>
-  </div>
-</div>
-
+        <div class="card">
+          <div style="color:var(--accent); font-weight:800; font-size:24px; margin-bottom:10px;">06</div>
+          <h3>Release</h3>
+          <p>Funds are released to the seller after the buyer confirms full access.</p>
+        </div>
+      </div>
     </section>
 
     <section id="reviews" class="section">
       <h2>Client reviews</h2>
-      <p class="sub">Feedback from clients who have completed transactions using our service.</p>
+      <p class="sub">Real feedback from our global trading community.</p>
 
-
-      <div id="feedbackBarContainer" style="margin-bottom:20px;"></div>
+      <div id="feedbackBarContainer" style="margin-bottom:30px;"></div>
       <div class="testimonials" id="reviewsContainer"></div>
-      <div id="pagination" style="margin-top:20px;text-align:center"></div>
+      <div id="pagination" style="margin-top:30px;"></div>
 
-      <div style="max-width:520px;margin:40px auto 0;background:#0f1628;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px">
-        <h3 style="margin-top:0">Leave a review</h3>
-        <p style="color:var(--muted);font-size:14px">Only clients who completed a transaction may leave a review.</p>
+      <div style="max-width:550px; margin:60px auto 0; background:var(--card); border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:32px; box-shadow:var(--shadow);">
+        <h3 style="margin:0 0 8px; font-size:22px;">Leave a review</h3>
+        <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Only verified clients can submit feedback.</p>
+        
         <form id="reviewForm">
-          <input type="text" id="reviewName" placeholder="Name or username" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:10px" />
-          <div id="quickReviews" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px"></div>
-          <textarea id="reviewText" placeholder="Write your experience" required rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:12px"></textarea>
-          <button type="submit" class="btn" style="width:100%">Submit review</button>
+          <input type="text" id="reviewName" placeholder="Username" required 
+            class="form-input" style="margin-bottom:12px;"/>
+          
+          <div id="quickReviews" style="display:flex; gap:8px; margin-bottom:12px; overflow-x:auto; padding-bottom:8px;"></div>
+          
+          <textarea id="reviewText" placeholder="Describe your experience..." required rows="4" 
+            class="form-input" style="resize:none; margin-bottom:20px;"></textarea>
+          
+          <button type="submit" class="submit-btn">Post Verified Review</button>
         </form>
       </div>
     </section>
- </main>
+  </main>
 
-<section id="middlemanSection" class="section" style="display:none">
-  <h2>Open tickets (Middleman)</h2>
-  <div id="ticketList"></div>
- 
-</section>
+  <section id="middlemanSection" class="section" style="display:none; background:rgba(43,212,189,0.02)">
+    <div class="container">
+      <h2><span style="color:var(--accent2)">●</span> Active Master Tickets</h2>
+      <div id="ticketList" class="grid"></div>
+    </div>
+  </section>
 
+  <footer>
+    <div class="container">
+      <span>© <span class="year-range">2022–<span id="year"></span></span> KHZ Middleman Service.</span>
+      <div style="display:flex; gap:20px; opacity:0.6;">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
 
-<footer>
-  <div class="container">
-    © <span class="year-range">2022–<span id="year"></span></span> KHZ Middleman Service. All rights reserved.
-  </div>
-</footer>
-
-  <!-- Ventana emergente (popup) -->
-  <div id="ticketPopup" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000;">
-    <div class="popup-content" style="background: #121826; border-radius: 16px; padding: 20px; color: white; text-align: center;">
-     <p id="ticketText"></p>
-      <button id="closePopup" class="btn secondary" style="margin-top: 20px;">Close</button>
+  <div id="ticketPopup" class="chat-popup">
+    <div class="popup-content">
+      <div style="font-size:40px; margin-bottom:15px;">🎫</div>
+      <p id="ticketText" style="font-size:16px; line-height:1.6;"></p>
+      <button id="closePopup" class="btn primary" style="margin-top: 20px;">I Understand</button>
     </div>
   </div>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
+// Configuración de Supabase
 const SUPABASE_URL = 'https://hgzbdjumlzczwyrvmllz.supabase.co'
 const SUPABASE_ANON_KEY = 'sb_publishable_K4lepgc7XUeYnz4PnkV6QA_Y3Xnr0WU'
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// BOTONES
+// ELEMENTOS DE LA INTERFAZ
 const createTicketBtn = document.getElementById('createTicketBtn')
 const chooseBuyer = document.getElementById('chooseBuyer')
 const chooseSeller = document.getElementById('chooseSeller')
@@ -888,72 +987,67 @@ const rolePopup = document.getElementById('rolePopup')
 const ticketPopup = document.getElementById('ticketPopup')
 const closePopupBtn = document.getElementById('closePopup')
 
+/**
+ * Formateo estético de los nombres en el chat (Estilo ElDorado)
+ */
 function formatSender(sender) {
-
   if (sender === 'middleman') {
-    return `<span style="
-      color:#60a5fa;
-      font-weight:700;
-      text-shadow:0 0 6px rgba(96,165,250,.4);
-    ">👑 KHZ Middleman:</span>`
+    return `<span style="color:var(--accent2); font-weight:800; text-transform:uppercase; font-size:11px; letter-spacing:0.5px; display:block; margin-bottom:2px;">
+              <span style="filter:drop-shadow(0 0 5px var(--accent2))">🛡️ Official Middleman</span>
+            </span>`
   }
-
   if (sender === 'buyer') {
-    return `<span style="
-      color:#22c55e;
-      font-weight:600;
-    ">💳 Buyer:</span>`
+    return `<span style="color:var(--accent); font-weight:700; font-size:11px; text-transform:uppercase; display:block; margin-bottom:2px;">
+              👤 Buyer
+            </span>`
   }
-
   if (sender === 'seller') {
-    return `<span style="
-      color:#f59e0b;
-      font-weight:600;
-    ">📦 Seller:</span>`
+    return `<span style="color:#f59e0b; font-weight:700; font-size:11px; text-transform:uppercase; display:block; margin-bottom:2px;">
+              📦 Seller
+            </span>`
   }
-
   if (sender === 'connected') {
-    return `<span style="
-      color:#a855f7;
-      font-weight:600;
-    ">🟣 Counterparty:</span>`
+    return `<span style="color:#a855f7; font-weight:600; font-size:11px; display:block; margin-bottom:2px;">
+              🟣 Counterparty
+            </span>`
   }
-
-  return `<span style="color:#e5e7eb">${sender}:</span>`
+  return `<span style="color:var(--muted); font-size:11px; display:block; margin-bottom:2px;">${sender}:</span>`
 }
 
-let middlemanInterval = null
-let chatInitialized = false   
-let sendingMessage = false  
+// ESTADO GLOBAL DE LA APLICACIÓN
 let currentTicketId = null
 let currentRole = null
 let chatChannel = null
 let middlemanOnline = false
+let chatInitialized = false  
+let sendingMessage = false  
+let middlemanInterval = null
 
-
-  function resolveRoleFromTicket(ticket) {
-  // Middleman nunca cambia
+/**
+ * Resuelve y valida el rol del usuario basado en el ticket de la DB
+ */
+function resolveRoleFromTicket(ticket) {
   if (currentRole === "middleman") return "middleman";
 
-  // Intentar restaurar rol guardado
   const savedRole = localStorage.getItem("khz_role");
-
   if (savedRole === "buyer" && ticket.buyer) return "buyer";
   if (savedRole === "seller" && ticket.seller) return "seller";
 
-  // Asignación automática si falta alguien
+  // Asignación automática inteligente
   if (ticket.buyer && !ticket.seller) return "seller";
   if (ticket.seller && !ticket.buyer) return "buyer";
 
   return "guest";
 }
 
-
 const MIDDLEMAN_KEY = "*Dinero19"
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // ♻️ Actualizar año del footer automáticamente
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ♻️ Restaurar sesión si existe (SIN abrir chat)
+  // ♻️ Restaurar sesión existente de Supabase
   const savedTicket = localStorage.getItem("khz_ticketId");
   const savedRole = localStorage.getItem("khz_role");
 
@@ -961,197 +1055,203 @@ document.addEventListener('DOMContentLoaded', async () => {
     currentTicketId = savedTicket;
     currentRole = savedRole;
 
-    const { data: ticket } = await supabase
+    const { data: ticket, error } = await supabase
       .from("tickets")
       .select("*")
       .eq("id", savedTicket)
       .single(); 
 
-    if (!ticket) {
-      console.log("Ticket no encontrado o no autorizado.");
+    if (!ticket || error) {
+      console.warn("Session expired or ticket invalid.");
       localStorage.removeItem("khz_ticketId");
       localStorage.removeItem("khz_role");
       currentTicketId = null;
       currentRole = null;
     } else {
-  const resolvedRole = resolveRoleFromTicket(ticket);
-  currentRole = resolvedRole;
-
-  // 🔄 Sincronizar estado del middleman
-  if (ticket.middleman_joined) {
-    middlemanOnline = true;
+      currentRole = resolveRoleFromTicket(ticket);
+      if (ticket.middleman_joined) middlemanOnline = true;
+      
+      // Mostrar banner de "Reanudar Operación" de forma estética
+      showRestoreBanner(); 
+    }
   }
 
-  // 🟢 SOLO mostrar opción de reanudar
-  showRestoreBanner(); // botón "Resume chat"
-}
-
-  }
-
-  // 🔒 Prevent middleman form reload (ENTER fix)
+  // Prevenir recarga en formularios de login
   const middlemanForm = document.getElementById("middlemanForm");
   if (middlemanForm) {
-    middlemanForm.addEventListener("submit", e => {
-      e.preventDefault();
-    });
+    middlemanForm.addEventListener("submit", e => e.preventDefault());
   }
 
-  // =====================
-  // BUYER CREATE ORDER
-  // =====================
-  document.getElementById("buyerCreateOrderBtn").onclick = async () => {
+  // ==========================================
+  // LÓGICA DE CREACIÓN DE ORDEN (COMPRADOR)
+  // ==========================================
+  const createOrderBtn = document.getElementById("buyerCreateOrderBtn");
+  if (createOrderBtn) {
+    createOrderBtn.onclick = async () => {
+      if (currentRole !== "buyer") {
+        alert("Action restricted to Comprador only.");
+        return;
+      }
 
-    if (currentRole !== "buyer") {
-      alert("Only the buyer can create the order.");
-      return;
-    }
+      if (!currentTicketId) return;
 
-    if (!currentTicketId) {
-      alert("Ticket not ready");
-      return;
-    }
+      const name = document.getElementById("buyerProductName").value.trim();
+      const amount = document.getElementById("buyerAmount").value.trim();
+      const currency = document.getElementById("buyerCurrency").value;
 
-    const name = document.getElementById("buyerProductName").value.trim();
-    const amount = document.getElementById("buyerAmount").value.trim();
-    const currency = document.getElementById("buyerCurrency").value;
+      if (!name || !amount) {
+        alert("Please specify the product and the agreed price.");
+        return;
+      }
 
-    if (!name || !amount) {
-      alert("Fill product and price");
-      return;
-    }
+      // Actualizar ticket en Supabase con los detalles del trade
+      const { error } = await supabase
+        .from("tickets")
+        .update({
+          product_name: name,
+          amount: amount,
+          currency: currency,
+          status_step: "PRODUCT_SET"
+        })
+        .eq("id", currentTicketId);
 
-    const { error } = await supabase
-      .from("tickets")
-      .update({
-        product_name: name,
-        amount: amount,
-        currency: currency,
-        status_step: "PRODUCT_SET"
-      })
-      .eq("id", currentTicketId);
+      if (error) {
+        console.error("DB Error:", error);
+        alert("Error creating order. Please try again.");
+        return;
+      }
 
-    if (error) {
-      alert("Error saving order");
-      console.error(error);
-      return;
-    }
+      const { data: ticketData } = await supabase
+        .from("tickets")
+        .select("code")
+        .eq("id", currentTicketId)
+        .single();
 
-    const { data: ticketData } = await supabase
-      .from("tickets")
-      .select("code")
-      .eq("id", currentTicketId)
-      .single();
+      // Mostrar popup profesional con el código generado
+      document.getElementById("ticketText").innerHTML = `
+        <div style="text-align:center">
+          <div style="background:rgba(43,212,189,0.1); color:var(--accent2); padding:10px; border-radius:12px; display:inline-block; margin-bottom:15px; font-weight:bold;">
+            ORDER SECURED ✅
+          </div>
+          <p style="color:var(--muted); font-size:14px; margin-bottom:20px;">
+            Trade initialized. Share this unique access code with the seller:
+          </p>
+          <div style="background:#0b0f14; border:1px dashed var(--accent); padding:20px; border-radius:12px; font-size:28px; font-weight:800; letter-spacing:4px; color:#fff; position:relative;">
+            ${ticketData.code}
+          </div>
+          <p style="font-size:12px; color:var(--muted); margin-top:15px;">The transaction will begin once the seller joins.</p>
+        </div>
+      `;
 
-    document.getElementById("ticketText").innerHTML = `
-      <h3>Order created ✅</h3>
-      <p style="color:#9aa4b2;font-size:14px">
-        Send this code to the seller so they can join the transaction:
-      </p>
-      <div style="font-size:22px;font-weight:800;margin-top:12px;letter-spacing:2px;">
-        ${ticketData.code}
-      </div>
-    `;
+      ticketPopup.style.display = "flex";
+      document.getElementById("buyerCreateOrderModal").style.display = "none";
+      
+      // Cargar panel de estado
+      if (typeof loadOrderPanel === "function") loadOrderPanel(currentTicketId);
+    };
+  }
 
-    ticketPopup.style.display = "flex";
-    document.getElementById("buyerCreateOrderModal").style.display = "none";
-    loadOrderPanel(currentTicketId);
-  };
-
-  // =====================
-  // CTRL + M (MIDDLEMAN)
-  // =====================
+  // ATRAJO DE TECLADO PARA EL MIDDLEMAN (CTRL + M)
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key.toLowerCase() === 'm') {
       e.preventDefault();
-      document.getElementById('middlemanLogin').style.display = 'block';
+      const mmModal = document.getElementById('middlemanLogin');
+      if (mmModal) mmModal.style.display = 'flex';
     }
   });
-
   // =====================
   // LOGIN MIDDLEMAN
   // =====================
   document.getElementById('middlemanLoginBtn').onclick = async () => {
+    const input = document.getElementById('middlemanKeyInput');
+    if (input.value === MIDDLEMAN_KEY) {
+      currentRole = 'middleman';
+      
+      // Si ya hay un ticket activo, avisamos que el MM entró
+      if (currentTicketId) {
+        await supabase
+          .from("tickets")
+          .update({ middleman_joined: true })
+          .eq("id", currentTicketId);
+      }
 
-  const input = document.getElementById('middlemanKeyInput');
-  if (input.value === MIDDLEMAN_KEY) {
-    currentRole = 'middleman';
-    await supabase
-  .from("tickets")
-  .update({ middleman_joined: true })
-  .eq("id", currentTicketId);
+      document.getElementById('middlemanLogin').style.display = 'none';
+      document.getElementById('middlemanSection').style.display = 'block';
 
-
-    document.getElementById('middlemanLogin').style.display = 'none';
-    document.getElementById('middlemanSection').style.display = 'block';
-
-    loadMiddlemanTickets();
-    middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
-  }
-};
-
+      // Carga inicial y bucle de actualización de tickets abiertos
+      loadMiddlemanTickets();
+      if (middlemanInterval) clearInterval(middlemanInterval);
+      middlemanInterval = setInterval(loadMiddlemanTickets, 5000);
+    } else {
+      alert("Invalid Access Key");
+    }
+  };
 
   // =====================
-// JOIN TICKET
-// =====================
-const joinTicketBtn = document.getElementById('joinTicketBtn');
-const ticketCodeInput = document.getElementById('ticketCodeInput');
+  // JOIN TICKET
+  // =====================
+  const joinTicketBtn = document.getElementById('joinTicketBtn');
+  const ticketCodeInput = document.getElementById('ticketCodeInput');
 
-joinTicketBtn.addEventListener('click', async () => {
-  const code = ticketCodeInput.value.trim().toUpperCase();
-  if (!code) return alert("Put code");
+  joinTicketBtn.addEventListener('click', async () => {
+    const code = ticketCodeInput.value.trim().toUpperCase();
+    if (!code) return alert("Please enter a valid ticket code");
 
-  const { data: ticket } = await supabase
-    .from('tickets')
-    .select('*')
-    .eq('code', code)
-    .single();
+    const { data: ticket, error } = await supabase
+      .from('tickets')
+      .select('*')
+      .eq('code', code)
+      .single();
 
-  if (!ticket) return alert("Ticket not found");
+    if (error || !ticket) return alert("Ticket not found. Verify the code.");
 
-  const resolvedRole = resolveRoleFromTicket(ticket);
-  currentRole = resolvedRole;
-  currentTicketId = ticket.id;
+    currentTicketId = ticket.id;
+    const resolvedRole = resolveRoleFromTicket(ticket);
+    currentRole = resolvedRole;
 
-  // 🔑 REGISTRAR SELLER (UNA SOLA VEZ)
-  if (resolvedRole === "seller" && !ticket.seller) {
-    await supabase
-      .from("tickets")
-      .update({ seller: "connected" })
-      .eq("id", ticket.id);
-  }
+    // Guardar en sesión local para reanudar si se recarga
+    localStorage.setItem("khz_ticketId", currentTicketId);
+    localStorage.setItem("khz_role", currentRole);
 
-  // >>> NUEVA LÓGICA PARA EL MIDDLEMAN <<<
-  // Si el que entra es el middleman, actualizamos la base de datos para avisar a todos
-  if (resolvedRole === "middleman") {
-    await supabase
-      .from("tickets")
-      .update({ middleman_joined: true })
-      .eq("id", ticket.id);
+    // 🔑 REGISTRAR SELLER (Si es la primera vez que se une)
+    if (resolvedRole === "seller" && !ticket.seller) {
+      await supabase
+        .from("tickets")
+        .update({ seller: "connected" })
+        .eq("id", ticket.id);
+    }
+
+    // LÓGICA DE SINCRONIZACIÓN DEL MIDDLEMAN
+    if (resolvedRole === "middleman") {
+      await supabase
+        .from("tickets")
+        .update({ middleman_joined: true })
+        .eq("id", ticket.id);
+      middlemanOnline = true;
+    } else {
+      middlemanOnline = ticket.middleman_joined || false;
+    }
+
+    // Aplicar bloqueos de chat si el MM no está presente
+    applyChatPermissions(currentRole); 
+
+    // Interfaz
+    const joinTicketModal = document.getElementById('joinTicketModal');
+    if (joinTicketModal) joinTicketModal.style.display = 'none';
     
-    middlemanOnline = true; // Lo activamos localmente también
-  } else {
-    // Si es buyer o seller, leemos el estado actual que viene de la base de datos
-    middlemanOnline = ticket.middleman_joined || false;
-  }
-
-  // Una vez que sabemos si el MM está o no, aplicamos los permisos visuales
-  applyChatPermissions(currentRole); 
-
-  // Continuar con el flujo normal
-  joinTicketModal.style.display = 'none';
-  showChatSection();
-  loadMessages();
-  setupRealtime(); // Este paso es vital para que el Buyer vea el cambio en vivo
-});
+    showChatSection();
+    loadMessages();
+    setupRealtime(); // Vital para ver cuando el MM entra en vivo
+  });
 
   // =====================
-  // CREATE TICKET
+  // CREATE TICKET (INICIO)
   // =====================
   createTicketBtn.addEventListener('click', () => {
     rolePopup.style.display = 'flex';
   });
 
-}); // ✅ CIERRE CORRECTO DOMContentLoaded
+}); // ✅ CIERRE CORRECTO DOMContentLoaded DEL BLOQUE ANTERIOR
 
 
 // =====================
@@ -1164,22 +1264,19 @@ async function forceMiddlemanSync(ticketId) {
     .eq("id", ticketId)
     .single();
 
-  if (error) {
-    console.error("Middleman sync error:", error);
-    return;
-  }
+  if (error) return;
 
   if (data?.middleman_joined) {
     middlemanOnline = true;
     applyChatPermissions(currentRole);
   }
 }
+
 // ==========================================
-// 1. LA FUNCIÓN QUE TE FALTABA (generateTicketID)
+// GENERADOR DE CÓDIGOS ÚNICOS
 // ==========================================
-// Función para generar el ID (por si acaso)
 function generateTicketID() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Quitamos O, 0, I, 1 por confusión
   let result = '';
   for (let i = 0; i < 6; i++) {
     result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -1187,36 +1284,30 @@ function generateTicketID() {
   return result;
 }
 
-// Función para mostrar la sección del chat y ocultar el inicio
-function showChatSection() {
-  const hero = document.getElementById('hero');
-  const chatSection = document.getElementById('chatSection');
-  
-  if (hero) hero.style.display = 'none';
-  if (chatSection) chatSection.style.display = 'block';
-  
-  // También cerramos cualquier modal que pueda estar abierto
-  const modalBuyer = document.getElementById('buyerOrderModal');
-  const modalJoin = document.getElementById('joinTicketModal');
-  if (modalBuyer) modalBuyer.style.display = 'none';
-  if (modalJoin) modalJoin.style.display = 'none';
-}
 // ==========================================
-// 2. LA FUNCIÓN PARA CREAR EL TICKET
+// NAVEGACIÓN HACIA EL CHAT
+// ==========================================
+function showChatSection() {
+  // Ocultamos el contenido principal (Hero, How it works, Reviews)
+  const mainContent = document.querySelector('main');
+  const chatOverlay = document.getElementById('chatOverlay');
+  
+  if (mainContent) mainContent.style.filter = 'blur(10px)';
+  if (chatOverlay) chatOverlay.style.display = 'flex';
+  
+  // Cerramos modales de selección
+  if (document.getElementById('rolePopup')) rolePopup.style.display = 'none';
+}
+
+// ==========================================
+// CREACIÓN DE TICKET EN DATABASE
 // ==========================================
 async function createTicketWithRole(role) {
-  // Capturamos datos de los inputs
-  const productName = document.getElementById('buyerProductName')?.value.trim() || "Order";
-  const amount = document.getElementById('buyerAmount')?.value.trim() || 0;
-  const currency = document.getElementById('buyerCurrency')?.value || "USD";
-
   const newTicket = {
     code: generateTicketID(), 
-    product_name: productName,
-    amount: parseFloat(amount),
-    currency: currency,
     status: "open",
-    middleman_joined: false // Chat bloqueado inicialmente
+    middleman_joined: false,
+    created_at: new Date().toISOString()
   };
 
   const { data: ticket, error } = await supabase
@@ -1226,8 +1317,8 @@ async function createTicketWithRole(role) {
     .single();
 
   if (error) {
-    console.error("Error Supabase:", error);
-    alert("Error: " + error.message);
+    console.error("Supabase Insert Error:", error);
+    alert("Error creating ticket: " + error.message);
     return;
   }
 
@@ -1236,47 +1327,56 @@ async function createTicketWithRole(role) {
     currentRole = role;
     middlemanOnline = false;
 
-    // Actualizar el código en el HTML (ID: ticketCode)
-    const codeDisplay = document.getElementById('ticketCode');
-    if (codeDisplay) codeDisplay.innerText = ticket.code;
-    
-    // Bloquear chat para el comprador
-    applyChatPermissions(currentRole);
+    // Persistencia
+    localStorage.setItem("khz_ticketId", currentTicketId);
+    localStorage.setItem("khz_role", currentRole);
 
-    // Cambiar de pantalla (La función que creamos arriba)
-    showChatSection();
+    // Si es comprador, mostramos el modal de detalles del producto
+    if (role === 'buyer') {
+      document.getElementById('buyerCreateOrderModal').style.display = 'block';
+    } else {
+      // Si es vendedor, vamos directo al chat a esperar al comprador
+      showChatSection();
+      loadMessages();
+      setupRealtime();
+    }
     
-    // Iniciar servicios
-    loadMessages();
-    setupRealtime();
+    applyChatPermissions(currentRole);
   }
 }
-chooseBuyer.onclick = () => {
-  createTicketWithRole('buyer');
-  document.getElementById('buyerCreateOrderModal').style.display = 'block';
-};
 
-chooseSeller.onclick = () => {
-  createTicketWithRole('seller');
-};
+// ASIGNACIÓN DE EVENTOS A LOS BOTONES DE ROL
+if (chooseBuyer) {
+  chooseBuyer.onclick = () => createTicketWithRole('buyer');
+}
 
+if (chooseSeller) {
+  chooseSeller.onclick = () => createTicketWithRole('seller');
+}
 
-closePopupBtn.addEventListener('click', () => {
-  ticketPopup.style.display = 'none';
-  openChat(currentTicketId, currentRole);
-});
+// CERRAR POPUP DE CÓDIGO Y ENTRAR AL CHAT
+if (closePopupBtn) {
+  closePopupBtn.addEventListener('click', () => {
+    ticketPopup.style.display = 'none';
+    showChatSection();
+    loadMessages();
+    setupRealtime();
+  });
+}
 
-  async function openChat(ticketId, role) {
+  // ==========================================
+// APERTURA DE VENTANA DE CHAT
+// ==========================================
+async function openChat(ticketId, role) {
   if (!ticketId || !role) return;
 
-  // ===== STATE =====
   currentTicketId = ticketId;
   currentRole = role;
 
   localStorage.setItem("khz_ticketId", ticketId);
   localStorage.setItem("khz_role", role);
 
-  // ===== CHECK MIDDLEMAN STATUS =====
+  // Verificar si el Middleman ya está presente en la DB
   const { data: ticket } = await supabase
     .from("tickets")
     .select("middleman_joined")
@@ -1285,29 +1385,32 @@ closePopupBtn.addEventListener('click', () => {
 
   middlemanOnline = !!ticket?.middleman_joined;
 
-  // ===== UI =====
+  // UI Setup
   const overlay = document.getElementById("chatOverlay");
-  const messagesBox = document.getElementById("messages");
+  const messagesBox = document.getElementById("messages"); // ID corregido según tu CSS
 
   if (!overlay || !messagesBox) return;
 
   overlay.style.display = "flex";
-  messagesBox.innerHTML = "";
+  messagesBox.innerHTML = ""; // Limpiar antes de cargar
 
-  // ===== PERMISSIONS =====
+  // Aplicar permisos de escritura
   applyChatPermissions(currentRole);
 
-  // ===== LOAD DATA =====
+  // Cargar historial y panel de estado
   await loadOldMessages();
-  await loadOrderPanel(ticketId);
+  if (typeof loadOrderPanel === "function") await loadOrderPanel(ticketId);
 
-  // ===== SYSTEM MESSAGE =====
+  // Mensaje de sistema inicial
   if (!middlemanOnline && currentRole !== "middleman") {
-    addSystemMessage("⏳ Waiting for middleman to join.");
+    addSystemMessage("⏳ Waiting for middleman to secure the chat...");
   }
 }
 
-  async function loadOldMessages() {
+// ==========================================
+// CARGA DE HISTORIAL (ESTILO ELDORADO)
+// ==========================================
+async function loadOldMessages() {
   if (!currentTicketId) return;
 
   const messagesBox = document.getElementById("messages");
@@ -1325,189 +1428,160 @@ closePopupBtn.addEventListener('click', () => {
   }
 
   messages?.forEach(msg => {
-    const div = document.createElement("div");
-
-    if (msg.extension === "image") {
-      div.innerHTML = `
-        ${formatSender(msg.sender)}<br>
-        <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
-      `;
-    } else {
-      div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
-    }
-
-    messagesBox.appendChild(div);
+    renderMessage(msg);
   });
 
   messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
+// ==========================================
+// RENDERIZADO DE BURBUJAS DE MENSAJE
+// ==========================================
+function renderMessage(msg) {
+  const messagesBox = document.getElementById("messages");
+  if (!messagesBox) return;
+
+  const div = document.createElement("div");
   
+  // Determinar la clase según quién envía y quién eres tú
+  let bubbleClass = "msg them"; // Por defecto es "el otro"
+  if (msg.sender === currentRole) bubbleClass = "msg me";
+  if (msg.sender === "middleman") bubbleClass = "msg middleman";
+
+  div.className = bubbleClass;
+
+  if (msg.extension === "image") {
+    div.innerHTML = `
+      ${formatSender(msg.sender)}
+      <img src="${msg.text}" style="max-width:100%; border-radius:10px; margin-top:5px; cursor:pointer;" onclick="window.open(this.src)">
+    `;
+  } else {
+    div.innerHTML = `${formatSender(msg.sender)} <div>${msg.text}</div>`;
+  }
+
+  messagesBox.appendChild(div);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+// ==========================================
+// PERMISOS DE CHAT
+// ==========================================
 function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
 
   if (!input || !sendBtn) return;
 
-  // Si eres el middleman, siempre puedes escribir
   if (role === "middleman") {
     input.disabled = false;
     sendBtn.disabled = false;
-    input.placeholder = "Escribe un mensaje como Middleman...";
+    input.placeholder = "Write as Official Middleman...";
     return;
   }
 
-  // Para comprador y vendedor, depende de la variable middlemanOnline
   if (middlemanOnline) {
     input.disabled = false;
     sendBtn.disabled = false;
-    input.placeholder = "Escribe un mensaje...";
+    input.placeholder = "Write a message...";
   } else {
     input.disabled = true;
     sendBtn.disabled = true;
-    input.placeholder = "Esperando que el Middleman se una...";
+    input.placeholder = "🔒 Waiting for Middleman...";
   }
 }
 
-
-  function showRestoreBanner() {
-  const restoreBtn = document.getElementById("restoreChatBtn");
-  const chatOverlay = document.getElementById("chatOverlay");
-
-  if (!restoreBtn || !chatOverlay) return;
-
-  // Mostrar botón "Resume chat"
-  restoreBtn.style.display = "block";
-
-  restoreBtn.onclick = () => {
-    chatOverlay.style.display = "flex";
-    restoreBtn.style.display = "none";
-
-    if (currentTicketId && currentRole) {
-      openChat(currentTicketId, currentRole);
-    }
-  };
-}
-  
-
-  /* ========= REALTIME (SOLO 1 CANAL) ========= */
-
-chatChannel = supabase
-  .channel("chat-realtime")
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "tickets"
-    },
+// ==========================================
+// SISTEMA REALTIME (TICKETS Y MENSAJES)
+// ==========================================
+function setupRealtime() {
+  // Canal para cambios en el Ticket (Saber cuando entra el MM)
+  supabase
+    .channel("ticket-updates")
+    .on("postgres_changes", { event: "UPDATE", schema: "public", table: "tickets" }, 
     payload => {
-      // Si el cambio no es en el ticket actual, ignoramos
       if (payload.new.id !== currentTicketId) return;
 
-      // Si el estado de middleman_joined cambió a true en la DB
-      if (payload.new.middleman_joined === true) {
-        
-        // Solo enviamos el mensaje de sistema la primera vez que se detecta el cambio
-        if (!middlemanOnline) {
-            addSystemMessage("✅ Middleman joined. Chat unlocked.");
-        }
-
-        middlemanOnline = true;            // Actualizamos el estado local
-        applyChatPermissions(currentRole); // Habilitamos el input y el botón
+      if (payload.new.middleman_joined === true && !middlemanOnline) {
+        middlemanOnline = true;
+        addSystemMessage("✅ Middleman joined. Chat unlocked.");
+        applyChatPermissions(currentRole);
       }
-    }
-  )
-  .subscribe();
+    })
+    .subscribe();
+
+  // Canal para nuevos Mensajes
+  supabase
+    .channel("new-messages")
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages" }, 
+    payload => {
+      if (payload.new.ticket_id !== currentTicketId) return;
+      renderMessage(payload.new);
+    })
+    .subscribe();
+}
 
 function addSystemMessage(text) {
   const messagesBox = document.getElementById("messages");
   if (!messagesBox) return;
 
   const div = document.createElement("div");
-  div.innerHTML = `<strong style="color:#60a5fa">KHZ:</strong><br>${text}`;
+  div.style.cssText = "text-align:center; margin:15px 0; font-size:12px; color:var(--muted); width:100%; font-weight:600; text-transform:uppercase; letter-spacing:1px;";
+  div.innerHTML = `— ${text} —`;
   messagesBox.appendChild(div);
- messagesBox.scrollTop = messagesBox.scrollHeight;
+  messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
+// ==========================================
+// ENVÍO DE MENSAJES
+// ==========================================
+if (!chatInitialized) {
+  chatInitialized = true;
+  
+  const msgInput = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendMsg");
 
-  // 💬 MENSAJES DEL CHAT
-supabase
-  .channel("messages-realtime")
-  .on(
-    "postgres_changes",
-    {
-      event: "INSERT",
-      schema: "public",
-      table: "messages"
-    },
-    payload => {
-      const messagesBox = document.getElementById("messages");
-      if (!messagesBox) return;
-
-      const msg = payload.new;
-      if (msg.ticket_id !== currentTicketId) return;
-
-      const div = document.createElement("div");
-
-      if (msg.extension === "image") {
-        div.innerHTML = `
-          ${formatSender(msg.sender)}<br>
-          <img src="${msg.text}" style="max-width:220px;border-radius:10px;">
-        `;
-      } else {
-        div.innerHTML = `${formatSender(msg.sender)} ${msg.text}`;
-      }
-
-      messagesBox.appendChild(div);
-      messagesBox.scrollTop = messagesBox.scrollHeight;
+  msgInput?.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendBtn.click();
     }
-  )
-  .subscribe();
+  });
 
+  sendBtn.onclick = async () => {
+    if (sendingMessage || !currentTicketId || !msgInput.value.trim()) return;
 
-  /* ========= SEND MESSAGE (UNA SOLA VEZ) ========= */
-  if (!chatInitialized) {
-    chatInitialized = true;
+    sendingMessage = true;
+    const text = msgInput.value.trim();
+    msgInput.value = ""; // Limpiar rápido para mejor UX
 
-    const msgInput = document.getElementById("msgInput");
-    const sendBtn = document.getElementById("sendMsg");
+    await supabase.from("messages").insert([{
+      ticket_id: currentTicketId,
+      sender: currentRole,
+      text: text,
+      topic: "chat",
+      extension: "text"
+    }]);
 
-    msgInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendBtn.click();
-      }
-    });
+    sendingMessage = false;
+  };
+}
 
-    sendBtn.onclick = async () => {
-  if (sendingMessage) return;
-  if (!currentTicketId) return;
-  if (!msgInput.value.trim()) return;
-
-  sendingMessage = true;
-
-  await supabase.from("messages").insert([{
-    ticket_id: currentTicketId,
-    sender: currentRole,
-    text: msgInput.value,
-    topic: "chat",
-    extension: "text"
-  }]);
-
-  msgInput.value = "";
-  sendingMessage = false;
-};
-
-  }
-
-  document.getElementById("closeChatBtn").onclick = () => {
+// BOTONES DE CIERRE Y REANUDACIÓN
+document.getElementById("closeChatBtn").onclick = () => {
   document.getElementById("chatOverlay").style.display = "none";
-
-  // 🔥 ESTO ES CLAVE
-  chatInitialized = false;
+  document.querySelector('main').style.filter = 'none';
 };
 
+function showRestoreBanner() {
+  const restoreBtn = document.getElementById("restoreChatBtn");
+  if (!restoreBtn) return;
+
+  restoreBtn.style.display = "flex";
+  restoreBtn.onclick = () => {
+    openChat(currentTicketId, currentRole);
+    restoreBtn.style.display = "none";
+  };
+}
 /* =====================
    UPLOAD PAYMENT PHOTO
    ===================== */
@@ -1521,7 +1595,6 @@ paymentInput.addEventListener("change", async () => {
     return
   }
 
-  // 🔒 El Dorado rule: order must be set before payment
   const { data: ticket } = await supabase
     .from("tickets")
     .select("status_step")
@@ -1534,12 +1607,6 @@ paymentInput.addEventListener("change", async () => {
     return;
   }
   
-  if (!currentTicketId) {
-    alert("Ticket not ready yet")
-    return
-  }
-
-  // ❌ solo buyer puede subir pago
   if (currentRole !== "buyer") {
     alert("Only the buyer can upload payment proof")
     paymentInput.value = ""
@@ -1551,7 +1618,6 @@ paymentInput.addEventListener("change", async () => {
 
   const fileName = `payments/${currentTicketId}_${Date.now()}_${file.name}`
 
-  // subir imagen
   const { error: uploadError } = await supabase.storage
     .from("chat-files")
     .upload(fileName, file)
@@ -1566,16 +1632,16 @@ paymentInput.addEventListener("change", async () => {
     .from("chat-files")
     .getPublicUrl(fileName)
 
-  // insertar mensaje
-  const { error } = await supabase
-    .from("messages")
-    .insert([{
-      ticket_id: currentTicketId,
-      sender: currentRole,
-      text: data.publicUrl,
-      topic: "chat",
-      extension: "image"
-    }])
+  // 🚀 Insertar mensaje usando renderMessage para consistencia
+  const newMessage = {
+    ticket_id: currentTicketId,
+    sender: currentRole,
+    text: data.publicUrl,
+    topic: "chat",
+    extension: "image"
+  };
+
+  const { error } = await supabase.from("messages").insert([newMessage]);
 
   if (error) {
     console.error("INSERT IMAGE ERROR:", error)
@@ -1583,7 +1649,7 @@ paymentInput.addEventListener("change", async () => {
     return
   }
 
-  // actualizar orden (ESCROW)
+  // Actualizar orden (ESCROW)
   await supabase
     .from("tickets")
     .update({
@@ -1592,14 +1658,59 @@ paymentInput.addEventListener("change", async () => {
     })
     .eq("id", currentTicketId)
 
-  // actualizar panel
   document.getElementById("orderStatusText").textContent = "PAYMENT_UPLOADED"
-
   paymentInput.value = ""
 })
 
+/* =====================
+   ✨ RENDER MESSAGE (PREMIUM)
+   ===================== */
+function renderMessage(msg) {
+  const box = document.getElementById("messages");
+  if (!box) return;
 
-// ORDER PANEL (ESCROW)
+  const div = document.createElement("div");
+  // Añadimos una pequeña animación de entrada
+  div.className = `msg ${msg.sender} animate-fade-in`;
+  
+  if (msg.extension === "image") {
+    div.innerHTML = `
+      <div class="msg-content">
+        <span class="sender-tag">${msg.sender.toUpperCase()}</span>
+        <div class="chat-img-wrapper">
+          <img src="${msg.text}" class="chat-img-clickable" loading="lazy">
+        </div>
+      </div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div class="msg-content">
+        <span class="sender-tag">${msg.sender.toUpperCase()}</span>
+        <p class="msg-text">${msg.text}</p>
+      </div>
+    `;
+  }
+
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+/* =====================
+   🌌 PREMIUM BLUR EFFECT
+   ===================== */
+function toggleAppBlur(active) {
+  const mainContent = document.querySelector(".main-container"); // Ajusta a tu selector de fondo
+  if (mainContent) {
+    if (active) {
+      mainContent.style.filter = "blur(10px) brightness(0.8)";
+      mainContent.style.transition = "filter 0.3s ease";
+    } else {
+      mainContent.style.filter = "none";
+    }
+  }
+}
+
+// ORDER PANEL (ESCROW) - Mantenemos tu lógica igual
 // =====================
 async function loadOrderPanel(ticketId) {
   const { data: ticket, error } = await supabase
@@ -1613,105 +1724,73 @@ async function loadOrderPanel(ticketId) {
     return
   }
 
-  // TEXT INFO
   const statusEl = document.getElementById("orderStatusText");
-if (statusEl) {
-  statusEl.textContent = ticket.status_step || "CREATED";
-}
+  if (statusEl) statusEl.textContent = ticket.status_step || "CREATED";
 
   renderOrderActions(ticket.status_step, currentRole)
 
-const productEl = document.getElementById("orderProductText");
-if (productEl) {
-  productEl.textContent = ticket.product_name || "—";
-}
-
+  const productEl = document.getElementById("orderProductText");
+  if (productEl) productEl.textContent = ticket.product_name || "—";
 
   const amountEl = document.getElementById("orderAmountText");
-if (amountEl) {
-  amountEl.textContent = `${ticket.currency || "$"} ${ticket.amount || "—"}`;
-}
+  if (amountEl) amountEl.textContent = `${ticket.currency || "$"} ${ticket.amount || "—"}`;
 
-  // RESET Steps
-  document.querySelectorAll(".step").forEach(step => {
-    step.classList.remove("active", "done")
-  })
+  // RESET Steps visuales
+  document.querySelectorAll(".step").forEach(step => step.classList.remove("active", "done"))
 
-  // ACTIVATE STEPS BASED ON STATUS
-  if (ticket.status_step === "CREATED") {
-    document.getElementById("step-payment").classList.add("active")
-  }
-
+  if (ticket.status_step === "CREATED") document.getElementById("step-payment").classList.add("active")
   if (ticket.status_step === "PAYMENT_UPLOADED") {
     document.getElementById("step-payment").classList.add("done")
     document.getElementById("step-delivery").classList.add("active")
   }
-
   if (ticket.status_step === "DELIVERED") {
     document.getElementById("step-payment").classList.add("done")
     document.getElementById("step-delivery").classList.add("done")
     document.getElementById("step-confirm").classList.add("active")
   }
-
   if (ticket.status_step === "RELEASED") {
     document.getElementById("step-payment").classList.add("done")
     document.getElementById("step-delivery").classList.add("done")
     document.getElementById("step-confirm").classList.add("done")
     document.getElementById("step-release").classList.add("active")
   }
-
   if (ticket.status_step === "COMPLETED") {
-    document.querySelectorAll(".step").forEach(step => {
-      step.classList.add("done")
-    })
+    document.querySelectorAll(".step").forEach(step => step.classList.add("done"))
   }
 }
 
-// =====================
-// ORDER ACTIONS
+// ORDER ACTIONS - Tu lógica original intacta
 // =====================
 function renderOrderActions(status, role) {
   const box = document.getElementById("orderActions");
   if (!box) return;
-
   box.innerHTML = "";
 
-  // BUYER
-  if (role === "buyer") {
-    if (status === "DELIVERED") {
-      box.innerHTML = `<button id="btnConfirm">Confirm Delivery</button>`;
-      document.getElementById("btnConfirm").onclick = () =>
-        updateTicketStatus("COMPLETED");
-    }
+  if (role === "buyer" && status === "DELIVERED") {
+    box.innerHTML = `<button id="btnConfirm" class="btn-premium">Confirm Delivery</button>`;
+    document.getElementById("btnConfirm").onclick = () => updateTicketStatus("COMPLETED");
   }
 
-  // SELLER
   if (role === "seller") {
     if (status === "PAYMENT_CONFIRMED") {
-      box.innerHTML = `<button id="btnDelivered">Mark as Delivered</button>`;
-      document.getElementById("btnDelivered").onclick = () =>
-        updateTicketStatus("DELIVERED");
+      box.innerHTML = `<button id="btnDelivered" class="btn-premium">Mark as Delivered</button>`;
+      document.getElementById("btnDelivered").onclick = () => updateTicketStatus("DELIVERED");
     } else {
-      box.innerHTML = `<p style="color:#9aa4b2">Waiting for payment confirmation</p>`;
+      box.innerHTML = `<p style="color:#9aa4b2; font-size:12px">Waiting for payment confirmation</p>`;
     }
   }
 
-  // MIDDLEMAN
   if (role === "middleman") {
     if (status === "PAYMENT_UPLOADED") {
-      box.innerHTML = `<button id="btnConfirmPayment">Confirm Payment</button>`;
-      document.getElementById("btnConfirmPayment").onclick = () =>
-        updateTicketStatus("PAYMENT_CONFIRMED");
+      box.innerHTML = `<button id="btnConfirmPayment" class="btn-premium">Confirm Payment</button>`;
+      document.getElementById("btnConfirmPayment").onclick = () => updateTicketStatus("PAYMENT_CONFIRMED");
     }
-
     if (status === "COMPLETED") {
-      box.innerHTML = `<button id="btnRelease">Release Funds</button>`;
-      document.getElementById("btnRelease").onclick = () =>
-        updateTicketStatus("RELEASED");
+      box.innerHTML = `<button id="btnRelease" class="btn-premium">Release Funds</button>`;
+      document.getElementById("btnRelease").onclick = () => updateTicketStatus("RELEASED");
     }
   }
 }
-
 async function updateTicketStatus(newStatus) {
   const { error } = await supabase
     .from("tickets")
@@ -1726,12 +1805,10 @@ async function updateTicketStatus(newStatus) {
   }
 }
 
-
 // =====================
 // MIDDLEMAN TICKETS LIST
 // =====================
 async function loadMiddlemanTickets() {
-
   const { data: tickets, error } = await supabase
     .from('tickets')
     .select('*')
@@ -1749,15 +1826,23 @@ async function loadMiddlemanTickets() {
 
   tickets?.forEach(t => {
     const div = document.createElement('div');
+    // Añadimos una clase para estilos premium en el listado
+    div.className = "ticket-card-premium"; 
+    
     const btn = document.createElement('button');
     btn.textContent = 'Open';
-    btn.onclick = () => openChat(t.id, 'middleman');
+    btn.className = "btn-open-chat";
+    btn.onclick = () => {
+      openChat(t.id, 'middleman');
+      toggleAppBlur(true); // Activa el desenfoque al abrir
+    };
 
     div.innerHTML = `
-      <strong>${t.code}</strong><br>
-      Status: ${t.status}<br>
-      Buyer: ${t.buyer || '—'}<br>
-      Seller: ${t.seller || '—'}
+      <div class="ticket-info">
+        <strong>${t.code}</strong><br>
+        <span class="status-badge">${t.status_step || t.status}</span><br>
+        <small>B: ${t.buyer || '—'} | S: ${t.seller || '—'}</small>
+      </div>
     `;
 
     div.appendChild(btn);
@@ -1765,7 +1850,7 @@ async function loadMiddlemanTickets() {
   });
 }
 
-  if (currentRole === 'middleman') {
+if (currentRole === 'middleman') {
   loadMiddlemanTickets();
   middlemanInterval = setInterval(loadMiddlemanTickets, 3000);
 }
@@ -1781,23 +1866,24 @@ if (minimizeBtn && restoreBtn && chatOverlay) {
   minimizeBtn.onclick = () => {
     chatOverlay.style.display = 'none';
     restoreBtn.style.display = 'block';
+    toggleAppBlur(false); // Quita el blur al minimizar
   };
 
   restoreBtn.onclick = () => {
     chatOverlay.style.display = 'flex';
     restoreBtn.style.display = 'none';
+    toggleAppBlur(true); // Re-activa el blur al restaurar
   };
 }
 
 // =====================
-// IMAGE MODAL (FUERA DEL DOMContentLoaded)
+// IMAGE MODAL (LOGICA UNIFICADA)
 // =====================
-
-// Mostrar imagen en el modal cuando se haga clic en una imagen
 document.addEventListener("click", (e) => {
   let src = null;
-
   const img = e.target.closest("img");
+  
+  // Evitamos abrir el modal con avatars o perfiles
   if (img && !img.classList.contains("avatar") && !img.closest(".profile")) {
     src = img.src;
   }
@@ -1806,7 +1892,7 @@ document.addEventListener("click", (e) => {
     const el = e.target.closest("[style*='background-image']");
     if (el) {
       const bg = el.style.backgroundImage;
-      src = bg.slice(5, -2);
+      src = bg.slice(5, -2).replace(/"/g, "");
     }
   }
 
@@ -1814,46 +1900,46 @@ document.addEventListener("click", (e) => {
 
   const modal = document.getElementById("imageModal");
   const modalImg = document.getElementById("modalImage");
-  if (!modal || !modalImg) return;
-
-  modal.style.display = "flex";
-  modalImg.src = src;
+  
+  if (modal && modalImg) {
+    modal.style.display = "flex";
+    modalImg.src = src;
+    // Efecto extra de profundidad al ver la imagen
+    modal.style.backdropFilter = "blur(15px)";
+  }
 });
 
-// Añadir el evento de confirmación al botón de cerrar el chat
+// Evento de cierre del Chat con Confirmación
 const closeChatBtn = document.getElementById("closeChatBtn");
 if (closeChatBtn) {
   closeChatBtn.onclick = () => {
-    // Mostrar la confirmación antes de cerrar el chat
     const userConfirmed = window.confirm("Are you sure you want to close the chat? All messages will be lost.");
     if (userConfirmed) {
-      // Si el usuario acepta, cerrar el chat
-      document.getElementById("chatOverlay").style.display = "none"; // Cierra el chat
+      document.getElementById("chatOverlay").style.display = "none";
+      toggleAppBlur(false); // Limpiamos el fondo
     }
   };
 }
 
-// Manejo del modal
-const modal = document.getElementById("imageModal");  // Declaración única para el modal
+// Manejo del modal de imagen (Cerrar)
+const imgModal = document.getElementById("imageModal");
+const closeImgBtn = document.querySelector("#imageModal .close");
 
-// Cerrar el modal si se hace clic en el botón de cierre (closeBtn)
-const closeBtn = document.querySelector("#imageModal .close");
-if (closeBtn) {
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none"; // Cierra el modal
-  });
+if (closeImgBtn) {
+  closeImgBtn.onclick = () => {
+    imgModal.style.display = "none";
+  };
 }
 
-// Cerrar el modal si el usuario hace clic fuera del modal
-if (modal) {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none"; // Cierra el modal si se hace clic fuera
+if (imgModal) {
+  imgModal.onclick = (e) => {
+    if (e.target === imgModal) {
+      imgModal.style.display = "none";
     }
-  });
+  };
 }
 
-  </script>
+</script>
   
 <script type="module">
 
@@ -2041,12 +2127,12 @@ loadReviews();
 
 </script>
 
-<!-- Role Selection Popup -->
 <div id="rolePopup" style="
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.65);
+  background:rgba(0,0,0,.75); /* Un poco más oscuro para resaltar el popup */
+  backdrop-filter: blur(8px); /* Efecto blur de fondo premium */
   z-index:10000;
   align-items:center;
   justify-content:center;
@@ -2058,8 +2144,9 @@ loadReviews();
     width:340px;
     text-align:center;
     box-shadow:0 20px 50px rgba(0,0,0,.6);
+    border: 1px solid rgba(255,255,255,0.05); /* Borde sutil */
   ">
-    <h3 style="margin-top:0">Select your role</h3>
+    <h3 style="margin-top:0; color:#fff;">Select your role</h3>
     <p style="color:#9aa4b2;font-size:14px">
       Choose how you participate in this transaction
     </p>
@@ -2069,31 +2156,31 @@ loadReviews();
       <button id="chooseSeller" class="btn secondary" style="flex:1">Seller</button>
     </div>
   </div>
-</div> <!-- 🔥 ESTE CIERRE FALTABA -->
+</div>
 
-<!-- CHAT OVERLAY -->
 <div id="chatOverlay" class="chat-overlay">
   <div class="chat-window">
 
-    <!-- HEADER -->
-    <div class="chat-header">
-      <strong>Chat</strong>
+    <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 8px; height: 8px; background: #2bd4bd; border-radius: 50%; box-shadow: 0 0 8px #2bd4bd;"></div>
+        <strong>Live Chat</strong>
+      </div>
       <div class="chat-header-actions">
-        <button id="minimizeChatBtn">_</button>
-        <button id="closeChatBtn">✕</button>
+        <button id="minimizeChatBtn" style="background:none; border:none; color:#9aa4b2; cursor:pointer;">_</button>
+        <button id="closeChatBtn" style="background:none; border:none; color:#9aa4b2; cursor:pointer; font-size:16px;">✕</button>
       </div>
     </div>
 
-    <!-- ORDER PANEL -->
-    <div id="orderPanel">
+    <div id="orderPanel" style="background: rgba(15, 22, 40, 0.6); border-bottom: 1px solid rgba(255,255,255,0.05);">
       <div class="order-info">
         <div>
           <span class="label">Product</span>
-          <span id="orderProductText">—</span>
+          <span id="orderProductText" style="color: #fff; font-weight: 500;">—</span>
         </div>
         <div>
           <span class="label">Amount</span>
-          <span id="orderAmountText">—</span>
+          <span id="orderAmountText" style="color: #2bd4bd; font-weight: 600;">—</span>
         </div>
       </div>
 
@@ -2107,26 +2194,24 @@ loadReviews();
       <div id="orderActions"></div>
     </div>
 
-    <!-- MESSAGES -->
-    <div id="messages" class="chat-messages"></div>
+    <div id="messages" class="chat-messages" style="scrollbar-width: thin; scrollbar-color: #1e2a4a transparent;"></div>
 
-    <!-- INPUT -->
-    <div class="chat-input-bar">
-      <input id="msgInput" placeholder="Write a message..." />
-      <button id="sendMsg">Send</button>
+    <div class="chat-input-bar" style="background: #0f1628; border-top: 1px solid rgba(255,255,255,0.05); padding: 12px; gap: 10px;">
+      
+      <label class="upload-btn" style="margin: 0; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; transition: 0.3s;">
+        📷
+        <input type="file" id="paymentPhotoInput" accept="image/*" hidden>
+      </label>
+
+      <input id="msgInput" placeholder="Write a message..." style="flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; padding: 8px 12px;" />
+      
+      <button id="sendMsg" style="background: #3b82f6; border: none; border-radius: 10px; padding: 8px 15px; color: #fff; font-weight: 600; cursor: pointer;">Send</button>
     </div>
-
-    <!-- PAYMENT -->
-    <label class="upload-btn">
-      📷 Upload
-      <input type="file" id="paymentPhotoInput" accept="image/*" hidden>
-    </label>
 
   </div>
 </div>
 
 
-<!-- RESTORE CHAT BUTTON -->
 <button id="restoreChatBtn" style="
   display:none;
   position:fixed;
@@ -2139,23 +2224,25 @@ loadReviews();
   padding:10px 16px;
   cursor:pointer;
   box-shadow:0 10px 20px rgba(0,0,0,.4);
+  z-index: 9999;
 ">
   💬 Chat
 </button>
+
 <div id="imageModal" class="image-modal">
   <span class="close">&times;</span>
   <img class="modal-content" id="modalImage">
 </div>
 
-<!-- Popup para el comprador -->
-<div id="buyerCreateOrderModal" class="chat-popup" style="display:none;">
-  <div class="popup-content">
-    <h3>Create Order</h3>
+<div id="buyerCreateOrderModal" class="chat-popup" style="display:none; backdrop-filter: blur(10px);">
+  <div class="popup-content" style="background: #121826; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+    <h3 style="color:#fff; margin-bottom: 20px;">Create Order</h3>
 
     <input
       id="buyerProductName"
       class="chat-input"
       placeholder="Product / Account name"
+      style="margin-bottom: 12px;"
     />
 
     <input
@@ -2163,30 +2250,27 @@ loadReviews();
       class="chat-input"
       type="number"
       placeholder="Price"
+      style="margin-bottom: 12px;"
     />
 
-    <select id="buyerCurrency" class="chat-input">
+    <select id="buyerCurrency" class="chat-input" style="margin-bottom: 20px;">
       <option value="USD">$ USD</option>
       <option value="EUR">€ EUR</option>
       <option value="GBP">£ GBP</option>
     </select>
 
-    <button id="buyerCreateOrderBtn" class="btn primary">
+    <button id="buyerCreateOrderBtn" class="btn primary" style="width: 100%;">
       Create Order
     </button>
   </div>
 </div>
 
-<!-- =====================
-     MIDDLEMAN LOGIN
-     ===================== -->
-<div id="middlemanLogin" class="modal" style="display:none;">
-  <div class="modal-content">
+<div id="middlemanLogin" class="modal" style="display:none; backdrop-filter: blur(15px);">
+  <div class="modal-content" style="background: #121826; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
     <span class="close-btn" onclick="document.getElementById('middlemanLogin').style.display='none'">&times;</span>
-    <h3>Middleman Access</h3>
+    <h3 style="color:#fff;">Middleman Access</h3>
 
    <form onsubmit="document.getElementById('middlemanLoginBtn').click(); return false;">
-  <!-- 👇 USERNAME OCULTO (SOLO PARA CHROME / ACCESIBILIDAD) -->
   <input
     type="text"
     name="username"
@@ -2200,12 +2284,11 @@ loadReviews();
     type="password"
     placeholder="Enter middleman key"
     autocomplete="new-password"
+    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px; width: 100%; color: #fff;"
   />
 </form>
 
-
-
-    <button id="middlemanLoginBtn" class="submit-btn">
+    <button id="middlemanLoginBtn" class="submit-btn" style="margin-top: 20px; width: 100%; border-radius: 10px;">
       Enter
     </button>
   </div>
@@ -2213,6 +2296,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
