@@ -974,12 +974,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       currentTicketId = null;
       currentRole = null;
     } else {
-      const resolvedRole = resolveRoleFromTicket(ticket);
-      currentRole = resolvedRole;
+  const resolvedRole = resolveRoleFromTicket(ticket);
+  currentRole = resolvedRole;
 
-      // 🟢 SOLO mostrar opción de reanudar
-      showRestoreBanner(); // botón "Resume chat"
-    }
+  // 🔄 Sincronizar estado del middleman
+  if (ticket.middleman_joined) {
+    middlemanOnline = true;
+  }
+
+  // 🟢 SOLO mostrar opción de reanudar
+  showRestoreBanner(); // botón "Resume chat"
+}
+
   }
 
   // 🔒 Prevent middleman form reload (ENTER fix)
@@ -2137,6 +2143,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
