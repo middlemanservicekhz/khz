@@ -1272,9 +1272,6 @@ async function openChat(ticketId, role) {
     messagesBox.appendChild(div);
   });
 
-  messagesBox.scrollTop = messagesBox.scrollHeight;
-  applyChatPermissions(currentRole);
-
 function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
@@ -2125,6 +2122,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
