@@ -744,68 +744,72 @@ h1, h2, h3, .brand strong {
 .chat-input-bar button:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
-} 
-    
-/* HEADER REPARADO Y ALINEADO - VERSIÓN FINAL */
+}
+
+/* HEADER CHAT */
 .chat-header {
-  padding: 12px 20px !important;
-  background: #1e293b !important;
-  display: flex !important;
-  flex-direction: row !important; /* 👈 FUERZA LA FILA */
-  justify-content: space-between !important;
-  align-items: center !important;
-  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
+  padding: 12px 20px;
+  background: #1e293b;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-status {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 10px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
 }
 
 .chat-header-actions {
-  display: flex !important;
-  flex-direction: row !important; /* 👈 FUERZA QUE LOS BOTONES ESTÉN AL LADO */
-  gap: 8px !important;
-  margin-left: auto; /* Empuja hacia la derecha */
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
 }
 
-/* Estilo de los botones */
 .chat-header-actions button {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: none !important;
-  color: #94a3b8 !important;
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 8px !important;
-  cursor: pointer !important;
-  font-size: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s;
 }
+
+/* STATUS DOT */
 .status-dot {
   width: 8px;
   height: 8px;
   background: #2bd4bd;
   border-radius: 50%;
   box-shadow: 0 0 10px #2bd4bd;
-  animation: pulse 2s infinite;
 }
 
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
+/* SECURE TRANSACTION */
+.secure-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #ffffff 40%, #9fb5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* ORDER PANEL */
 #orderPanel {
-  background: #111827 !important; /* Forzamos el color oscuro */
-  padding: 20px !important;
+  background: #111827;
+  padding: 20px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -831,6 +835,7 @@ h1, h2, h3, .brand strong {
   color: #f1f5f9;
 }
 
+/* STEPS */
 #orderSteps {
   display: flex;
   justify-content: space-between;
@@ -846,7 +851,9 @@ h1, h2, h3, .brand strong {
   opacity: 0.3;
 }
 
-.step.active { opacity: 1; }
+.step.active {
+  opacity: 1;
+}
 
 .step-dot {
   width: 100%;
@@ -863,19 +870,10 @@ h1, h2, h3, .brand strong {
   font-size: 9px;
   font-weight: 700;
   color: #94a3b8;
-} 
-  .secure-title{
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-
-  background: linear-gradient(135deg, #ffffff 40%, #9fb5ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
-  </style>
+</style>
+
 </head>
 <body>
   <header>
@@ -2401,6 +2399,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
