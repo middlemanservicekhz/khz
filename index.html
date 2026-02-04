@@ -1921,11 +1921,15 @@ if (closeChatBtn) {
 // Manejo del modal
 const modal = document.getElementById("imageModal");  // Declaración única para el modal
 
-// Cerrar el modal si se hace clic en el botón de cierre (closeBtn)
-const closeBtn = document.querySelector("#imageModal .close");
-if (closeBtn) {
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none"; // Cierra el modal
+// ==========================================
+// MODAL DE IMÁGENES (VISUALIZADOR)
+// ==========================================
+const imgModal = document.getElementById("imageModal");
+const imgModalCloseBtn = document.querySelector("#imageModal .close");
+
+if (imgModalCloseBtn && imgModal) {
+  imgModalCloseBtn.addEventListener("click", () => {
+    imgModal.style.display = "none"; // Cierra el visualizador de fotos
   });
 }
 
@@ -2338,6 +2342,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
