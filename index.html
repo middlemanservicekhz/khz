@@ -1330,20 +1330,12 @@ function applyChatPermissions(role) {
   const input = document.getElementById("msgInput");
   const sendBtn = document.getElementById("sendMsg");
 
-  if (!input || !sendBtn) return;
-
-  // Middleman siempre escribe
-  if (role === "middleman") {
+  if (input && sendBtn) {
     input.disabled = false;
     sendBtn.disabled = false;
-    return;
+    input.placeholder = "Escribe un mensaje...";
   }
-
-  // Buyer y Seller solo cuando el middleman entró
-  input.disabled = !middlemanOnline;
-  sendBtn.disabled = !middlemanOnline;
 }
-
   function showRestoreBanner() {
   const restoreBtn = document.getElementById("restoreChatBtn");
   const chatOverlay = document.getElementById("chatOverlay");
@@ -2205,6 +2197,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
