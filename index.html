@@ -807,11 +807,6 @@ h1, h2, h3, .brand strong {
   color: #f1f5f9;
 }
 
-/* ===============================
-   ESCROW STEPS – VISUAL PRO
-   =============================== */
-
-/* === ESCROW STEPS VISUAL === */
 #orderSteps {
   display: flex;
   justify-content: space-between;
@@ -825,61 +820,27 @@ h1, h2, h3, .brand strong {
   align-items: center;
   gap: 6px;
   opacity: 0.3;
-  transition: all 0.3s ease;
 }
 
-.step span {
-  font-size: 9px;
-  font-weight: 700;
-  color: #94a3b8;
-}
+.step.active { opacity: 1; }
 
 .step-dot {
   width: 100%;
   height: 4px;
   background: #334155;
   border-radius: 2px;
-  transition: all 0.3s ease;
-}
-
-.step.active {
-  opacity: 1;
-  transform: translateY(-2px);
-}
-
-.step.active span {
-  color: #ffffff;
 }
 
 .step.active .step-dot {
-  height: 6px;
-  animation: glowPulse 1.6s infinite;
+  background: linear-gradient(90deg, #4f7cff, #2bd4bd);
 }
 
-/* Colores por estado */
-.step-payment.active .step-dot {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-}
-
-.step-delivery.active .step-dot {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
-}
-
-.step-confirm.active .step-dot {
-  background: linear-gradient(90deg, #22c55e, #4ade80);
-}
-
-.step-release.active .step-dot {
-  background: linear-gradient(90deg, #a855f7, #c084fc);
-}
-
-@keyframes glowPulse {
-  0% { box-shadow: 0 0 6px rgba(255,255,255,0.4); }
-  50% { box-shadow: 0 0 16px rgba(255,255,255,0.9); }
-  100% { box-shadow: 0 0 6px rgba(255,255,255,0.4); }
-}
-
-
+.step span {
+  font-size: 9px;
+  font-weight: 700;
+  color: #94a3b8;
+} 
+  
   </style>
 </head>
 <body>
@@ -1303,26 +1264,6 @@ document.getElementById("minimizeChatBtn").onclick = () => {
     console.log("Chat minimized. Use the restore button to come back.");
   }
 };
-  // =====================
-// SELECT ROLE (BUYER / SELLER)
-// =====================
-const buyerBtn = document.getElementById("buyerBtn");
-const sellerBtn = document.getElementById("sellerBtn");
-
-if (buyerBtn) {
-  buyerBtn.addEventListener("click", async () => {
-    rolePopup.style.display = "none";
-    await createTicketWithRole("buyer");
-  });
-}
-
-if (sellerBtn) {
-  sellerBtn.addEventListener("click", async () => {
-    rolePopup.style.display = "none";
-    await createTicketWithRole("seller");
-  });
-}
-
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
 
@@ -2242,29 +2183,7 @@ form.addEventListener('submit', async e => {
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();
-loadReviews(); 
-  
-  function setActiveStep(step) {
-  document.querySelectorAll(".step").forEach(el => {
-    el.classList.remove("active");
-  });
-
-  if (step === "PAYMENT") {
-    document.getElementById("step-payment")?.classList.add("active");
-  }
-  if (step === "DELIVERY") {
-    document.getElementById("step-delivery")?.classList.add("active");
-  }
-  if (step === "CONFIRM") {
-    document.getElementById("step-confirm")?.classList.add("active");
-  }
-  if (step === "RELEASED") {
-    document.getElementById("step-release")?.classList.add("active");
-  }
-}
-
-/* 🔥 PRUEBA VISUAL AUTOMÁTICA AL ABRIR EL CHAT */
-setActiveStep("PAYMENT");
+loadReviews();
 
 </script>
 
@@ -2327,32 +2246,28 @@ setActiveStep("PAYMENT");
       </div>
 
       <div id="orderSteps">
-  <div class="step step-payment" id="step-payment">
-    <div class="step-dot"></div>
-    <span>Payment</span>
-  </div>
-
-  <div class="step step-delivery" id="step-delivery">
-    <div class="step-dot"></div>
-    <span>Delivery</span>
-  </div>
-
-  <div class="step step-confirm" id="step-confirm">
-    <div class="step-dot"></div>
-    <span>Confirm</span>
-  </div>
-
-  <div class="step step-release" id="step-release">
-    <div class="step-dot"></div>
-    <span>Released</span>
-  </div>
-</div>
-
-<div id="orderActions"></div>
-
-<!-- MESSAGES -->
-<div id="messages" class="chat-messages"></div>
-
+        <div class="step" id="step-payment">
+          <div class="step-dot"></div>
+          <span>Payment</span>
+        </div>
+        <div class="step" id="step-delivery">
+          <div class="step-dot"></div>
+          <span>Delivery</span>
+        </div>
+        <div class="step" id="step-confirm">
+          <div class="step-dot"></div>
+          <span>Confirm</span>
+        </div>
+        <div class="step" id="step-release">
+          <div class="step-dot"></div>
+          <span>Released</span>
+        </div>
+      </div>
+      <div id="orderActions"></div>
+    </div>
+    
+    <!-- MESSAGES -->
+    <div id="messages" class="chat-messages"></div>
 
 <div class="chat-input-bar">
   <label class="upload-btn-modern" title="Enviar Comprobante">
@@ -2457,6 +2372,33 @@ setActiveStep("PAYMENT");
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
