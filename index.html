@@ -790,6 +790,32 @@ footer .year-range {
   font-size: 9px;
   font-weight: 700;
   color: #94a3b8;
+} 
+    .chat-header-actions button {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: #94a3b8;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.chat-header-actions button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+#closeChatBtn:hover {
+  background: rgba(239, 68, 68, 0.2); /* Rojo suave al cerrar */
+  color: #ef4444;
 }
   </style>
 </head>
@@ -2299,6 +2325,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
