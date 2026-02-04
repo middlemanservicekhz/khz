@@ -697,53 +697,50 @@ footer .year-range {
 .chat-input-bar button:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
-} /* HEADER REPARADO Y ALINEADO */
+} 
+    
+/* HEADER REPARADO Y ALINEADO - VERSIÓN FINAL */
 .chat-header {
-  padding: 14px 20px;
-  background: #1e293b;
-  display: flex;                /* 👈 Esto los pone en la misma fila */
-  justify-content: space-between; /* 👈 Esto manda los botones al final */
-  align-items: center;          /* 👈 Esto los centra verticalmente */
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 12px 20px !important;
+  background: #1e293b !important;
+  display: flex !important;
+  flex-direction: row !important; /* 👈 FUERZA LA FILA */
+  justify-content: space-between !important;
+  align-items: center !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .header-status {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
 }
 
 .chat-header-actions {
-  display: flex;                /* 👈 Botones en fila */
-  gap: 8px;                     /* 👈 Espacio entre botones */
+  display: flex !important;
+  flex-direction: row !important; /* 👈 FUERZA QUE LOS BOTONES ESTÉN AL LADO */
+  gap: 8px !important;
+  margin-left: auto; /* Empuja hacia la derecha */
 }
 
-/* Estilo de los botones para que no sean letras peladas */
+/* Estilo de los botones */
 .chat-header-actions button {
-  background: rgba(255, 255, 255, 0.05);
-  border: none;
-  color: #94a3b8;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: none !important;
+  color: #94a3b8 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-
-.chat-header-actions button:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-}
-
-#closeChatBtn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-}
-
 .status-dot {
   width: 8px;
   height: 8px;
@@ -2341,6 +2338,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
