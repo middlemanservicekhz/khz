@@ -612,143 +612,159 @@ footer .year-range {
   z-index: 9999;
 }
 
+/* VENTANA DE CHAT REIMAGINADA */
 .chat-window {
   width: 420px;
-  height: 620px;
-  background: #0f172a; /* TU COLOR BASE */
-  border-radius: 14px;
+  height: 650px;
+  background: #0f172a; 
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-  font-family: inherit;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
 }
 
-/* HEADER */
+/* HEADER CON ESTILO */
 .chat-header {
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 20px;
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #e5e7eb;
-  font-size: 15px;
 }
 
-.chat-header-actions button {
-  background: transparent;
-  border: none;
-  color: #9aa4b2;
+.chat-header h3 {
   font-size: 16px;
-  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
 }
 
-/* ORDER PANEL */
+/* PANEL DE PASOS (STEPS) MEJORADO */
 #orderPanel {
-  padding: 12px 16px;
-  background: rgba(255,255,255,0.03);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-
-.order-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: #cbd5f5;
-}
-
-.order-info .label {
-  display: block;
-  font-size: 11px;
-  color: #9aa4b2;
-}
-
-#orderSteps {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.8);
 }
 
 .step {
   flex: 1;
   text-align: center;
-  padding: 4px 0;
-  font-size: 11px;
+  padding: 6px 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   border-radius: 6px;
-  background: rgba(255,255,255,0.06);
-  color: #9aa4b2;
+  background: #1e293b;
+  color: #64748b;
+  transition: all 0.3s ease;
 }
 
 .step.active {
-  background: #2563eb; /* COLOR ACTIVO */
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-/* MESSAGES */
+/* MENSAJES ESTILO BURBUJA MODERNA */
 .chat-messages {
   flex: 1;
-  padding: 14px;
-  overflow-y: auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 24px 24px;
 }
 
-/* MENSAJES */
 .msg {
-  max-width: 75%;
-  padding: 10px 12px;
-  border-radius: 12px;
+  max-width: 80%;
+  padding: 12px 16px;
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.5;
+  position: relative;
+  animation: fadeIn 0.3s ease;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Burbuja del Comprador (Derecha) */
 .msg.buyer {
   background: #2563eb;
   color: #fff;
   align-self: flex-end;
+  border-radius: 16px 16px 4px 16px;
 }
 
-.msg.seller,
-.msg.middleman {
-  background: #1e293b;
-  color: #e5e7eb;
+/* Burbuja del Vendedor (Izquierda) */
+.msg.seller {
+  background: #334155;
+  color: #f1f5f9;
   align-self: flex-start;
+  border-radius: 16px 16px 16px 4px;
 }
 
-/* INPUT */
+/* Burbuja del Middleman (Especial - Centrado) */
+.msg.middleman {
+  background: rgba(79, 124, 255, 0.1);
+  border: 1px solid rgba(79, 124, 255, 0.3);
+  color: #93c5fd;
+  align-self: center;
+  text-align: center;
+  width: 90%;
+  font-weight: 500;
+  border-radius: 12px;
+}
+
+/* BARRA DE ENTRADA (INPUT) */
 .chat-input-bar {
+  padding: 16px;
+  background: #1e293b;
   display: flex;
-  gap: 8px;
-  padding: 12px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  align-items: center;
+  gap: 10px;
 }
 
 .chat-input-bar input {
   flex: 1;
-  background: #020617;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  padding: 10px;
-  color: #e5e7eb;
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 12px 15px !important;
+  color: #fff !important;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.chat-input-bar input:focus {
+  border-color: #3b82f6 !important;
 }
 
 .chat-input-bar button {
   background: #2563eb;
+  color: white;
   border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
 }
 
-/* UPLOAD */
-.upload-btn {
-  padding: 10px 16px;
-  font-size: 13px;
-  color: #9aa4b2;
-  cursor: pointer;
+.chat-input-bar button:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
 }
-
   </style>
 </head>
 <body>
@@ -2197,6 +2213,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
