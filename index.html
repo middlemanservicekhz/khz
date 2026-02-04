@@ -437,22 +437,43 @@ footer .year-range {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Estilo del botón de cerrar */
-.close-btn {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  cursor: pointer;
+/* --- BOTONES PREMIUM (CERRAR Y MINIMIZAR) --- */
+.close-btn, #minimizeChatBtn, #closeChatBtn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94a3b8 !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important; /* Circulares estilo Mac */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  position: static !important; /* Evita que floten fuera de lugar */
 }
 
-.close-btn:hover,
-.close-btn:focus {
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
+/* Efecto Hover Pro */
+.close-btn:hover, #closeChatBtn:hover {
+  background: #ff5f57 !important; /* Rojo Apple */
+  color: white !important;
+  transform: scale(1.1);
+}
+
+#minimizeChatBtn:hover {
+  background: #febc2e !important; /* Amarillo Apple */
+  color: white !important;
+}
+
+/* --- TIPOGRAFÍA PREMIUM --- */
+h1, h2, h3, .brand strong {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -1px !important;
+  font-weight: 800 !important;
+  background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Estilo de los inputs y el select */
@@ -2342,6 +2363,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
