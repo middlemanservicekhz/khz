@@ -1303,6 +1303,26 @@ document.getElementById("minimizeChatBtn").onclick = () => {
     console.log("Chat minimized. Use the restore button to come back.");
   }
 };
+  // =====================
+// SELECT ROLE (BUYER / SELLER)
+// =====================
+const buyerBtn = document.getElementById("buyerBtn");
+const sellerBtn = document.getElementById("sellerBtn");
+
+if (buyerBtn) {
+  buyerBtn.addEventListener("click", async () => {
+    rolePopup.style.display = "none";
+    await createTicketWithRole("buyer");
+  });
+}
+
+if (sellerBtn) {
+  sellerBtn.addEventListener("click", async () => {
+    rolePopup.style.display = "none";
+    await createTicketWithRole("seller");
+  });
+}
+
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
 
@@ -2437,6 +2457,7 @@ setActiveStep("PAYMENT");
 
 </body>
 </html>
+
 
 
 
