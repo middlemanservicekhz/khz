@@ -811,6 +811,7 @@ h1, h2, h3, .brand strong {
    ESCROW STEPS – VISUAL PRO
    =============================== */
 
+/* === ESCROW STEPS VISUAL === */
 #orderSteps {
   display: flex;
   justify-content: space-between;
@@ -833,7 +834,14 @@ h1, h2, h3, .brand strong {
   color: #94a3b8;
 }
 
-/* Activo */
+.step-dot {
+  width: 100%;
+  height: 4px;
+  background: #334155;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
 .step.active {
   opacity: 1;
   transform: translateY(-2px);
@@ -841,15 +849,6 @@ h1, h2, h3, .brand strong {
 
 .step.active span {
   color: #ffffff;
-}
-
-/* Barra */
-.step-dot {
-  width: 100%;
-  height: 4px;
-  background: #334155;
-  border-radius: 2px;
-  transition: all 0.3s ease;
 }
 
 .step.active .step-dot {
@@ -879,6 +878,7 @@ h1, h2, h3, .brand strong {
   50% { box-shadow: 0 0 16px rgba(255,255,255,0.9); }
   100% { box-shadow: 0 0 6px rgba(255,255,255,0.4); }
 }
+
 
   </style>
 </head>
@@ -2412,9 +2412,33 @@ loadReviews();
     </button>
   </div>
 </div>
+<script>
+function setActiveStep(step) {
+  document.querySelectorAll(".step").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  if (step === "PAYMENT") {
+    document.getElementById("step-payment")?.classList.add("active");
+  }
+  if (step === "DELIVERY") {
+    document.getElementById("step-delivery")?.classList.add("active");
+  }
+  if (step === "CONFIRM") {
+    document.getElementById("step-confirm")?.classList.add("active");
+  }
+  if (step === "RELEASED") {
+    document.getElementById("step-release")?.classList.add("active");
+  }
+}
+
+/* 🔥 PRUEBA VISUAL AUTOMÁTICA AL ABRIR EL CHAT */
+setActiveStep("PAYMENT");
+</script>
 
 </body>
 </html>
+
 
 
 
