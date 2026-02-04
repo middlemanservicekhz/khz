@@ -1187,7 +1187,33 @@ openChat(ticket.id, resolvedRole);
   createTicketBtn.addEventListener('click', () => {
     rolePopup.style.display = 'flex';
   });
+// ==========================================
+// LÓGICA DE MINIMIZAR Y CERRAR CHAT
+// ==========================================
 
+// 1. CERRAR CHAT (Cierra y limpia la sesión si quieres)
+document.getElementById("closeChatBtn").onclick = () => {
+  if (confirm("Are you sure you want to close the chat? This will hide the window.")) {
+    document.getElementById("chatOverlay").style.display = "none";
+    // Opcional: Si quieres que al cerrar se olvide del ticket, quita las barras de abajo:
+    // localStorage.removeItem("khz_ticketId");
+    // localStorage.removeItem("khz_role");
+  }
+};
+
+// 2. MINIMIZAR CHAT (Lo oculta pero deja el botón de "Resume")
+document.getElementById("minimizeChatBtn").onclick = () => {
+  document.getElementById("chatOverlay").style.display = "none";
+  
+  // Si tienes el banner de "Resume chat", asegúrate de que se muestre
+  const restoreBtn = document.getElementById("restoreChatBtn");
+  if (restoreBtn) {
+    restoreBtn.style.display = "block";
+  } else {
+    // Si no tienes el botón creado en el HTML, avísame y lo creamos rápido
+    console.log("Chat minimized. Use the restore button to come back.");
+  }
+};
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
 
@@ -2273,6 +2299,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
