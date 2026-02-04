@@ -491,6 +491,32 @@ h1, h2, h3, .brand strong {
   outline: none;
   background: #444;
 }
+/* ===== FIX HEADER CHAT ===== */
+.chat-header{
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Contenedor del estado */
+.header-status{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* Texto premium */
+.secure-title{
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  background: linear-gradient(135deg, #ffffff 40%, #9fb5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* Estilo del botón de confirmación */
 .submit-btn {
@@ -2375,5 +2401,6 @@ loadReviews();
 
 </body>
 </html>
+
 
 
