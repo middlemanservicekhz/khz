@@ -1991,6 +1991,13 @@ function displayMessage(msg) {
 
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
+} 
+  // Esta función hará que el chat baje solo
+function scrollToBottom() {
+  const chatMessages = document.querySelector('.chat-messages');
+  if (chatMessages) {
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 }
   </script>
   
@@ -2365,6 +2372,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
