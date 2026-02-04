@@ -615,6 +615,8 @@ h1, h2, h3, .brand strong {
 /* MENSAJES ESTILO BURBUJA MODERNA */
 .chat-messages {
   flex: 1;
+  height: 400px;           /* Altura fija necesaria para que el scroll funcione */
+  overflow-y: auto;        /* Activa la barra de desplazamiento vertical */
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -2363,6 +2365,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
