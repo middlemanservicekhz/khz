@@ -1847,24 +1847,36 @@ async function loadMiddlemanTickets() {
 }
 
 // =====================
-// MINIMIZAR / RESTAURAR CHAT
+// MINIMIZAR / CERRAR / RESTAURAR CHAT
 // =====================
 const minimizeBtn = document.getElementById('minimizeChatBtn');
+const closeBtn = document.getElementById('closeChatBtn'); // Añadimos el de cerrar
 const restoreBtn = document.getElementById('restoreChatBtn');
 const chatOverlay = document.getElementById('chatOverlay');
 
-if (minimizeBtn && restoreBtn && chatOverlay) {
-  minimizeBtn.onclick = () => {
-    chatOverlay.style.display = 'none';
-    restoreBtn.style.display = 'block';
-  };
+// Función para ocultar
+const hideChat = () => {
+  chatOverlay.style.display = 'none';
+  if (restoreBtn) restoreBtn.style.display = 'block';
+};
 
+if (minimizeBtn) minimizeBtn.onclick = hideChat;
+
+if (closeBtn) {
+  closeBtn.onclick = () => {
+    if (confirm("Close transaction window?")) {
+      hideChat();
+      // Opcional: localStorage.removeItem("khz_ticketId"); // Si quieres que olvide el ticket al cerrar
+    }
+  };
+}
+
+if (restoreBtn) {
   restoreBtn.onclick = () => {
     chatOverlay.style.display = 'flex';
     restoreBtn.style.display = 'none';
   };
 }
-
 // =====================
 // IMAGE MODAL (FUERA DEL DOMContentLoaded)
 // =====================
@@ -2329,6 +2341,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
