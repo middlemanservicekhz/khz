@@ -2222,7 +2222,29 @@ form.addEventListener('submit', async e => {
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();
-loadReviews();
+loadReviews(); 
+  
+  function setActiveStep(step) {
+  document.querySelectorAll(".step").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  if (step === "PAYMENT") {
+    document.getElementById("step-payment")?.classList.add("active");
+  }
+  if (step === "DELIVERY") {
+    document.getElementById("step-delivery")?.classList.add("active");
+  }
+  if (step === "CONFIRM") {
+    document.getElementById("step-confirm")?.classList.add("active");
+  }
+  if (step === "RELEASED") {
+    document.getElementById("step-release")?.classList.add("active");
+  }
+}
+
+/* 🔥 PRUEBA VISUAL AUTOMÁTICA AL ABRIR EL CHAT */
+setActiveStep("PAYMENT");
 
 </script>
 
@@ -2413,31 +2435,9 @@ loadReviews();
   </div>
 </div>
 
-function setActiveStep(step) {
-  document.querySelectorAll(".step").forEach(el => {
-    el.classList.remove("active");
-  });
-
-  if (step === "PAYMENT") {
-    document.getElementById("step-payment")?.classList.add("active");
-  }
-  if (step === "DELIVERY") {
-    document.getElementById("step-delivery")?.classList.add("active");
-  }
-  if (step === "CONFIRM") {
-    document.getElementById("step-confirm")?.classList.add("active");
-  }
-  if (step === "RELEASED") {
-    document.getElementById("step-release")?.classList.add("active");
-  }
-}
-
-/* 🔥 PRUEBA VISUAL AUTOMÁTICA AL ABRIR EL CHAT */
-setActiveStep("PAYMENT");
-</script>
-
 </body>
 </html>
+
 
 
 
