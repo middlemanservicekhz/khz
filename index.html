@@ -838,7 +838,17 @@ h1, h2, h3, .brand strong {
   font-weight: 700;
   color: #94a3b8;
 } 
-  
+  .secure-title{
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+
+  background: linear-gradient(135deg, #ffffff 40%, #9fb5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
   </style>
 </head>
 <body>
@@ -2213,11 +2223,13 @@ loadReviews();
   <div class="chat-window">
 
     <!-- HEADER -->
-    <div class="chat-header">
-      <div class="header-status">
-        <span class="status-dot"></span>
-        <strong>SECURE TRANSACTION</strong>
-      </div>
+<div class="chat-header">
+  <div class="header-status">
+    <span class="status-dot"></span>
+    <span class="secure-title">SECURE TRANSACTION</span>
+  </div>
+</div>
+
       <div class="chat-header-actions">
         <button id="minimizeChatBtn" title="Minimize">—</button>
         <button id="closeChatBtn" title="Close">✕</button>
@@ -2363,4 +2375,5 @@ loadReviews();
 
 </body>
 </html>
+
 
