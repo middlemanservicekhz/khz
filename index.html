@@ -2110,36 +2110,49 @@ loadReviews();
 
     <!-- HEADER -->
     <div class="chat-header">
-      <strong>Chat</strong>
+      <div class="header-status">
+        <span class="status-dot"></span>
+        <strong>SECURE TRANSACTION</strong>
+      </div>
       <div class="chat-header-actions">
-        <button id="minimizeChatBtn">_</button>
-        <button id="closeChatBtn">✕</button>
+        <button id="minimizeChatBtn" title="Minimize">—</button>
+        <button id="closeChatBtn" title="Close">✕</button>
       </div>
     </div>
 
-    <!-- ORDER PANEL -->
     <div id="orderPanel">
-      <div class="order-info">
-        <div>
-          <span class="label">Product</span>
-          <span id="orderProductText">—</span>
+      <div class="order-grid">
+        <div class="order-item">
+          <span class="label">PRODUCT</span>
+          <span id="orderProductText" class="value">—</span>
         </div>
-        <div>
-          <span class="label">Amount</span>
-          <span id="orderAmountText">—</span>
+        <div class="order-item">
+          <span class="label">TOTAL AMOUNT</span>
+          <span id="orderAmountText" class="value">—</span>
         </div>
       </div>
 
       <div id="orderSteps">
-        <span class="step" id="step-payment">Payment</span>
-        <span class="step" id="step-delivery">Delivery</span>
-        <span class="step" id="step-confirm">Confirm</span>
-        <span class="step" id="step-release">Released</span>
+        <div class="step" id="step-payment">
+          <div class="step-dot"></div>
+          <span>Payment</span>
+        </div>
+        <div class="step" id="step-delivery">
+          <div class="step-dot"></div>
+          <span>Delivery</span>
+        </div>
+        <div class="step" id="step-confirm">
+          <div class="step-dot"></div>
+          <span>Confirm</span>
+        </div>
+        <div class="step" id="step-release">
+          <div class="step-dot"></div>
+          <span>Released</span>
+        </div>
       </div>
-
       <div id="orderActions"></div>
     </div>
-
+    
     <!-- MESSAGES -->
     <div id="messages" class="chat-messages"></div>
 
@@ -2246,6 +2259,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
