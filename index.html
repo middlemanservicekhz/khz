@@ -592,26 +592,6 @@ h1, h2, h3, .brand strong {
   background: rgba(15, 23, 42, 0.8);
 }
 
-.step {
-  flex: 1;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 6px;
-  background: #1e293b;
-  color: #64748b;
-  transition: all 0.3s ease;
-}
-
-.step.active {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
-
 /* MENSAJES ESTILO BURBUJA MODERNA */
 .chat-messages {
   flex: 1;
@@ -819,43 +799,53 @@ h1, h2, h3, .brand strong {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  opacity: 0.3;
+  padding: 6px 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 6px;
+  background: #1e293b; /* apagado */
+  color: #64748b;      /* texto apagado */
+  opacity: 0.5;
+  transition: all 0.3s ease;
 }
-
-.step.active { opacity: 1; }
 
 .step-dot {
-  width: 100%;
-  height: 4px;
-  background: #334155;
-  border-radius: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #334155; /* apagado */
+  transition: all 0.3s ease;
 }
 
-.step.active .step-dot {
-  background: linear-gradient(90deg, #4f7cff, #2bd4bd);
+/* Paso actual parpadeante */
+.step.current {
+  background: #facc15; /* amarillo brillante */
+  color: #000;
+  opacity: 1;
+  animation: blink 1s infinite;
+}
+.step.current .step-dot {
+  background: #f59e0b; /* punto amarillo */
 }
 
-.step span {
-  font-size: 9px;
-  font-weight: 700;
-  color: #94a3b8;
-} 
-  .system-message {
-  font-size: 13px;
-  color: #9aa4b2;
-  text-align: center;
-  margin: 10px 0;
-  opacity: 0.85;
+/* Paso completado */
+.step.completed {
+  background: #22c55e; /* verde fijo */
+  color: #fff;
+  opacity: 1;
+  animation: none;
 }
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.step.completed .step-dot {
+  background: #16a34a; /* punto verde */
 }
 
-.waiting-spinner {
-  display: inline-block;
-  animation: spin 1.2s linear infinite;
+/* Parpadeo */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
+
   </style>
 </head>
 <body>
@@ -2290,25 +2280,28 @@ loadReviews();
       </div>
 
       <div id="orderSteps">
-        <div class="step" id="step-payment">
-          <div class="step-dot"></div>
-          <span>Payment</span>
-        </div>
-        <div class="step" id="step-delivery">
-          <div class="step-dot"></div>
-          <span>Delivery</span>
-        </div>
-        <div class="step" id="step-confirm">
-          <div class="step-dot"></div>
-          <span>Confirm</span>
-        </div>
-        <div class="step" id="step-release">
-          <div class="step-dot"></div>
-          <span>Released</span>
-        </div>
-      </div>
-      <div id="orderActions"></div>
-    </div>
+  <div class="step" id="step-payment">
+    <div class="step-dot"></div>
+    <span>Payment</span>
+  </div>
+  <div class="step" id="step-verification">
+    <div class="step-dot"></div>
+    <span>Verification</span>
+  </div>
+  <div class="step" id="step-confirm">
+    <div class="step-dot"></div>
+    <span>Confirm</span>
+  </div>
+  <div class="step" id="step-delivery">
+    <div class="step-dot"></div>
+    <span>Delivery</span>
+  </div>
+  <div class="step" id="step-release">
+    <div class="step-dot"></div>
+    <span>Released</span>
+  </div>
+</div>
+</div>
     
     <!-- MESSAGES -->
     <div id="messages" class="chat-messages"></div>
@@ -2423,6 +2416,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
