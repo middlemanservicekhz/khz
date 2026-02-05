@@ -1206,47 +1206,7 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
 };
 
 
-  // =====================
-  // JOIN TICKET
-  // =====================
-  const joinTicketBtn = document.getElementById('joinTicketBtn');
-  const ticketCodeInput = document.getElementById('ticketCodeInput');
-
-  joinTicketBtn.addEventListener('click', async () => {
-    const code = ticketCodeInput.value.trim().toUpperCase();
-    if (!code) return alert("Put code");
-
-    const { data: ticket } = await supabase
-      .from('tickets')
-      .select('*')
-      .eq('code', code)
-      .single(); 
-
-    if (!ticket) return alert("Ticket not found");
-
-    currentTicketId = ticket.id;
-
-    const resolvedRole = resolveRoleFromTicket(ticket);
-currentRole = resolvedRole;
-
-// 🔄 Sincronizar estado del middleman
-middlemanOnline = !!ticket.middleman_joined;
-
-
-localStorage.setItem("khz_ticketId", ticket.id);
-localStorage.setItem("khz_role", resolvedRole);
-
-// 🟢 SOLO UNA VEZ
-openChat(ticket.id, resolvedRole);
-
-    if (ticket.buyer && !ticket.seller) {
-      await supabase
-        .from('tickets')
-        .update({ seller: 'connected' })
-        .eq('id', ticket.id);
-    }
-  });
-// =====================
+ // =====================
 // JOIN TICKET
 // =====================
 const joinTicketBtn = document.getElementById('joinTicketBtn');
@@ -2473,6 +2433,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
