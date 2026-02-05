@@ -1377,6 +1377,9 @@ async function openChat(ticketId, role) {
 
   await forceMiddlemanSync(ticketId);
 
+  // ✅ Cargar panel de orden para TODOS (buyer, seller, middleman)
+loadOrderPanel(ticketId);
+
 
   // Abrir chat
   const chatOverlay = document.getElementById("chatOverlay");
@@ -2420,6 +2423,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
