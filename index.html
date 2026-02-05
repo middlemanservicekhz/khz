@@ -2263,12 +2263,21 @@ loadReviews();
         <div class="order-item" style="grid-column: 1 / -1;">
   <span class="label">Description</span>
   <div
-    id="orderDescriptionText"
-    class="value"
-    style="font-size:13px;opacity:.9;line-height:1.5"
-  >
-    —
-  </div>
+  id="orderDescriptionText"
+  class="value"
+  style="
+    font-size:13px;
+    opacity:.9;
+    line-height:1.5;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    max-height: 90px;
+    overflow-y: auto;
+  "
+>
+  —
+</div>
+
 </div>
 
         <div class="order-item">
@@ -2411,6 +2420,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
