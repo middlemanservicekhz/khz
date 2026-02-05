@@ -1736,7 +1736,7 @@ paymentInput.addEventListener("change", async () => {
 async function loadOrderPanel(ticketId) {
   const { data: ticket, error } = await supabase
     .from("tickets")
-    .select("status_step, product_name, amount, currency")
+    .select("status_step, product_name, product_description, amount, currency")
     .eq("id", ticketId)
     .single()
 
@@ -1756,6 +1756,10 @@ if (statusEl) {
 const productEl = document.getElementById("orderProductText");
 if (productEl) {
   productEl.textContent = ticket.product_name || "—";
+}
+const descriptionEl = document.getElementById("orderDescriptionText");
+if (descriptionEl) {
+  descriptionEl.textContent = ticket.product_description || "—";
 }
 
 
@@ -2427,6 +2431,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
