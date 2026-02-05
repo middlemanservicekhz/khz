@@ -1410,22 +1410,19 @@ loadOrderPanel(ticketId);
 applyChatPermissions(currentRole);
 
 
- // Mensaje sistema (premium)
+ // Mensaje sistema (ultra premium)
 const welcome = document.createElement("div");
 welcome.innerHTML = `
   <div style="
-    color:#ffffff;
-    font-size:14px;
-    font-weight:600;
+    color:#e5e7eb;
+    font-size:13px;
     text-align:center;
-    letter-spacing:0.3px;
-    opacity:0.9;
+    margin:16px 0;
   ">
-    Welcome to the secure middleman service
+    Secure middleman transaction initialized
   </div>
 `;
 messagesBox.appendChild(welcome);
-
 
   // Cargar mensajes anteriores
   const { data: oldMessages } = await supabase
@@ -2386,6 +2383,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
