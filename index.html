@@ -1227,8 +1227,8 @@ if (!ticket) return alert("Ticket not found");
 // 🔑 Resolver rol
 let resolvedRole = resolveRoleFromTicket(ticket);
 
-// 🔥 SI NO HAY SELLER → ESTE USUARIO ES EL SELLER
-if (!ticket.seller) {
+// 🔥 SOLO FORZAR SELLER SI NO ES MIDDLEMAN
+if (resolvedRole !== "middleman" && !ticket.seller) {
   resolvedRole = "seller";
 
   await supabase
@@ -1236,6 +1236,7 @@ if (!ticket.seller) {
     .update({ seller: 'connected' })
     .eq('id', ticket.id);
 }
+
 
 currentTicketId = ticket.id;
 currentRole = resolvedRole;
@@ -2424,6 +2425,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
