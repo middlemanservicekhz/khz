@@ -1217,34 +1217,36 @@ joinTicketBtn.addEventListener('click', async () => {
   if (!code) return alert("Put code");
 
   const { data: ticket } = await supabase
+  .from('tickets')
+  .select('*')
+  .eq('code', code)
+  .single();
+
+if (!ticket) return alert("Ticket not found");
+
+// 🔑 Resolver rol
+let resolvedRole = resolveRoleFromTicket(ticket);
+
+// 🔥 SI NO HAY SELLER → ESTE USUARIO ES EL SELLER
+if (!ticket.seller) {
+  resolvedRole = "seller";
+
+  await supabase
     .from('tickets')
-    .select('*')
-    .eq('code', code)
-    .single(); 
+    .update({ seller: 'connected' })
+    .eq('id', ticket.id);
+}
 
-  if (!ticket) return alert("Ticket not found");
+currentTicketId = ticket.id;
+currentRole = resolvedRole;
+middlemanOnline = !!ticket.middleman_joined;
 
-  // 🔑 Resolver rol correctamente
-  let resolvedRole = resolveRoleFromTicket(ticket);
+localStorage.setItem("khz_ticketId", ticket.id);
+localStorage.setItem("khz_role", resolvedRole);
 
-  // 🔑 Si no hay seller, forzamos seller
-  if (!ticket.seller && resolvedRole === "guest") {
-    resolvedRole = "seller";
-    await supabase
-      .from('tickets')
-      .update({ seller: 'connected' })
-      .eq('id', ticket.id);
-  }
+// ✅ ABRIR CHAT DESPUÉS DE REGISTRAR SELLER
+openChat(ticket.id, resolvedRole);
 
-  currentTicketId = ticket.id;
-  currentRole = resolvedRole;
-  middlemanOnline = !!ticket.middleman_joined;
-
-  localStorage.setItem("khz_ticketId", ticket.id);
-  localStorage.setItem("khz_role", resolvedRole);
-
-  // Abrir chat
-  openChat(ticket.id, resolvedRole);
 });
 
   // =====================
@@ -2422,6 +2424,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
