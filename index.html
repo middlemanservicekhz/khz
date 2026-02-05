@@ -1410,12 +1410,20 @@ loadOrderPanel(ticketId);
 applyChatPermissions(currentRole);
 
 
-  // Mensaje de bienvenida (sistema, limpio)
+ // Mensaje sistema
 const welcome = document.createElement("div");
-welcome.className = "system-message";
-welcome.innerText = "Welcome to the secure middleman transaction.";
-
+welcome.innerHTML = `
+  <div style="
+    color:#ffffff;
+    font-size:13px;
+    text-align:center;
+    opacity:0.85;
+  ">
+    Welcome to the secure middleman service.
+  </div>
+`;
 messagesBox.appendChild(welcome);
+
 
 
   // Cargar mensajes anteriores
@@ -2377,6 +2385,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
