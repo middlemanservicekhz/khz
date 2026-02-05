@@ -847,7 +847,15 @@ h1, h2, h3, .brand strong {
   margin: 10px 0;
   opacity: 0.85;
 }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
+.waiting-spinner {
+  display: inline-block;
+  animation: spin 1.2s linear infinite;
+}
   </style>
 </head>
 <body>
@@ -1397,11 +1405,17 @@ async function openChat(ticketId, role) {
       unlockChat();
     }
 
-   messagesBox.innerHTML = `
-  <div id="waitingMessage" style="color:#9aa4b2;font-size:14px;text-align:center;">
-    ⏳ Waiting for the other party to join the transaction...
+  messagesBox.innerHTML = `
+  <div id="waitingMessage" style="
+    color:#9aa4b2;
+    font-size:14px;
+    text-align:center;
+  ">
+    <span class="waiting-spinner">⏳</span>
+    Waiting for the other party to join the transaction...
   </div>
 `;
+
 
 
   } else {
@@ -2415,6 +2429,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
