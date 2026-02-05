@@ -1220,14 +1220,6 @@ openChat(ticket.id, resolvedRole);
         .from('tickets')
         .update({ seller: 'connected' })
         .eq('id', ticket.id);
-
-      await supabase.from("messages").insert([{
-        ticket_id: ticket.id,
-        sender: "system",
-        text: "✅ Seller has joined the transaction.",
-        topic: "system",
-        extension: "text"
-      }]);
     }
   });
 
@@ -2372,6 +2364,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
