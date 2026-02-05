@@ -1813,9 +1813,7 @@ function renderOrderActions(status, role) {
       box.innerHTML = `<button id="btnDelivered">Mark as Delivered</button>`;
       document.getElementById("btnDelivered").onclick = () =>
         updateTicketStatus("DELIVERED");
-    } else {
-      box.innerHTML = `<p style="color:#9aa4b2">Waiting for payment confirmation</p>`;
-    }
+    } 
   }
 
   // MIDDLEMAN
@@ -2433,6 +2431,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
