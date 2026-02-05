@@ -1404,30 +1404,21 @@ loadOrderPanel(ticketId);
     .single();
 
   // ⏳ Falta alguien
-  if (!ticket.buyer || !ticket.seller) {
-
-    // 👑 Middleman puede escribir
-    if (currentRole === "middleman") {
-      unlockChat();
-    }
-
-  messagesBox.innerHTML = `
-  <div id="waitingMessage" style="
-    color:#9aa4b2;
-    font-size:14px;
-    text-align:center;
-  ">
-    <span class="waiting-spinner">⏳</span>
-    Waiting for the other party to join the transaction...
-  </div>
-`;
-
-
-
-  } else {
-    // ✅ Buyer + Seller presentes
-    unlockChat();
+if (!ticket.buyer || !ticket.seller) {
+  const waitingMsg = document.getElementById("waitingMessage");
+  if (!waitingMsg) {
+    const div = document.createElement("div");
+    div.id = "waitingMessage";
+    div.style.cssText = "color:#9aa4b2;font-size:14px;text-align:center;";
+    div.innerHTML = `<span class="waiting-spinner">⏳</span> Waiting for the other party to join the transaction...`;
+    messagesBox.appendChild(div);
   }
+} else {
+  // ✅ Buyer + Seller presentes
+  const waitingMsg = document.getElementById("waitingMessage");
+  if (waitingMsg) waitingMsg.remove();
+  unlockChat();
+}
 
   // Cargar panel
 loadOrderPanel(ticketId);
@@ -2431,6 +2422,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
