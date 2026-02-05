@@ -1468,7 +1468,6 @@ if (chatChannel) {
 
 chatChannel = supabase
   .channel("chat-realtime")
-
   .on(
     "postgres_changes",
     {
@@ -1479,7 +1478,7 @@ chatChannel = supabase
     payload => {
       if (payload.new.id !== currentTicketId) return;
 
-      // 🔓 Middleman entra
+      // 🔓 Middleman entra → SOLO lógica, NO mensaje en chat
       if (payload.new.middleman_joined && !middlemanOnline) {
         middlemanOnline = true;
         applyChatPermissions(currentRole);
@@ -1491,27 +1490,25 @@ chatChannel = supabase
           input.disabled = false;
           sendBtn.disabled = false;
         }
-
-        addSystemMessage("✅ Middleman joined. Chat unlocked.");
       }
 
-      // 📦 Producto / precio
+      // 🟢 Seller entra → ÚNICO mensaje de sistema permitido
       if (
-        payload.new.product_name &&
-        payload.new.amount &&
-        (
-          payload.new.product_name !== payload.old.product_name ||
-          payload.new.amount !== payload.old.amount
-        )
+        payload.new.seller === "connected" &&
+        payload.old.seller !== "connected"
       ) {
-        addSystemMessage(
-          `📦 Product: ${payload.new.product_name}<br>
-           💰 Price: ${payload.new.currency || "$"} ${payload.new.amount}`
-        );
+        addSystemMessage("✅ Seller has joined the transaction.");
       }
+
+      // ❌ ELIMINADO:
+      // - Middleman joined message
+      // - Product / Price message
+      // - KHZ spam en el chat
     }
   )
   .subscribe(); // 🔥 CRÍTICO
+
+/* ========= MENSAJES DE SISTEMA (SOLO SI SE USAN) ========= */
 
 function addSystemMessage(text) {
   const messagesBox = document.getElementById("messages");
@@ -1520,7 +1517,7 @@ function addSystemMessage(text) {
   const div = document.createElement("div");
   div.innerHTML = `<strong style="color:#60a5fa">KHZ:</strong><br>${text}`;
   messagesBox.appendChild(div);
- messagesBox.scrollTop = messagesBox.scrollHeight;
+  messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
 
@@ -2364,6 +2361,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
