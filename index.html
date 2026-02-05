@@ -1096,65 +1096,87 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // =====================
-  // BUYER CREATE ORDER
-  // =====================
-  document.getElementById("buyerCreateOrderBtn").onclick = async () => {
+// BUYER CREATE ORDER
+// =====================
+document.getElementById("buyerCreateOrderBtn").onclick = async () => {
 
-    if (currentRole !== "buyer") {
-      alert("Only the buyer can create the order.");
-      return;
-    }
+  if (currentRole !== "buyer") {
+    alert("Only the buyer can create the order.");
+    return;
+  }
 
-    if (!currentTicketId) {
-      alert("Ticket not ready");
-      return;
-    }
+  if (!currentTicketId) {
+    alert("Ticket not ready");
+    return;
+  }
 
-    const name = document.getElementById("buyerProductName").value.trim();
-    const amount = document.getElementById("buyerAmount").value.trim();
-    const currency = document.getElementById("buyerCurrency").value;
+  const name = document.getElementById("buyerProductName").value.trim();
+  const description = document
+    .getElementById("buyerProductDescription")
+    .value
+    .trim();
+  const amount = document.getElementById("buyerAmount").value.trim();
+  const currency = document.getElementById("buyerCurrency").value;
 
-    if (!name || !amount) {
-      alert("Fill product and price");
-      return;
-    }
+  if (!name || !description || !amount) {
+    alert("Fill product, description and price");
+    return;
+  }
 
-    const { error } = await supabase
-      .from("tickets")
-      .update({
-        product_name: name,
-        amount: amount,
-        currency: currency,
-        status_step: "PRODUCT_SET"
-      })
-      .eq("id", currentTicketId);
+  const { error } = await supabase
+    .from("tickets")
+    .update({
+      product_name: name,
+      product_description: description,
+      amount: amount,
+      currency: currency,
+      status_step: "PRODUCT_SET"
+    })
+    .eq("id", currentTicketId);
 
-    if (error) {
-      alert("Error saving order");
-      console.error(error);
-      return;
-    }
+  if (error) {
+    alert("Error saving order");
+    console.error(error);
+    return;
+  }
 
-    const { data: ticketData } = await supabase
-      .from("tickets")
-      .select("code")
-      .eq("id", currentTicketId)
-      .single();
+  // 📦 Mensaje premium en el chat
+  await supabase.from("messages").insert([{
+    ticket_id: currentTicketId,
+    sender: "middleman",
+    text: `
+📦 <b>Order details submitted</b>
 
-    document.getElementById("ticketText").innerHTML = `
-      <h3>Order created ✅</h3>
-      <p style="color:#9aa4b2;font-size:14px">
-        Send this code to the seller so they can join the transaction:
-      </p>
-      <div style="font-size:22px;font-weight:800;margin-top:12px;letter-spacing:2px;">
-        ${ticketData.code}
-      </div>
-    `;
+<b>Product:</b> ${name}
+<b>Description:</b> ${description}
+<b>Price:</b> ${amount} ${currency}
 
-    ticketPopup.style.display = "flex";
-    document.getElementById("buyerCreateOrderModal").style.display = "none";
-    loadOrderPanel(currentTicketId);
-  };
+Please review and confirm the details.
+    `,
+    extension: "order_summary"
+  }]);
+
+  const { data: ticketData } = await supabase
+    .from("tickets")
+    .select("code")
+    .eq("id", currentTicketId)
+    .single();
+
+  document.getElementById("ticketText").innerHTML = `
+    <h3>Order created ✅</h3>
+    <p style="color:#9aa4b2;font-size:14px">
+      Send this code to the seller so they can join the transaction:
+    </p>
+    <div style="font-size:22px;font-weight:800;margin-top:12px;letter-spacing:2px;">
+      ${ticketData.code}
+    </div>
+  `;
+
+  ticketPopup.style.display = "flex";
+  document.getElementById("buyerCreateOrderModal").style.display = "none";
+  loadOrderPanel(currentTicketId);
+};
+
 
   // =====================
   // CTRL + M (MIDDLEMAN)
@@ -2393,6 +2415,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
