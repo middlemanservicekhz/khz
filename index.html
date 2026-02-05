@@ -1384,11 +1384,12 @@ async function openChat(ticketId, role) {
       unlockChat();
     }
 
-    messagesBox.innerHTML = `
-      <div style="color:#9aa4b2;font-size:14px">
-        ⏳ Waiting for the other party to join the transaction...
-      </div>
-    `;
+   messagesBox.innerHTML = `
+  <div id="waitingMessage" style="color:#9aa4b2;font-size:14px;text-align:center;">
+    ⏳ Waiting for the other party to join the transaction...
+  </div>
+`;
+
 
   } else {
     // ✅ Buyer + Seller presentes
@@ -1492,13 +1493,18 @@ chatChannel = supabase
         }
       }
 
-      // 🟢 Seller entra → ÚNICO mensaje de sistema permitido
-      if (
-        payload.new.seller === "connected" &&
-        payload.old.seller !== "connected"
-      ) {
-        addSystemMessage("✅ Seller has joined the transaction.");
-      }
+     // 🟢 Seller entra
+if (
+  payload.new.seller === "connected" &&
+  payload.old.seller !== "connected"
+) {
+  // ❌ Quitar mensaje de espera
+  const waitingMsg = document.getElementById("waitingMessage");
+  if (waitingMsg) waitingMsg.remove();
+
+  addSystemMessage("✅ Seller has joined the transaction.");
+}
+
 
       // ❌ ELIMINADO:
       // - Middleman joined message
@@ -2361,6 +2367,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
