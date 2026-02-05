@@ -1042,18 +1042,21 @@ let middlemanOnline = false
   // Middleman nunca cambia
   if (currentRole === "middleman") return "middleman";
 
-  // Intentar restaurar rol guardado
   const savedRole = localStorage.getItem("khz_role");
 
+  // Restaurar rol guardado si existe
   if (savedRole === "buyer" && ticket.buyer) return "buyer";
   if (savedRole === "seller" && ticket.seller) return "seller";
 
-  // Asignación automática si falta alguien
-  if (ticket.buyer && !ticket.seller) return "seller";
-  if (ticket.seller && !ticket.buyer) return "buyer";
+  // Si entra alguien y no hay seller → asignar seller
+  if (!ticket.seller) return "seller";
+
+  // Si entra alguien y no hay buyer → asignar buyer
+  if (!ticket.buyer) return "buyer";
 
   return "guest";
 }
+
 
 
 const MIDDLEMAN_KEY = "*Dinero19"
@@ -1243,6 +1246,46 @@ openChat(ticket.id, resolvedRole);
         .eq('id', ticket.id);
     }
   });
+// =====================
+// JOIN TICKET
+// =====================
+const joinTicketBtn = document.getElementById('joinTicketBtn');
+const ticketCodeInput = document.getElementById('ticketCodeInput');
+
+joinTicketBtn.addEventListener('click', async () => {
+  const code = ticketCodeInput.value.trim().toUpperCase();
+  if (!code) return alert("Put code");
+
+  const { data: ticket } = await supabase
+    .from('tickets')
+    .select('*')
+    .eq('code', code)
+    .single(); 
+
+  if (!ticket) return alert("Ticket not found");
+
+  // 🔑 Resolver rol correctamente
+  let resolvedRole = resolveRoleFromTicket(ticket);
+
+  // 🔑 Si no hay seller, forzamos seller
+  if (!ticket.seller && resolvedRole === "guest") {
+    resolvedRole = "seller";
+    await supabase
+      .from('tickets')
+      .update({ seller: 'connected' })
+      .eq('id', ticket.id);
+  }
+
+  currentTicketId = ticket.id;
+  currentRole = resolvedRole;
+  middlemanOnline = !!ticket.middleman_joined;
+
+  localStorage.setItem("khz_ticketId", ticket.id);
+  localStorage.setItem("khz_role", resolvedRole);
+
+  // Abrir chat
+  openChat(ticket.id, resolvedRole);
+});
 
   // =====================
   // CREATE TICKET
@@ -1995,8 +2038,15 @@ function displayMessage(msg) {
   
   // Asignamos la clase de burbuja según el rol
   // Buyer = derecha (azul), Seller/Middleman = izquierda (gris)
-  const roleClass = (msg.role === 'buyer') ? 'buyer' : 'seller';
-  div.className = `msg ${roleClass}`;
+ let roleClass = 'buyer'; // por defecto azul
+
+if (msg.role === 'buyer') roleClass = 'buyer';
+else if (msg.role === 'seller') roleClass = 'seller';
+else if (msg.role === 'middleman') roleClass = 'middleman';
+else roleClass = 'seller'; // cualquier otro caso → gris
+
+div.className = `msg ${roleClass}`;
+
 
   // Si es una imagen
   if (msg.extension === "image") {
@@ -2423,6 +2473,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
