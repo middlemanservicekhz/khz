@@ -1429,24 +1429,6 @@ loadOrderPanel(ticketId);
 // 🔥 FORZAR PERMISOS AL ABRIR CHAT
 applyChatPermissions(currentRole);
 
-
- <!--// Mensaje sistema (WELCOME PREMIUM)
-const welcome = document.createElement("div");
-welcome.innerHTML = `
-  <div style="
-    color:#ffffff;
-    font-size:14px;
-    font-weight:700;
-    text-align:center;
-    margin:18px 0;
-    letter-spacing:0.4px;
-  ">
-    Welcome to the Middleman Service
-  </div>
-`;
-messagesBox.appendChild(welcome);-->
-
-
   // Cargar mensajes anteriores
   const { data: oldMessages } = await supabase
     .from("messages")
@@ -2429,6 +2411,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
