@@ -1269,6 +1269,46 @@ document.getElementById("minimizeChatBtn").onclick = () => {
 };
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
+  // FUNCION PARA ACTUALIZAR LOS PASOS
+  function updateOrderSteps(status) {
+    const steps = [
+      document.getElementById("step-payment"),
+      document.getElementById("step-verification"),
+      document.getElementById("step-confirm"),
+      document.getElementById("step-delivery"),
+      document.getElementById("step-release")
+    ];
+
+    // Limpiar clases
+    steps.forEach(s => {
+      s.classList.remove("current", "completed");
+    });
+
+    switch(status) {
+      case "PAYMENT_PENDING":
+        steps[0].classList.add("current");
+        break;
+      case "VERIFICATION_PENDING":
+        steps[0].classList.add("completed");
+        steps[1].classList.add("current");
+        break;
+      case "CONFIRMATION_PENDING":
+        steps[0].classList.add("completed");
+        steps[1].classList.add("completed");
+        steps[2].classList.add("current");
+        break;
+      case "DELIVERY_PENDING":
+        steps[0].classList.add("completed");
+        steps[1].classList.add("completed");
+        steps[2].classList.add("completed");
+        steps[3].classList.add("current");
+        break;
+      case "RELEASED":
+        steps.forEach(s => s.classList.add("completed"));
+        break;
+    }
+  }
+
 
 // =====================
 // 🔄 FORCE MIDDLEMAN SYNC
@@ -1382,21 +1422,20 @@ loadOrderPanel(ticketId);
   const sendBtn = document.getElementById("sendMsg");
 
   /* =============================
-     2️⃣ CONSULTA PARTICIPANTES
-     ============================= */
-  const { data: ticket } = await supabase
-    .from("tickets")
-    .select("buyer, seller")
-    .eq("id", ticketId)
-    .single();
+   2️⃣ CONSULTA PARTICIPANTES
+   ============================= */
+const { data: ticket } = await supabase
+  .from("tickets")
+  .select("buyer, seller, status_step") // 🔹 agrega status_step aquí
+  .eq("id", ticketId)
+  .single();
 
-  // ⏳ Falta alguien
-  if (!ticket.buyer || !ticket.seller) {
-
-    // 👑 Middleman puede escribir
-    if (currentRole === "middleman") {
-      unlockChat();
-    }
+// ⏳ Falta alguien
+if (!ticket.buyer || !ticket.seller) {
+  // 👑 Middleman puede escribir
+  if (currentRole === "middleman") {
+    unlockChat();
+  }
 
   messagesBox.innerHTML = `
   <div id="waitingMessage" style="
@@ -1407,20 +1446,23 @@ loadOrderPanel(ticketId);
     <span class="waiting-spinner">⏳</span>
     Waiting for the other party to join the transaction...
   </div>
-`;
+  `;
 
+} else {
+  // ✅ Buyer + Seller presentes
+  unlockChat();
+}
 
+// -------------------------------
+// 🔹 LLAMAR A updateOrderSteps AQUÍ
+updateOrderSteps(ticket.status_step);
 
-  } else {
-    // ✅ Buyer + Seller presentes
-    unlockChat();
-  }
-
-  // Cargar panel
+// Cargar panel
 loadOrderPanel(ticketId);
 
 // 🔥 FORZAR PERMISOS AL ABRIR CHAT
 applyChatPermissions(currentRole);
+
 
   // Cargar mensajes anteriores
   const { data: oldMessages } = await supabase
@@ -2416,6 +2458,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
