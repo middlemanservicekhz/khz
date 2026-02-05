@@ -1521,10 +1521,13 @@ function addSystemMessage(text) {
   if (!messagesBox) return;
 
   const div = document.createElement("div");
-  div.innerHTML = `<strong style="color:#60a5fa">KHZ:</strong><br>${text}`;
+  div.className = "system-message";
+  div.innerHTML = text;
+
   messagesBox.appendChild(div);
   messagesBox.scrollTop = messagesBox.scrollHeight;
 }
+
 
 
   // 💬 MENSAJES DEL CHAT
@@ -2367,6 +2370,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
