@@ -1140,22 +1140,6 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
     return;
   }
 
-  // 📦 Mensaje premium en el chat
-  await supabase.from("messages").insert([{
-    ticket_id: currentTicketId,
-    sender: "middleman",
-    text: `
-📦 <b>Order details submitted</b>
-
-<b>Product:</b> ${name}
-<b>Description:</b> ${description}
-<b>Price:</b> ${amount} ${currency}
-
-Please review and confirm the details.
-    `,
-    extension: "order_summary"
-  }]);
-
   const { data: ticketData } = await supabase
     .from("tickets")
     .select("code")
@@ -2431,6 +2415,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
