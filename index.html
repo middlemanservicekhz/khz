@@ -1508,9 +1508,9 @@ applyChatPermissions(currentRole);
   // PEGA ESTO EN SU LUGAR:
 oldMessages?.forEach(msg => {
   displayMessage({
-    role: msg.sender,
-    content: msg.text,
-    extension: msg.extension
+    role: msg.sender || "system",
+    content: msg.text || msg.message || "",
+    extension: msg.extension || "text"
   });
 });
   
@@ -2505,6 +2505,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
