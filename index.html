@@ -1185,7 +1185,7 @@ Please proceed with the payment and upload proof to continue.
 
   console.log("SENDING MESSAGE", {
   ticket_id: currentTicketId,
-  sender_role: "middleman",
+  sender: "middleman",
   message: premiumMessage
 });
 
@@ -1193,7 +1193,7 @@ const { error: msgError } = await supabase
   .from("messages")
   .insert({
     ticket_id: currentTicketId,
-    sender_role: "middleman",
+    sender: "middleman",
     message: premiumMessage
   });
 
@@ -2505,6 +2505,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
