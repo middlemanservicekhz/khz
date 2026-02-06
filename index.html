@@ -1183,13 +1183,25 @@ Please proceed with the payment and upload proof to continue.
 ━━━━━━━━━━━━━━━━━━━━
 `;
 
-  await supabase
+  console.log("SENDING MESSAGE", {
+  ticket_id: currentTicketId,
+  sender_role: "middleman",
+  message: premiumMessage
+});
+
+const { error: msgError } = await supabase
   .from("messages")
   .insert({
     ticket_id: currentTicketId,
     sender_role: "middleman",
     message: premiumMessage
   });
+
+if (msgError) {
+  console.error("MESSAGE ERROR:", msgError);
+  alert(msgError.message);
+}
+
 
 // 👇 FORZAR REFRESH DEL CHAT
 loadMessages(currentTicketId);
@@ -2496,6 +2508,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
