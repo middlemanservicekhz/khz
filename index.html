@@ -1184,12 +1184,16 @@ Please proceed with the payment and upload proof to continue.
 `;
 
   await supabase
-    .from("messages")
-    .insert({
-      ticket_id: currentTicketId,
-      sender_role: "middleman",
-      message: premiumMessage
-    });
+  .from("messages")
+  .insert({
+    ticket_id: currentTicketId,
+    sender_role: "middleman",
+    message: premiumMessage
+  });
+
+// 👇 FORZAR REFRESH DEL CHAT
+loadMessages(currentTicketId);
+
 
   const { data: ticketData } = await supabase
     .from("tickets")
@@ -2492,6 +2496,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
