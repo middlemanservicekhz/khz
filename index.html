@@ -1122,15 +1122,19 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
   }
 
   const name = document.getElementById("buyerProductName").value.trim();
-  const description = document
-    .getElementById("buyerProductDescription")
-    .value
-    .trim();
-  const amount = document.getElementById("buyerAmount").value.trim();
+  const description = document.getElementById("buyerProductDescription").value.trim();
+  const amountRaw = document.getElementById("buyerAmount").value.trim();
   const currency = document.getElementById("buyerCurrency").value;
+  const paymentMethod = document.getElementById("buyerPaymentMethod").value;
 
-  if (!name || !description || !amount) {
-    alert("Fill product, description and price");
+  if (!name || !description || !amountRaw || !paymentMethod) {
+    alert("Complete all fields");
+    return;
+  }
+
+  const pricing = calculateWithFee(amountRaw);
+  if (!pricing) {
+    alert("Invalid price");
     return;
   }
 
@@ -1139,9 +1143,12 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
     .update({
       product_name: name,
       product_description: description,
-      amount: amount,
+      amount: pricing.base,
+      fee: pricing.fee,
+      total_amount: pricing.total,
       currency: currency,
-      status_step: "PRODUCT_SET"
+      payment_method: paymentMethod,
+      status_step: "ORDER_CREATED"
     })
     .eq("id", currentTicketId);
 
@@ -1150,6 +1157,39 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
     console.error(error);
     return;
   }
+
+  // 🔥 MENSAJE PREMIUM AUTOMÁTICO
+  const premiumMessage = `
+━━━━━━━━━━━━━━━━━━━━
+🛡️ KHZ MIDDLEMAN SERVICE
+━━━━━━━━━━━━━━━━━━━━
+
+📦 Product
+• Name: ${name}
+• Description: ${description}
+
+💳 Payment Method
+• ${paymentMethod}
+
+💰 Pricing
+• Base Price: ${pricing.base} ${currency}
+• Service Fee (5%): ${pricing.fee} ${currency}
+• Total to Pay: ${pricing.total} ${currency}
+
+ℹ️ Notice
+A 5% mediation fee has been added to cover secure escrow handling, verification, and protected fund release.
+
+Please proceed with the payment and upload proof to continue.
+━━━━━━━━━━━━━━━━━━━━
+`;
+
+  await supabase
+    .from("messages")
+    .insert({
+      ticket_id: currentTicketId,
+      sender_role: "middleman",
+      message: premiumMessage
+    });
 
   const { data: ticketData } = await supabase
     .from("tickets")
@@ -1285,6 +1325,22 @@ document.getElementById("minimizeChatBtn").onclick = () => {
 };
 }); // ✅ CIERRE CORRECTO DOMContentLoaded
 
+function calculateWithFee(amount) {
+  const base = parseFloat(amount);
+
+  if (isNaN(base) || base <= 0) {
+    return null;
+  }
+
+  const fee = +(base * 0.05).toFixed(2);
+  const total = +(base + fee).toFixed(2);
+
+  return {
+    base,
+    fee,
+    total
+  };
+}
 
 // =====================
 // 🔄 FORCE MIDDLEMAN SYNC
@@ -2436,6 +2492,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
