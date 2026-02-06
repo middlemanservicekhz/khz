@@ -1203,9 +1203,6 @@ if (msgError) {
 }
 
 
-// 👇 FORZAR REFRESH DEL CHAT
-loadMessages(currentTicketId);
-
 
   const { data: ticketData } = await supabase
     .from("tickets")
@@ -2508,6 +2505,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
