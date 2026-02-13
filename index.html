@@ -1768,7 +1768,7 @@ supabase
    ===================== */
 const paymentInput = document.getElementById("paymentPhotoInput")
 
-paymentInput.addEventListener("change", async () => {
+paymentInput.addEventListener("change", async (e) => {
 
   if (!currentTicketId) {
     alert("Ticket not ready yet")
@@ -1776,6 +1776,10 @@ paymentInput.addEventListener("change", async () => {
     return
   }
 
+  const file = e.target.files[0] // ✅ AQUÍ DEFINES file
+
+  if (!file) return
+  
   const safeFileName = file.name
   .replace(/\s+/g, "_")        // reemplaza espacios por _
   .replace(/[^\w.-]/g, "")     // elimina caracteres raros
@@ -2565,6 +2569,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
