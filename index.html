@@ -1212,29 +1212,40 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
   }
 
   // 🔥 MENSAJE PREMIUM AUTOMÁTICO
-  const premiumMessage = `
-━━━━━━━━━━━━━━━━━━━━
-🛡️ KHZ MIDDLEMAN SERVICE
-━━━━━━━━━━━━━━━━━━━━
+ const premiumMessage = `
+<div class="escrow-box">
 
-📦 Product
-• Name: ${name}
-• Description: ${description}
+  <h3>👑 KHZ Escrow – Payment Instructions</h3>
 
-💳 Payment Method
-• ${paymentMethod}
+  <div class="escrow-section">
+    <p><strong>📦 Product Name:</strong> ${name}</p>
+    <p><strong>📝 Description:</strong> ${description}</p>
+  </div>
 
-💰 Pricing
-• Base Price: ${pricing.base} ${currency}
-• Service Fee (5%): ${pricing.fee} ${currency}
-• Total to Pay: ${pricing.total} ${currency}
+  <div class="escrow-section">
+    <p><strong>💳 Payment Method:</strong> ${paymentMethod}</p>
+    <p><strong>💰 Base Price:</strong> ${pricing.base} ${currency}</p>
+    <p><strong>🛡 Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
+    <p class="total"><strong>Total to Pay:</strong> ${pricing.total} ${currency}</p>
+  </div>
 
-ℹ️ Notice
-A 5% mediation fee has been added to cover secure escrow handling, verification, and protected fund release.
+  <div class="payment-details">
+    <p><strong>📧 PayPal Account:</strong></p>
+    <p class="paypal-email">paufly1985@gmail.com</p>
 
-Please proceed with the payment and upload proof to continue.
-━━━━━━━━━━━━━━━━━━━━
+    <p class="important">
+      ⚠️ IMPORTANT: Payment MUST be sent via 
+      <u>PayPal Friends & Family</u>.
+    </p>
+  </div>
+
+  <p class="notice">
+    After completing the payment, please upload the payment proof below to continue the transaction.
+  </p>
+
+</div>
 `;
+
 
   console.log("SENDING MESSAGE", {
   ticket_id: currentTicketId,
@@ -2563,6 +2574,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
