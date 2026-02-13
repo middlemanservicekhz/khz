@@ -1776,10 +1776,12 @@ paymentInput.addEventListener("change", async () => {
     return
   }
 
-  const file = paymentInput.files[0]
-  if (!file) return
+  const safeFileName = file.name
+  .replace(/\s+/g, "_")        // reemplaza espacios por _
+  .replace(/[^\w.-]/g, "")     // elimina caracteres raros
 
-  const fileName = `payments/${currentTicketId}_${Date.now()}_${file.name}`
+const fileName = `payments/${currentTicketId}_${Date.now()}_${safeFileName}`
+
 
   // Subir imagen a storage
   const { error: uploadError } = await supabase.storage
@@ -2563,6 +2565,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
