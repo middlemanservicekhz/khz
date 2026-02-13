@@ -1776,39 +1776,12 @@ paymentInput.addEventListener("change", async () => {
     return
   }
 
-  // 🔒 El Dorado rule: order must be set before payment
-  const { data: ticket } = await supabase
-    .from("tickets")
-    .select("status_step")
-    .eq("id", currentTicketId)
-    .single();
+  const file = paymentInput.files[0]
+  if (!file) return
 
-  if (ticket.status_step !== "PRODUCT_SET") {
-    alert("Order is not ready for payment yet.");
-    paymentInput.value = "";
-    return;
-  }
-  
-  if (!currentTicketId) {
-    alert("Ticket not ready yet")
-    return
-  }
+  const fileName = `payments/${currentTicketId}_${Date.now()}_${file.name}`
 
-  // ❌ solo buyer puede subir pago
-  if (currentRole !== "buyer") {
-    alert("Only the buyer can upload payment proof")
-    paymentInput.value = ""
-    return
-  }
-
-  const safeFileName = file.name
-  .replace(/\s+/g, "_")        // reemplaza espacios por _
-  .replace(/[^\w.-]/g, "")     // elimina caracteres raros
-
-const fileName = `payments/${currentTicketId}_${Date.now()}_${safeFileName}`
-
-
-  // subir imagen
+  // Subir imagen a storage
   const { error: uploadError } = await supabase.storage
     .from("chat-files")
     .upload(fileName, file)
@@ -1819,40 +1792,44 @@ const fileName = `payments/${currentTicketId}_${Date.now()}_${safeFileName}`
     return
   }
 
-  const { data } = supabase.storage
+  // Obtener URL pública
+  const { data: publicData } = supabase.storage
     .from("chat-files")
     .getPublicUrl(fileName)
 
-  // insertar mensaje
-  const { error } = await supabase
+  const imageUrl = publicData.publicUrl
+
+  // Insertar mensaje en tabla messages
+  const { error: insertError } = await supabase
     .from("messages")
     .insert([{
       ticket_id: currentTicketId,
       sender: currentRole,
-      text: data.publicUrl,
+      text: imageUrl,
       topic: "chat",
       extension: "image"
     }])
 
-  if (error) {
-    console.error("INSERT IMAGE ERROR:", error)
-    alert(error.message)
+  if (insertError) {
+    console.error("INSERT IMAGE ERROR:", insertError)
+    alert(insertError.message)
     return
   }
 
-  // actualizar orden (ESCROW)
+  // (Opcional) actualizar estado si quieres mantener lógica escrow
   await supabase
     .from("tickets")
     .update({
-      payment_proof: data.publicUrl,
+      payment_proof: imageUrl,
       status_step: "PAYMENT_UPLOADED"
     })
     .eq("id", currentTicketId)
 
-  // actualizar panel
   document.getElementById("orderStatusText").textContent = "PAYMENT_UPLOADED"
 
   paymentInput.value = ""
+  loadMessages(currentTicketId)
+
 })
 
 
@@ -2586,6 +2563,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
