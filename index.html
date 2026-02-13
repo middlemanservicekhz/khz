@@ -615,8 +615,8 @@ h1, h2, h3, .brand strong {
 /* MENSAJES ESTILO BURBUJA MODERNA */
 .chat-messages {
   flex: 1;
-  height: 400px;           /* Altura fija necesaria para que el scroll funcione */
-  overflow-y: auto;        /* Activa la barra de desplazamiento vertical */
+  height: 400px;
+  overflow-y: auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -720,92 +720,11 @@ h1, h2, h3, .brand strong {
 .chat-input-bar button:hover {
   background: #1d4ed8;
   transform: translateY(-2px);
-} 
-    
-/* HEADER REPARADO Y ALINEADO - VERSIÓN FINAL */
-.chat-header {
-  padding: 12px 20px !important;
-  background: #1e293b !important;
-  display: flex !important;
-  flex-direction: row !important; /* 👈 FUERZA LA FILA */
-  justify-content: space-between !important;
-  align-items: center !important;
-  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
 }
 
-.header-status {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 10px !important;
-}
-
-.chat-header-actions {
-  display: flex !important;
-  flex-direction: row !important; /* 👈 FUERZA QUE LOS BOTONES ESTÉN AL LADO */
-  gap: 8px !important;
-  margin-left: auto; /* Empuja hacia la derecha */
-}
-
-/* Estilo de los botones */
-.chat-header-actions button {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: none !important;
-  color: #94a3b8 !important;
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 8px !important;
-  cursor: pointer !important;
-  font-size: 16px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.2s;
-}
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: #2bd4bd;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #2bd4bd;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.4; }
-  100% { opacity: 1; }
-}
-
-#orderPanel {
-  background: #111827 !important; /* Forzamos el color oscuro */
-  padding: 20px !important;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.order-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.order-item .label {
-  display: block;
-  font-size: 9px;
-  font-weight: 800;
-  color: #64748b;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
-.order-item .value {
-  font-size: 15px;
-  font-weight: 600;
-  color: #f1f5f9;
-}
+/* ============================= */
+/* BLOQUE DE STEPS VISUALES ABAJO */
+/* ============================= */
 
 #orderSteps {
   display: flex;
@@ -820,9 +739,32 @@ h1, h2, h3, .brand strong {
   align-items: center;
   gap: 6px;
   opacity: 0.3;
+  position: relative; /* 👈 agregado para línea animada */
 }
 
-.step.active { opacity: 1; }
+.step.active { 
+  opacity: 1; 
+}
+
+/* 🔥 Línea naranja titilando arriba */
+.step.active::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: orange;
+  border-radius: 3px;
+  animation: blinkLine 1s infinite;
+}
+
+/* Animación */
+@keyframes blinkLine {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
 
 .step-dot {
   width: 100%;
@@ -839,24 +781,9 @@ h1, h2, h3, .brand strong {
   font-size: 9px;
   font-weight: 700;
   color: #94a3b8;
-} 
-  .system-message {
-  font-size: 13px;
-  color: #9aa4b2;
-  text-align: center;
-  margin: 10px 0;
-  opacity: 0.85;
-}
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
-.waiting-spinner {
-  display: inline-block;
-  animation: spin 1.2s linear infinite;
-} 
-    /* ===== ESCROW PAYMENT BOX ===== */
+/* ===== ESCROW PAYMENT BOX ===== */
 
 .escrow-box {
   background: #0f1b2e;
@@ -2564,6 +2491,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
