@@ -1779,7 +1779,9 @@ paymentInput.addEventListener("change", async () => {
   const file = paymentInput.files[0]
   if (!file) return
 
-  const fileName = `payments/${currentTicketId}_${Date.now()}_${file.name}`
+  const fileExtension = file.name.split(".").pop()
+const fileName = `payments/${currentTicketId}_${Date.now()}.${fileExtension}`
+
 
   // Subir imagen a storage
   const { error: uploadError } = await supabase.storage
@@ -2562,6 +2564,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
