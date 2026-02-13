@@ -1211,6 +1211,16 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
     return;
   }
 
+  let formattedPaymentMethod = paymentMethod;
+
+if (paymentMethod === "PAYPAL_FF") {
+  formattedPaymentMethod = "PayPal (Friends & Family)";
+}
+
+if (paymentMethod === "BINANCE_USDT") {
+  formattedPaymentMethod = "Binance USDT (TRC20)";
+}
+
   // 🔥 MENSAJE PREMIUM AUTOMÁTICO
  const premiumMessage = `
 <div class="escrow-box">
@@ -1223,9 +1233,9 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
   </div>
 
   <div class="escrow-section">
-    <p><strong>💳 Payment Method:</strong> ${paymentMethod}</p>
+    <p><strong>💳 Payment Method:</strong> ${formattedPaymentMethod}</p>
     <p><strong>💰 Base Price:</strong> ${pricing.base} ${currency}</p>
-    <p><strong>🛡 Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
+    <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
     <p class="total"><strong>Total to Pay:</strong> ${pricing.total} ${currency}</p>
   </div>
 
@@ -2574,6 +2584,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
