@@ -906,7 +906,42 @@ h1, h2, h3, .brand strong {
   margin-top: 15px;
   font-size: 14px;
   opacity: 0.8;
+} 
+    .wallet-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #0b1628;
+  border: 1px solid rgba(79,124,255,.25);
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-top: 8px;
 }
+
+.wallet-box span {
+  font-size: 13px;
+  word-break: break-all;   /* 🔥 ESTO EVITA QUE SE SALGA */
+  flex: 1;
+  color: #93c5fd;
+}
+.copy-btn {
+  background: linear-gradient(135deg,#4f7cff,#2bd4bd);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: 600;
+}
+
+.copy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(79,124,255,.4);
+}
+
 
   </style>
 </head>
@@ -2610,6 +2645,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
