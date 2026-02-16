@@ -1279,20 +1279,30 @@ if (paymentMethod === "PAYPAL_FF") {
 if (paymentMethod === "USDT") {
   paymentDetailsHTML = `
   <div class="payment-details">
-    <p><strong>💲 USDT (TRC20) Wallet Address:</strong></p>
-    
+
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
+      💲 USDT (TRC20) Wallet Address
+    </p>
+
     <div class="wallet-box">
       <span id="usdtWallet">TAiMxcluKVTDiQkJJoeVWG7QPUFDd9s7</span>
       <button id="copyWalletBtn" class="copy-btn">Copy</button>
     </div>
 
-    <p class="important">
-      ⚠️ Send ONLY USDT via TRC20 network.
+    <p style="
+      margin-top:12px;
+      font-size:13px;
+      color:#facc15;
+      font-weight:600;
+    ">
+      ⚠ Send ONLY USDT via TRC20 network.
       Sending from another network may result in permanent loss.
     </p>
+
   </div>
   `;
 }
+
 
 const premiumMessage = `
 <div class="escrow-box">
@@ -2106,19 +2116,46 @@ if (minimizeBtn) minimizeBtn.onclick = hideChat;
 
 if (closeBtn) {
   closeBtn.onclick = () => {
-    if (confirm("Close transaction window?")) {
+    const confirmed = confirm(
+      "⚠️ Close Transaction?\n\nThis will hide the escrow window.\nYou can reopen it using the restore button."
+    );
+
+    if (confirmed) {
       hideChat();
-      // Opcional: localStorage.removeItem("khz_ticketId"); // Si quieres que olvide el ticket al cerrar
     }
   };
 }
+
 
 if (restoreBtn) {
   restoreBtn.onclick = () => {
     chatOverlay.style.display = 'flex';
     restoreBtn.style.display = 'none';
   };
-}
+} 
+  // =====================
+// COPY WALLET (GLOBAL LISTENER)
+// =====================
+document.addEventListener("click", function(e) {
+  if (e.target && e.target.id === "copyWalletBtn") {
+
+    const walletEl = document.getElementById("usdtWallet");
+    if (!walletEl) return;
+
+    const walletText = walletEl.innerText;
+
+    navigator.clipboard.writeText(walletText).then(() => {
+      e.target.innerText = "Copied ✓";
+
+      setTimeout(() => {
+        e.target.innerText = "Copy";
+      }, 2000);
+    }).catch(() => {
+      alert("Copy failed");
+    });
+  }
+});
+
 // =====================
 // IMAGE MODAL (FUERA DEL DOMContentLoaded)
 // =====================
@@ -2149,19 +2186,6 @@ document.addEventListener("click", (e) => {
   modal.style.display = "flex";
   modalImg.src = src;
 });
-
-// Añadir el evento de confirmación al botón de cerrar el chat
-const closeChatBtn = document.getElementById("closeChatBtn");
-if (closeChatBtn) {
-  closeChatBtn.onclick = () => {
-    // Mostrar la confirmación antes de cerrar el chat
-    const userConfirmed = window.confirm("Are you sure you want to close the chat? All messages will be lost.");
-    if (userConfirmed) {
-      // Si el usuario acepta, cerrar el chat
-      document.getElementById("chatOverlay").style.display = "none"; // Cierra el chat
-    }
-  };
-}
 
 // Manejo del modal
 const modal = document.getElementById("imageModal");  // Declaración única para el modal
@@ -2645,6 +2669,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
