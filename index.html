@@ -2156,7 +2156,7 @@ function displayMessage(msg) {
   if (!container) return;
 
   // 🛡️ NORMALIZACIÓN (CLAVE)
-  const role = (msg.role || "system").toString();
+  const role = (msg.sender || msg.role || "system").toString();
   const content = msg.content || msg.text || msg.message || "";
   const extension = msg.extension || "text";
 
@@ -2610,6 +2610,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
