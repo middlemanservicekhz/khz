@@ -1217,11 +1217,11 @@ if (paymentMethod === "PAYPAL_FF") {
   formattedPaymentMethod = "PayPal (Friends & Family)";
 }
 
-if (paymentMethod === "BINANCE_USDT") {
-  formattedPaymentMethod = "Binance USDT (TRC20)";
+if (paymentMethod === "USDT") {
+  formattedPaymentMethod = "USDT (TRC20)";
 }
 
- // 🔥 MENSAJE PREMIUM AUTOMÁTICO
+// 🔥 MENSAJE PREMIUM AUTOMÁTICO
 
 let paymentDetailsHTML = "";
 
@@ -1241,7 +1241,7 @@ if (paymentMethod === "PAYPAL_FF") {
 }
 
 // USDT TRC20
-if (paymentMethod === "BINANCE_USDT") {
+if (paymentMethod === "USDT") {
   paymentDetailsHTML = `
   <div class="payment-details">
     <p><strong>💲 USDT (TRC20) Wallet Address:</strong></p>
@@ -2610,6 +2610,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
