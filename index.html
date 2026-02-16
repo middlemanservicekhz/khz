@@ -1480,21 +1480,11 @@ async function createTicketWithRole(role) {
     .select()
     .single();
 
- currentTicketId = ticket.id;
-currentRole = role;
+  currentTicketId = ticket.id;
+  currentRole = role;
 
-// 🔥 MENSAJE AUTOMÁTICO
-await supabase.from("messages").insert([{
-  ticket_id: ticket.id,
-  sender: "middleman",
-  text: `...`,
-  topic: "system",
-  extension: "text"
-}]);
-
-// 🔒 Al crear ticket, el middleman NO está online
-middlemanOnline = false;
-
+  // 🔒 Al crear ticket, el middleman NO está online
+  middlemanOnline = false;
 
   // Siempre cerramos el popup de rol
   rolePopup.style.display = 'none';
@@ -2579,7 +2569,6 @@ loadReviews();
 
 </body>
 </html>
-
 
 
 
