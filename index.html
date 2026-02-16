@@ -1740,23 +1740,17 @@ chatChannel = supabase
         }
       }
 
-     // 🟢 Seller entra
+  // 🟢 Seller entra
 if (
   payload.new.seller === "connected" &&
+  payload.old &&
   payload.old.seller !== "connected"
 ) {
-  // ❌ Quitar mensaje de espera
   const waitingMsg = document.getElementById("waitingMessage");
   if (waitingMsg) waitingMsg.remove();
 
-  addSystemMessage("✅ Seller has joined the transaction.");
+  addSystemMessageOnce("Seller has joined the transaction");
 }
-
-
-      // ❌ ELIMINADO:
-      // - Middleman joined message
-      // - Product / Price message
-      // - KHZ spam en el chat
     }
   )
   .subscribe(); // 🔥 CRÍTICO
@@ -2669,6 +2663,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
