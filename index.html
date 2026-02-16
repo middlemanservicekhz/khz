@@ -1222,7 +1222,25 @@ if (paymentMethod === "BINANCE_USDT") {
 }
 
   // 🔥 MENSAJE PREMIUM AUTOMÁTICO
- const premiumMessage = `
+
+let paymentDetailsHTML = "";
+
+// Mostrar datos SOLO si es PayPal
+if (paymentMethod === "PAYPAL_FF") {
+  paymentDetailsHTML = `
+  <div class="payment-details">
+    <p><strong>📧 PayPal Account:</strong></p>
+    <p class="paypal-email">paufly1985@gmail.com</p>
+
+    <p class="important">
+      ⚠️ IMPORTANT: Payment MUST be sent via 
+      <u>PayPal Friends & Family</u>.
+    </p>
+  </div>
+  `;
+}
+
+const premiumMessage = `
 <div class="escrow-box">
 
   <h3>👑 KHZ Escrow – Payment Instructions</h3>
@@ -1239,15 +1257,7 @@ if (paymentMethod === "BINANCE_USDT") {
     <p class="total"><strong>Total to Pay:</strong> ${pricing.total} ${currency}</p>
   </div>
 
-  <div class="payment-details">
-    <p><strong>📧 PayPal Account:</strong></p>
-    <p class="paypal-email">paufly1985@gmail.com</p>
-
-    <p class="important">
-      ⚠️ IMPORTANT: Payment MUST be sent via 
-      <u>PayPal Friends & Family</u>.
-    </p>
-  </div>
+  ${paymentDetailsHTML}
 
   <p class="notice">
     After completing the payment, please upload the payment proof below to continue the transaction.
@@ -1256,28 +1266,25 @@ if (paymentMethod === "BINANCE_USDT") {
 </div>
 `;
 
-
-  console.log("SENDING MESSAGE", {
+console.log("SENDING MESSAGE", {
   ticket_id: currentTicketId,
-  sender: "middleman",
-  message: premiumMessage
+  sender: "middleman"
 });
 
 const { error: msgError } = await supabase
   .from("messages")
   .insert({
-  ticket_id: currentTicketId,
-  sender: "middleman",
-  text: premiumMessage,
-  topic: "system",
-  extension: "html"
-});
+    ticket_id: currentTicketId,
+    sender: "middleman",
+    text: premiumMessage,
+    topic: "system",
+    extension: "html"
+  });
 
 if (msgError) {
   console.error("MESSAGE ERROR:", msgError);
   alert(msgError.message);
 }
-
 
 
   const { data: ticketData } = await supabase
@@ -2571,6 +2578,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
