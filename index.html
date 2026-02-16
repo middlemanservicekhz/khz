@@ -1769,6 +1769,14 @@ function addSystemMessage(text) {
   messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
+function addSystemMessageOnce(text) {
+  const exists = [...document.querySelectorAll(".system-message")]
+    .some(el => el.innerText.includes(text));
+
+  if (!exists) {
+    addSystemMessage("✅ " + text);
+  }
+}
 
 
   // 💬 MENSAJES DEL CHAT
@@ -2663,6 +2671,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
