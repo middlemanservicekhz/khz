@@ -1266,10 +1266,12 @@ if (paymentMethod === "BINANCE_USDT") {
 const { error: msgError } = await supabase
   .from("messages")
   .insert({
-    ticket_id: currentTicketId,
-    sender: "middleman",
-    message: premiumMessage
-  });
+  ticket_id: currentTicketId,
+  sender: "middleman",
+  text: premiumMessage,
+  topic: "system",
+  extension: "html"
+});
 
 if (msgError) {
   console.error("MESSAGE ERROR:", msgError);
@@ -2569,6 +2571,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
