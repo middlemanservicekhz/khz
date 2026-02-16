@@ -1221,11 +1221,11 @@ if (paymentMethod === "BINANCE_USDT") {
   formattedPaymentMethod = "Binance USDT (TRC20)";
 }
 
-  // 🔥 MENSAJE PREMIUM AUTOMÁTICO
+ // 🔥 MENSAJE PREMIUM AUTOMÁTICO
 
 let paymentDetailsHTML = "";
 
-// Mostrar datos SOLO si es PayPal
+// PAYPAL
 if (paymentMethod === "PAYPAL_FF") {
   paymentDetailsHTML = `
   <div class="payment-details">
@@ -1235,6 +1235,25 @@ if (paymentMethod === "PAYPAL_FF") {
     <p class="important">
       ⚠️ IMPORTANT: Payment MUST be sent via 
       <u>PayPal Friends & Family</u>.
+    </p>
+  </div>
+  `;
+}
+
+// USDT TRC20
+if (paymentMethod === "BINANCE_USDT") {
+  paymentDetailsHTML = `
+  <div class="payment-details">
+    <p><strong>💲 USDT (TRC20) Wallet Address:</strong></p>
+    
+    <div class="wallet-box">
+      <span id="usdtWallet">TAiMxcluKVTDiQkJJoeVWG7QPUFDd9s7</span>
+      <button id="copyWalletBtn" class="copy-btn">Copy</button>
+    </div>
+
+    <p class="important">
+      ⚠️ Send ONLY USDT via TRC20 network.
+      Sending from another network may result in permanent loss.
     </p>
   </div>
   `;
@@ -1266,11 +1285,6 @@ const premiumMessage = `
 </div>
 `;
 
-console.log("SENDING MESSAGE", {
-  ticket_id: currentTicketId,
-  sender: "middleman"
-});
-
 const { error: msgError } = await supabase
   .from("messages")
   .insert({
@@ -1284,7 +1298,25 @@ const { error: msgError } = await supabase
 if (msgError) {
   console.error("MESSAGE ERROR:", msgError);
   alert(msgError.message);
-}
+} 
+  // Esperar a que el mensaje se renderice
+setTimeout(() => {
+  const copyBtn = document.getElementById("copyWalletBtn");
+  const walletText = document.getElementById("usdtWallet");
+
+  if (copyBtn && walletText) {
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(walletText.innerText);
+      copyBtn.innerText = "Copied ✅";
+
+      setTimeout(() => {
+        copyBtn.innerText = "Copy";
+      }, 2000);
+    };
+  }
+}, 500);
+
+
 
 
   const { data: ticketData } = await supabase
@@ -2578,6 +2610,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
