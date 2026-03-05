@@ -816,6 +816,10 @@ h1, h2, h3, .brand strong {
   min-width: 0;
 }
 
+    .order-item.full {
+  grid-column: 1 / -1;
+}
+    
 #orderSteps {
   display: flex;
   justify-content: space-between;
@@ -949,11 +953,6 @@ h1, h2, h3, .brand strong {
 .copy-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(79,124,255,.4);
-}
-.secure-transaction-modal p,
-.secure-transaction-modal div {
-  word-break: break-word;
-  overflow-wrap: break-word;
 }
 
   </style>
@@ -2506,32 +2505,47 @@ loadReviews();
       </div>
     </div>
 
-    <div id="orderPanel">
-      <div class="order-grid">
-        <div class="order-item">
-          <span class="label">PRODUCT</span>
-          <span id="orderProductText" class="value">—</span>
-        </div>
+  <div id="orderPanel">
+  <div class="order-grid">
 
-        <div class="order-item" style="grid-column: 1 / -1;">
-  <span class="label">Description</span>
-  <div
-  id="orderDescriptionText"
-  class="value"
-  style="
-    font-size:13px;
-    opacity:.9;
-    line-height:1.5;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    max-height: 90px;
-    overflow-y: auto;
-  "
->
-  —
-</div>
+    <div class="order-item" style="grid-column: 1 / -1;">
+      <span class="label">PRODUCT</span>
+      <span
+        id="orderProductText"
+        class="value"
+        style="
+          font-size:13px;
+          opacity:.9;
+          line-height:1.5;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+          max-height: 90px;
+          overflow-y: auto;
+          display:block;
+        "
+      >
+        —
+      </span>
+    </div>
 
-</div>
+    <div class="order-item" style="grid-column: 1 / -1;">
+      <span class="label">Description</span>
+      <div
+        id="orderDescriptionText"
+        class="value"
+        style="
+          font-size:13px;
+          opacity:.9;
+          line-height:1.5;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+          max-height: 90px;
+          overflow-y: auto;
+        "
+      >
+        —
+      </div>
+    </div>
 
         <div class="order-item">
           <span class="label">TOTAL AMOUNT</span>
@@ -2684,6 +2698,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
