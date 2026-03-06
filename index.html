@@ -2307,6 +2307,19 @@ const feedbackBarContainer = document.getElementById('feedbackBarContainer');
 let reviews = [];
 let currentPage = 1;
 
+const reviewAvatars = [
+"https://cdn-icons-png.flaticon.com/512/53/53283.png",
+"https://cdn-icons-png.flaticon.com/512/686/686589.png",
+"https://cdn-icons-png.flaticon.com/512/2583/2583344.png",
+"https://cdn-icons-png.flaticon.com/512/1828/1828884.png",
+"https://cdn-icons-png.flaticon.com/512/1055/1055687.png",
+"https://cdn-icons-png.flaticon.com/512/3523/3523063.png",
+"https://cdn-icons-png.flaticon.com/512/3523/3523887.png",
+"https://cdn-icons-png.flaticon.com/512/889/889455.png",
+"https://cdn-icons-png.flaticon.com/512/616/616408.png",
+"https://cdn-icons-png.flaticon.com/512/744/744922.png"
+];
+
 // Cargar reseñas de Firebase
 async function loadReviews() {
   const q = query(reviewsRef, orderBy("date", "desc"));
@@ -2698,6 +2711,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
