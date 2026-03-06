@@ -2410,7 +2410,7 @@ function render() {
     div.className = 'review';
     div.innerHTML = `
       <div class="profile">
-        <img class="avatar" src="https://i.pravatar.cc/80?u=${r.name}" />
+        <img class="avatar" src="${reviewAvatars[Math.floor(Math.random()*reviewAvatars.length)]}" />
         <div>
           <div class="name">${escapeHTML(r.name)}</div>
           <div class="date">${formatDate(r.date)}</div>
@@ -2711,6 +2711,7 @@ loadReviews();
 
 </body>
 </html>
+
 
 
 
