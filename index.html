@@ -1841,20 +1841,28 @@ supabase
     });
 
     sendBtn.onclick = async () => {
-      if (!currentTicketId) return;
-      if (!msgInput.value.trim()) return;
+  if (!currentTicketId) return;
+  if (!msgInput.value.trim()) return;
 
-      await supabase.from("messages").insert([{
-        ticket_id: currentTicketId,
-        sender: currentRole,
-        text: msgInput.value,
-        topic: "chat",
-        extension: "text"
-      }]);
+  const messageText = msgInput.value;
 
-      msgInput.value = "";
-    };
-  }
+  // 🔥 ESTA LÍNEA ES LA DIFERENCIA (NO LA TENÍAS)
+  displayMessage({
+    role: currentRole,
+    content: messageText,
+    extension: "text"
+  });
+
+  msgInput.value = "";
+
+  await supabase.from("messages").insert([{
+    ticket_id: currentTicketId,
+    sender: currentRole,
+    text: messageText,
+    topic: "chat",
+    extension: "text"
+  }]);
+};
 
   document.getElementById("closeChatBtn").onclick = () => {
   document.getElementById("chatOverlay").style.display = "none";
