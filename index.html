@@ -1827,49 +1827,48 @@ supabase
 
 
   /* ========= SEND MESSAGE (UNA SOLA VEZ) ========= */
-  if (!chatInitialized) {
-    chatInitialized = true;
+if (!chatInitialized) {
+  chatInitialized = true;
 
-    const msgInput = document.getElementById("msgInput");
-    const sendBtn = document.getElementById("sendMsg");
+  const msgInput = document.getElementById("msgInput");
+  const sendBtn = document.getElementById("sendMsg");
 
-    msgInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendBtn.click();
-      }
-    });
-
-    sendBtn.onclick = async () => {
-  if (!currentTicketId) return;
-  if (!msgInput.value.trim()) return;
-
-  const messageText = msgInput.value;
-
-  // 🔥 ESTA LÍNEA ES LA DIFERENCIA (NO LA TENÍAS)
-  displayMessage({
-    role: currentRole,
-    content: messageText,
-    extension: "text"
+  msgInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendBtn.click();
+    }
   });
 
-  msgInput.value = "";
+  sendBtn.onclick = async () => {
+    if (!currentTicketId) return;
+    if (!msgInput.value.trim()) return;
 
-  await supabase.from("messages").insert([{
-    ticket_id: currentTicketId,
-    sender: currentRole,
-    text: messageText,
-    topic: "chat",
-    extension: "text"
-  }]);
-};
+    const messageText = msgInput.value;
+
+    displayMessage({
+      role: currentRole,
+      content: messageText,
+      extension: "text"
+    });
+
+    msgInput.value = "";
+
+    await supabase.from("messages").insert([{
+      ticket_id: currentTicketId,
+      sender: currentRole,
+      text: messageText,
+      topic: "chat",
+      extension: "text"
+    }]);
+  };
 
   document.getElementById("closeChatBtn").onclick = () => {
-  document.getElementById("chatOverlay").style.display = "none";
+    document.getElementById("chatOverlay").style.display = "none";
+    chatInitialized = false;
+  };
 
-  // 🔥 ESTO ES CLAVE
-  chatInitialized = false;
-};
+} // 🔥 ESTA LLAVE TE FALTABA
 
 /* =====================
    UPLOAD PAYMENT PHOTO
