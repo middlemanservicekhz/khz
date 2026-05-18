@@ -223,11 +223,28 @@ footer .container{
   object-fit:contain; /* usa cover si quieres que llene todo */
 }
 
-#quickReviews {
-  overflow-x: auto; /* Permite desplazamiento horizontal si se salen del área */
-  white-space: nowrap; /* Evita que los elementos se acomoden en varias líneas */
-}/* ===== SCROLL PREMIUM GLOBAL ===== */
+#quickReviews{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
 
+#quickReviews button{
+  font-size:12px !important;
+  padding:8px 10px !important;
+  border-radius:10px !important;
+  background:#162040 !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  color:#fff !important;
+  cursor:pointer;
+  transition:.2s;
+}
+
+#quickReviews button:hover{
+  transform:translateY(-2px);
+  background:#1d2b52 !important;
+}
 html {
   scroll-behavior: smooth;
 }
