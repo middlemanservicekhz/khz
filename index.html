@@ -1820,7 +1820,7 @@ if (
   )
   .subscribe(); // 🔥 CRÍTICO
 
-/* ========= MENSAJES DE SISTEMA (SOLO SI SE USAN) ========= */
+/* ========= MENSAJES DE SISTEMA ========= */
 
 function addSystemMessage(text) {
   const messagesBox = document.getElementById("messages");
@@ -1843,8 +1843,48 @@ function addSystemMessageOnce(text) {
   }
 }
 
+/* ========= DISPLAY MESSAGE PREMIUM ========= */
 
- supabase
+function displayMessage({ role, content, extension = "text" }) {
+
+  const messagesBox = document.getElementById("messages");
+  if (!messagesBox) return;
+
+  const div = document.createElement("div");
+
+  // clases del chat
+  div.className = `msg ${role}`;
+
+  // ===== IMAGEN =====
+  if (extension === "image") {
+
+    div.innerHTML = `
+      <div class="msg-content">
+        <img 
+          src="${content}" 
+          class="chat-image"
+          onclick="window.open('${content}', '_blank')"
+        >
+      </div>
+    `;
+
+  } else {
+
+    // ===== TEXTO =====
+    div.innerHTML = `
+      <div class="msg-content">
+        ${content}
+      </div>
+    `;
+  }
+
+  messagesBox.appendChild(div);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+/* ========= REALTIME MESSAGES ========= */
+
+supabase
   .channel("messages-realtime")
   .on(
     "postgres_changes",
