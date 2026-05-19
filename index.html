@@ -1960,14 +1960,18 @@ function displayMessage({ role, content, extension = "text" }) {
   if (extension === "image") {
 
     div.innerHTML = `
-      <div class="msg-content">
-        <img 
-          src="${content}" 
-          class="chat-image"
-          onclick="window.open('${content}', '_blank')"
-        >
-      </div>
-    `;
+  <div class="msg-label">
+    ${role.toUpperCase()}
+  </div>
+
+  <div class="msg-content">
+    <img 
+      src="${content}" 
+      class="chat-image"
+      onclick="window.open('${content}', '_blank')"
+    >
+  </div>
+`;
 
   } else {
 
