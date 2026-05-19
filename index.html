@@ -2396,11 +2396,18 @@ async function loadReviews() {
   render();
 }
 
-// Utilidades
 function escapeHTML(str) {
-  return str.replace(/[&<>"']/g, m => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+
+  if (!str) return "";
+
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   }[m]));
+
 }
 
 function formatDate(d) {
