@@ -1972,11 +1972,15 @@ function displayMessage({ role, content, extension = "text" }) {
   } else {
 
     // ===== TEXTO =====
-    div.innerHTML = `
-      <div class="msg-content">
-        ${content}
-      </div>
-    `;
+   div.innerHTML = `
+  <div class="msg-label">
+    ${role.toUpperCase()}
+  </div>
+
+  <div class="msg-content">
+    ${content}
+  </div>
+`;
   }
 
   messagesBox.appendChild(div);
