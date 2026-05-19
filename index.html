@@ -2443,35 +2443,50 @@ function updateFeedbackSummary() {
   `;
 }
 
-// Quick reviews
 function renderQuickReviews(){
+
   const box = document.getElementById("quickReviews");
+
   if(!box) return;
+
   box.innerHTML = "";
 
-  const firstTwoPages = reviews.slice(0,84);
-  const count = {};
+  const quickReviews = [
+    "Fast and secure transaction",
+    "Very professional service",
+    "Trusted middleman",
+    "Everything went smoothly",
+    "Safe and reliable",
+    "Highly recommended"
+  ];
 
-  firstTwoPages.forEach(r=>{
-    const t = r.text.trim();
-    count[t] = (count[t]||0)+1;
+  quickReviews.forEach(text => {
+
+    const b = document.createElement("button");
+
+    b.type = "button";
+    b.className = "btn secondary";
+
+    b.style.fontSize = "11px";
+    b.style.padding = "6px 8px";
+
+    b.textContent = text;
+
+    b.onclick = () => {
+
+      const textarea = document.getElementById("reviewText");
+
+      if(textarea){
+        textarea.value = text;
+      }
+
+    };
+
+    box.appendChild(b);
+
   });
 
-  Object.entries(count)
-    .filter(([_,c])=>c>1)
-    .slice(0,10)
-    .forEach(([text])=>{
-      const b = document.createElement("button");
-      b.type="button";
-      b.className="btn secondary";
-      b.style.fontSize="11px";
-      b.style.padding="6px 8px";
-      b.textContent = text.length>40 ? text.slice(0,40)+"…" : text;
-      b.onclick = ()=>document.getElementById("reviewText").value=text;
-      box.appendChild(b);
-    });
 }
-
 // Render reseñas
 function render() {
   container.innerHTML = "";
@@ -2508,7 +2523,7 @@ function render() {
 
   renderPagination();
 updateFeedbackSummary();
-renderQuickReviews();
+  renderQuickReviews();
 }
 
 // Paginación
