@@ -1810,13 +1810,23 @@ loadOrderPanel(ticketId);
 
   // ⏳ Falta alguien
 if (!ticket.buyer || !ticket.seller) {
+
   const waitingMsg = document.getElementById("waitingMessage");
+
   if (!waitingMsg) {
-  const div = document.createElement("div");
-  div.id = "waitingMessage";
-  div.style.cssText = "color:#9aa4b2;font-size:14px;text-align:center;";
-  div.innerHTML = `<span class="waiting-spinner">⏳</span> Waiting for the other party to join the transaction...`;
-  messagesBox.appendChild(div);
+
+    const div = document.createElement("div");
+
+    div.id = "waitingMessage";
+
+    div.style.cssText =
+      "color:#9aa4b2;font-size:14px;text-align:center;";
+
+    div.innerHTML =
+      `<span class="waiting-spinner">⏳</span> Waiting for the other party to join the transaction.`;
+
+    messagesBox.appendChild(div);
+  }
 
 } else {
 
