@@ -2422,46 +2422,6 @@ if (modal) {
     }
   });
 }
-function displayMessage(msg) {
-  const container = document.getElementById("messages");
-  if (!container) return;
-
-  // 🛡️ NORMALIZACIÓN (CLAVE)
-  const role = (msg.sender || msg.role || "system").toString();
-  const content = msg.content || msg.text || msg.message || "";
-  const extension = msg.extension || "text";
-
-  const div = document.createElement("div");
-
-  // Clase según rol
-  let roleClass = "seller";
-  if (role === "buyer") roleClass = "buyer";
-  else if (role === "seller") roleClass = "seller";
-  else if (role === "middleman") roleClass = "middleman";
-
-  div.className = `msg ${roleClass}`;
-
-  // Render
-  if (extension === "image") {
-    div.innerHTML = `
-      <div style="font-size:10px; opacity:0.6; margin-bottom:4px; font-weight:700;">
-        ${role.toUpperCase()}
-      </div>
-      <img src="${content}" style="max-width:100%; border-radius:10px; display:block;">
-    `;
-  } else {
-    div.innerHTML = `
-      <div style="font-size:10px; opacity:0.6; margin-bottom:4px; font-weight:700;">
-        ${role.toUpperCase()}
-      </div>
-      <div>${content}</div>
-    `;
-  }
-
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
   // Esta función hará que el chat baje solo
 function scrollToBottom() {
   const chatMessages = document.querySelector('.chat-messages');
