@@ -223,7 +223,45 @@ footer .container{
   object-fit:contain; /* usa cover si quieres que llene todo */
 }
 
+#quickReviews{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:14px 0;
+  width:100%;
+  overflow:hidden;
+}
 
+#quickReviews button{
+  background:rgba(79,124,255,.12) !important;
+  border:1px solid rgba(79,124,255,.18) !important;
+  color:#dbe7ff !important;
+
+  padding:7px 12px !important;
+  border-radius:999px !important;
+
+  font-size:12px !important;
+  font-weight:500;
+
+  max-width:100%;
+  white-space:normal !important;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+  line-height:1.2;
+
+  cursor:pointer;
+  transition:.18s;
+}
+
+#quickReviews button:hover{
+  background:rgba(79,124,255,.22) !important;
+  transform:translateY(-1px);
+}
+    
 html {
   scroll-behavior: smooth;
 }
