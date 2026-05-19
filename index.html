@@ -2097,28 +2097,35 @@ const fileName = `payments/${currentTicketId}_${Date.now()}_${safeFileName}`
   }
 
   // Obtener URL pública
-  const { data: publicData } = supabase.storage
-    .from("chat-files")
-    .getPublicUrl(fileName)
+const { data: publicData } = supabase.storage
+  .from("chat-files")
+  .getPublicUrl(fileName)
 
-  const imageUrl = publicData.publicUrl
+const imageUrl = publicData.publicUrl
 
-  // Insertar mensaje en tabla messages
-  const { error: insertError } = await supabase
-    .from("messages")
-    .insert([{
-      ticket_id: currentTicketId,
-      sender: currentRole,
-      text: imageUrl,
-      topic: "chat",
-      extension: "image"
-    }])
+// 🔥 MOSTRAR INSTANTÁNEAMENTE AL BUYER
+displayMessage({
+  role: currentRole,
+  content: imageUrl,
+  extension: "image"
+})
 
-  if (insertError) {
-    console.error("INSERT IMAGE ERROR:", insertError)
-    alert(insertError.message)
-    return
-  }
+// Insertar mensaje en tabla messages
+const { error: insertError } = await supabase
+  .from("messages")
+  .insert([{
+    ticket_id: currentTicketId,
+    sender: currentRole,
+    text: imageUrl,
+    topic: "chat",
+    extension: "image"
+  }])
+
+if (insertError) {
+  console.error("INSERT IMAGE ERROR:", insertError)
+  alert(insertError.message)
+  return
+}
 
   // (Opcional) actualizar estado si quieres mantener lógica escrow
   await supabase
