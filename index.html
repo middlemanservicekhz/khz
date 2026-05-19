@@ -1102,22 +1102,8 @@ Verified feedback from real completed escrow transactions.
         <p style="color:var(--muted);font-size:14px">Only clients who completed a transaction may leave a review.</p>
         <form id="reviewForm">
           <input type="text" id="reviewName" placeholder="Name or username" required style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:10px" />
-          <div id="quickReviews" style="max-width:100%;overflow:hidden">
-          <textarea
-  id="reviewText"
-  placeholder="Write your experience"
-  style="
-    width:100%;
-    min-height:120px;
-    margin-top:14px;
-    padding:14px;
-    border-radius:14px;
-    background:#0f172a;
-    color:white;
-    border:1px solid rgba(255,255,255,.08);
-    display:block;
-  "
-></textarea>
+          <div id="quickReviews" style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px"></div>
+          <textarea id="reviewText" placeholder="Write your experience" required rows="4" style="width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#10172a;color:#fff;margin-bottom:12px"></textarea>
           <button type="submit" class="btn" style="width:100%">Submit review</button>
         </form>
       </div>
