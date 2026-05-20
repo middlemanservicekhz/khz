@@ -1435,9 +1435,28 @@ if (!amountRaw) {
   showError(amountInput, "* Amount is required");
 }
 
+const paymentInput = document.getElementById("buyerPaymentMethod");
+
+paymentInput.style.border = "1px solid rgba(255,255,255,.15)";
+
 if (!paymentMethod) {
-  alert("Select payment method");
+
   hasError = true;
+
+  paymentInput.style.border = "1px solid #ff4d4f";
+
+  const error = document.createElement("div");
+
+  error.className = "field-error";
+
+  error.style.color = "#ff4d4f";
+  error.style.fontSize = "12px";
+  error.style.marginTop = "-8px";
+  error.style.marginBottom = "10px";
+
+  error.innerText = "* Payment method is required";
+
+  paymentInput.parentNode.insertBefore(error, paymentInput.nextSibling);
 }
 
 if (hasError) return;
