@@ -1379,29 +1379,78 @@ document.getElementById("buyerCreateOrderBtn").onclick = async () => {
   }
 
   if (!currentTicketId) {
-    alert("Ticket not ready");
-    return;
-  }
+  alert("Ticket not ready");
+  return;
+}
 
-  const name = document.getElementById("buyerProductName").value.trim();
-  const description = document.getElementById("buyerProductDescription").value.trim();
-  const amountRaw = document.getElementById("buyerAmount").value.trim();
-  const currency = document.getElementById("buyerCurrency").value;
-  const paymentMethod = document.getElementById("buyerPaymentMethod").value;
+const nameInput = document.getElementById("buyerProductName");
+const descInput = document.getElementById("buyerProductDescription");
+const amountInput = document.getElementById("buyerAmount");
 
-  if (!name || !description || !amountRaw || !paymentMethod) {
-    alert("Complete all fields");
-    return;
-  }
+const name = nameInput.value.trim();
+const description = descInput.value.trim();
+const amountRaw = amountInput.value.trim();
 
-  const pricing = calculateWithFee(amountRaw);
-  if (!pricing) {
-    alert("Invalid price");
-    return;
-  }
+const currency = document.getElementById("buyerCurrency").value;
+const paymentMethod = document.getElementById("buyerPaymentMethod").value;
 
-  const { error } = await supabase
-    .from("tickets")
+// limpiar errores viejos
+document.querySelectorAll(".field-error").forEach(el => el.remove());
+
+[nameInput, descInput, amountInput].forEach(input => {
+  input.style.border = "1px solid rgba(255,255,255,.15)";
+});
+
+let hasError = false;
+
+function showError(input, text) {
+
+  hasError = true;
+
+  input.style.border = "1px solid #ff4d4f";
+
+  const error = document.createElement("div");
+
+  error.className = "field-error";
+
+  error.style.color = "#ff4d4f";
+  error.style.fontSize = "12px";
+  error.style.marginTop = "-8px";
+  error.style.marginBottom = "10px";
+
+  error.innerText = text;
+
+  input.parentNode.insertBefore(error, input.nextSibling);
+}
+
+if (!name) {
+  showError(nameInput, "* Product name is required");
+}
+
+if (!description) {
+  showError(descInput, "* Description is required");
+}
+
+if (!amountRaw) {
+  showError(amountInput, "* Amount is required");
+}
+
+if (!paymentMethod) {
+  alert("Select payment method");
+  hasError = true;
+}
+
+if (hasError) return;
+
+const pricing = calculateWithFee(amountRaw);
+
+if (!pricing) {
+  alert("Invalid price");
+  return;
+}
+
+const { error } = await supabase
+  .from("tickets")
     .update({
       product_name: name,
       product_description: description,
