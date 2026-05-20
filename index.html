@@ -1337,7 +1337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       .from("tickets")
       .select("*")
       .eq("id", savedTicket)
-      .single(); 
+      .maybeSingle();
 
     if (!ticket) {
       console.log("Ticket no encontrado o no autorizado.");
@@ -1542,7 +1542,7 @@ setTimeout(() => {
     .from("tickets")
     .select("code")
     .eq("id", currentTicketId)
-    .single();
+    .maybeSingle();
 
   document.getElementById("ticketText").innerHTML = `
     <h3>Order created ✅</h3>
@@ -1607,7 +1607,7 @@ joinTicketBtn.addEventListener('click', async () => {
   .from('tickets')
   .select('*')
   .eq('code', code)
-  .single();
+  .maybeSingle();
 
 if (!ticket) return alert("Ticket not found");
 
@@ -1697,7 +1697,7 @@ async function forceMiddlemanSync(ticketId) {
     .from("tickets")
     .select("middleman_joined")
     .eq("id", ticketId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Middleman sync error:", error);
@@ -1738,7 +1738,7 @@ async function createTicketWithRole(role) {
       dispute_opened: false
     }])
     .select()
-    .single();
+    .maybeSingle();
 
   currentTicketId = ticket.id;
   currentRole = role;
@@ -1806,7 +1806,7 @@ loadOrderPanel(ticketId);
     .from("tickets")
     .select("buyer, seller")
     .eq("id", ticketId)
-    .single();
+  .maybeSingle();
 
   // ⏳ Falta alguien
 if (!ticket.buyer || !ticket.seller) {
@@ -2179,7 +2179,7 @@ async function loadOrderPanel(ticketId) {
     .from("tickets")
     .select("status_step, product_name, product_description, amount, currency")
     .eq("id", ticketId)
-    .single()
+    .maybeSingle();
 
   if (error || !ticket) {
     console.error("Order panel error:", error)
