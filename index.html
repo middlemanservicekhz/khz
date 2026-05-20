@@ -1787,7 +1787,7 @@ async function createTicketWithRole(role) {
       dispute_opened: false
     }])
     .select()
-    .maybeSingle();
+    .single();
 
   currentTicketId = ticket.id;
   currentRole = role;
