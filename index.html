@@ -1507,32 +1507,33 @@ if (paymentMethod === "PAYPAL_FF") {
   paymentDetailsHTML = `
   <div class="payment-details">
 
-    <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
-      📧 PayPal Account
-    </p>
+  <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
+    📧 PayPal Account
+  </p>
 
-    <div class="wallet-box">
-      <span id="paypalEmail"
-        style="
-          word-break:normal;
-          white-space:nowrap;
-          color:#4dff88;
-          font-weight:700;
-        ">
-        kilianhzabarce@gmail.com
-      </span>
-
-      <button id="copyPaypalBtn" class="copy-btn">
-        Copy
-      </button>
-    </div>
-
-    <p class="important">
-      ⚠️ IMPORTANT: Payment MUST be sent via
-      <u>PayPal Friends & Family</u>.
-    </p>
-
+  <div class="wallet-box">
+    <span id="paypalEmail"
+      style="
+        color:#4dff88;
+        font-weight:700;
+      ">
+      kilianhzabarce@gmail.com
+    </span>
   </div>
+
+  <button
+    id="copyPaypalBtn"
+    class="copy-btn"
+    style="margin-top:10px;">
+    Copy
+  </button>
+
+  <p class="important">
+    ⚠️ IMPORTANT: Payment MUST be sent via
+    <u>PayPal Friends & Family</u>.
+  </p>
+
+</div>
   `;
 }
 
