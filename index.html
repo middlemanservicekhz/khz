@@ -1607,12 +1607,15 @@ if (msgError) {
 } 
   // Esperar a que el mensaje se renderice
 setTimeout(() => {
+
+  // USDT
   const copyBtn = document.getElementById("copyWalletBtn");
   const walletText = document.getElementById("usdtWallet");
 
   if (copyBtn && walletText) {
     copyBtn.onclick = () => {
       navigator.clipboard.writeText(walletText.innerText);
+
       copyBtn.innerText = "Copied ✅";
 
       setTimeout(() => {
@@ -1620,6 +1623,23 @@ setTimeout(() => {
       }, 2000);
     };
   }
+
+  // PAYPAL
+  const paypalBtn = document.getElementById("copyPaypalBtn");
+  const paypalEmail = document.getElementById("paypalEmail");
+
+  if (paypalBtn && paypalEmail) {
+    paypalBtn.onclick = () => {
+      navigator.clipboard.writeText(paypalEmail.innerText);
+
+      paypalBtn.innerText = "Copied ✅";
+
+      setTimeout(() => {
+        paypalBtn.innerText = "Copy";
+      }, 2000);
+    };
+  }
+
 }, 500);
 
 
