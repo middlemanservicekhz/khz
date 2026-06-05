@@ -2490,17 +2490,16 @@ if (restoreBtn) {
   };
 } 
   // =====================
-// COPY WALLET (GLOBAL LISTENER)
-// =====================
+// COPY BUTTONS (GLOBAL LISTENER)
 document.addEventListener("click", function(e) {
+
+  // USDT
   if (e.target && e.target.id === "copyWalletBtn") {
 
     const walletEl = document.getElementById("usdtWallet");
     if (!walletEl) return;
 
-    const walletText = walletEl.innerText;
-
-    navigator.clipboard.writeText(walletText).then(() => {
+    navigator.clipboard.writeText(walletEl.innerText).then(() => {
       e.target.innerText = "Copied ✓";
 
       setTimeout(() => {
@@ -2510,8 +2509,25 @@ document.addEventListener("click", function(e) {
       alert("Copy failed");
     });
   }
-});
 
+  // PAYPAL
+  if (e.target && e.target.id === "copyPaypalBtn") {
+
+    const emailEl = document.getElementById("paypalEmail");
+    if (!emailEl) return;
+
+    navigator.clipboard.writeText(emailEl.innerText).then(() => {
+      e.target.innerText = "Copied ✓";
+
+      setTimeout(() => {
+        e.target.innerText = "Copy";
+      }, 2000);
+    }).catch(() => {
+      alert("Copy failed");
+    });
+  }
+
+});
 // =====================
 // IMAGE MODAL (FUERA DEL DOMContentLoaded)
 // =====================
