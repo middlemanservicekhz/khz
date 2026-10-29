@@ -1701,6 +1701,35 @@ setTimeout(() => {
   }
 };
 
+const buyerPaymentSelect = document.getElementById("buyerPaymentMethod");
+const giftCardOptions = document.getElementById("buyerGiftCardOptions");
+const feePaymentSelect = document.getElementById("buyerFeePaymentMethod");
+const feeGiftCardOptions = document.getElementById("buyerFeeGiftCardOptions");
+
+function refreshGiftCardOptions() {
+  const selected = buyerPaymentSelect.value === "GIFT_CARD";
+
+  giftCardOptions.style.display = selected ? "block" : "none";
+
+  if (!selected) {
+    document.getElementById("buyerGiftCardBrand").value = "";
+    feePaymentSelect.value = "";
+    document.getElementById("buyerFeeGiftCardBrand").value = "";
+    feeGiftCardOptions.style.display = "none";
+  }
+}
+
+buyerPaymentSelect.addEventListener("change", refreshGiftCardOptions);
+
+feePaymentSelect.addEventListener("change", () => {
+  const selected = feePaymentSelect.value === "GIFT_CARD";
+  feeGiftCardOptions.style.display = selected ? "block" : "none";
+
+  if (!selected) {
+    document.getElementById("buyerFeeGiftCardBrand").value = "";
+  }
+});
+
 
  // =====================
 // JOIN TICKET
