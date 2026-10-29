@@ -1462,7 +1462,28 @@ if (!paymentMethod) {
 
   paymentInput.parentNode.insertBefore(error, paymentInput.nextSibling);
 }
+if (paymentMethod === "GIFT_CARD") {
+  if (!giftCardBrand) {
+    showError(
+      document.getElementById("buyerGiftCardBrand"),
+      "* Gift card brand is required"
+    );
+  }
 
+  if (!feePaymentMethod) {
+    showError(
+      document.getElementById("buyerFeePaymentMethod"),
+      "* Select how to pay the service fee separately"
+    );
+  }
+
+  if (feePaymentMethod === "GIFT_CARD" && !feeGiftCardBrand) {
+    showError(
+      document.getElementById("buyerFeeGiftCardBrand"),
+      "* Fee gift card brand is required"
+    );
+  }
+}
 if (hasError) return;
 
 const pricing = calculateWithFee(amountRaw);
