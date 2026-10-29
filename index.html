@@ -3008,12 +3008,63 @@ loadReviews();
   PAYMENT METHOD
 </label>
 
+
 <select id="buyerPaymentMethod" class="chat-input">
   <option value="">Select payment method</option>
-  <option value="USDT">USDT</option>
+  <option value="USDT">USDT (TRC20)</option>
   <option value="PAYPAL_FF">PayPal (Friends & Family)</option>
   <option value="PAYEER">Payeer</option>
+  <option value="GIFT_CARD">Gift Card</option>
 </select>
+
+<div id="buyerGiftCardOptions" style="display:none;margin-top:8px;">
+  <label style="font-size:11px;font-weight:700;color:#9aa4b2;display:block;margin-bottom:6px;">
+    GIFT CARD BRAND
+  </label>
+
+  <select id="buyerGiftCardBrand" class="chat-input">
+    <option value="">Select gift card brand</option>
+    <option value="Steam">Steam</option>
+    <option value="Apple">Apple</option>
+    <option value="Xbox">Xbox</option>
+    <option value="Google Play">Google Play</option>
+    <option value="Amazon">Amazon</option>
+    <option value="Razer Gold">Razer Gold</option>
+    <option value="Other">Other</option>
+  </select>
+
+  <div style="background:#121826;border:1px solid #293449;border-radius:12px;padding:12px;margin-top:10px;">
+    <p style="font-size:13px;font-weight:700;margin:0 0 5px;">
+      KHZ Service Fee (5%)
+    </p>
+    <p style="font-size:12px;color:#9aa4b2;margin:0 0 10px;">
+      Choose how to pay the service fee separately.
+    </p>
+
+    <select id="buyerFeePaymentMethod" class="chat-input">
+      <option value="">Select fee payment method</option>
+      <option value="USDT">USDT (TRC20)</option>
+      <option value="PAYPAL_FF">PayPal (Friends & Family)</option>
+      <option value="GIFT_CARD">Gift Card</option>
+    </select>
+
+    <div id="buyerFeeGiftCardOptions" style="display:none;margin-top:8px;">
+      <label style="font-size:11px;font-weight:700;color:#9aa4b2;display:block;margin-bottom:6px;">
+        FEE GIFT CARD BRAND
+      </label>
+      <select id="buyerFeeGiftCardBrand" class="chat-input">
+        <option value="">Select gift card brand</option>
+        <option value="Steam">Steam</option>
+        <option value="Apple">Apple</option>
+        <option value="Xbox">Xbox</option>
+        <option value="Google Play">Google Play</option>
+        <option value="Amazon">Amazon</option>
+        <option value="Razer Gold">Razer Gold</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+  </div>
+</div>
 
     <input
       id="buyerAmount"
