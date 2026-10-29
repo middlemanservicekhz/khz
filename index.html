@@ -1503,7 +1503,12 @@ const { error } = await supabase
       total_amount: pricing.total,
       currency: currency,
       payment_method: paymentMethod,
-      status_step: "ORDER_CREATED"
+gift_card_brand: paymentMethod === "GIFT_CARD" ? giftCardBrand : null,
+fee_payment_method: paymentMethod === "GIFT_CARD" ? feePaymentMethod : null,
+fee_gift_card_brand: paymentMethod === "GIFT_CARD" && feePaymentMethod === "GIFT_CARD"
+  ? feeGiftCardBrand
+  : null,
+status_step: "ORDER_CREATED"
     })
     .eq("id", currentTicketId);
 
